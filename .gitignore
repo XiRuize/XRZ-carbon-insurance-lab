@@ -1,0 +1,4 @@
+.workbuddy/
+*.genie
+.DS_Store
+Thumbs.db
