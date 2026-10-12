@@ -1,0 +1,14 @@
+{
+  "enterprise_id": null,
+  "information_as_of": null,
+  "industry": null,
+  "compliance_year": null,
+  "required_allowance_t": null,
+  "eligible_resources_t": null,
+  "locked_future_t_not_in_resources": null,
+  "reserved_unpriced_t": null,
+  "stage_requested_t": null,
+  "stage_purchase_date": null,
+  "evidence_ids": [],
+  "verification_status": "unverified"
+}

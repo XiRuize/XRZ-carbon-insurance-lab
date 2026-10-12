@@ -1,0 +1,76 @@
+{
+  "empty": {
+    "status": "needs_enterprise_inputs",
+    "missing": [
+      "industry",
+      "compliance_year",
+      "required_allowance_t",
+      "eligible_resources_t",
+      "locked_future_t_not_in_resources",
+      "reserved_unpriced_t",
+      "stage_requested_t",
+      "stage_purchase_date"
+    ],
+    "insured_t": null,
+    "limit_cny": null
+  },
+  "missing_capacity": {
+    "status": "needs_insurer_capacity_review",
+    "remaining_net_t": 10000,
+    "requested_t": 10000,
+    "insured_t": null,
+    "limit_cny": null
+  },
+  "complete_demo": {
+    "status": "provisional_quantity_only",
+    "remaining_net_t": 10000,
+    "insured_t": 10000,
+    "limit_cny": null,
+    "evidence_status": "enterprise disclosures and overlapping coverage require verification"
+  },
+  "excess_request": {
+    "status": "requested_t_exceeds_remaining_net_need",
+    "remaining_net_t": 10000,
+    "requested_t": 20000,
+    "insured_t": null,
+    "limit_cny": null
+  },
+  "negative_quantity": {
+    "status": "invalid_input",
+    "invalid_field": "stage_requested_t",
+    "insured_t": null,
+    "limit_cny": null
+  },
+  "invalid_date": {
+    "status": "invalid_input",
+    "invalid_field": "stage_purchase_date",
+    "insured_t": null,
+    "limit_cny": null
+  },
+  "exhausted_need": {
+    "status": "no_remaining_unpriced_need",
+    "remaining_net_t": 0,
+    "insured_t": null,
+    "limit_cny": null
+  },
+  "reduced_capacity": {
+    "status": "provisional_quantity_only",
+    "remaining_net_t": 10000,
+    "insured_t": 5000,
+    "limit_cny": null,
+    "evidence_status": "enterprise disclosures and overlapping coverage require verification"
+  },
+  "invalid_capacity": {
+    "status": "invalid_insurer_capacity",
+    "insured_t": null,
+    "limit_cny": null
+  },
+  "unknown_resources": {
+    "status": "needs_enterprise_inputs",
+    "missing": [
+      "eligible_resources_t"
+    ],
+    "insured_t": null,
+    "limit_cny": null
+  }
+}

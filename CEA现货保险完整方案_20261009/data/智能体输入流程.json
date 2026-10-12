@@ -1,0 +1,81 @@
+{
+  "product": "短期CEA现货采购价格保障",
+  "collection_order": [
+    {
+      "step": 1,
+      "fields": [
+        "industry",
+        "compliance_year"
+      ],
+      "question": "企业属于哪个行业，本次对应哪一履约年度？"
+    },
+    {
+      "step": 2,
+      "fields": [
+        "required_allowance_t",
+        "eligible_resources_t"
+      ],
+      "question": "预计需清缴多少吨，已有多少吨可用于该年度履约？可用量需避免获配与库存重复计算。"
+    },
+    {
+      "step": 3,
+      "fields": [
+        "locked_future_t_not_in_resources",
+        "reserved_unpriced_t"
+      ],
+      "question": "还有多少未计入可用量的锁价采购？尚未锁价的需求中，有多少吨已分配给其他有效保险或待确认申请？同一吨只能扣除一次。"
+    },
+    {
+      "step": 4,
+      "fields": [
+        "stage_requested_t",
+        "stage_purchase_date"
+      ],
+      "question": "本次计划保障多少吨，采购或采价截止日期是什么？"
+    },
+    {
+      "step": 5,
+      "fields": [
+        "budget_price_choice",
+        "participation",
+        "deductible_choice",
+        "cap_band_choice"
+      ],
+      "question": "选择预算价格、免赔、赔付比例及每吨最高保障价差。"
+    }
+  ],
+  "default_contract": {
+    "budget": "研究起点最近5个已知交易日收盘均价",
+    "deductible": "max(2元/吨,2%预算价)",
+    "cap_band": "5%预算价",
+    "participation": 0.8,
+    "sampling": "每阶段末5个交易日均价"
+  },
+  "capacity_policy": "行业用于核算与核验分组，不以行业均值推定企业额度；容量参数来自保险人授权",
+  "missing_input_policy": "missing or blank remains unknown; never convert to zero or auto-approve",
+  "over_request_policy": "ask to reduce stage quantity or reverify annual need; do not silently clip",
+  "evidence_fields": [
+    "enterprise_id",
+    "information_as_of",
+    "evidence_ids",
+    "verification_status"
+  ],
+  "field_semantics": {
+    "eligible_resources_t": "截至信息时点可用于目标履约年度的资源；获配量与账户库存去重，仅纳入合法可用且经核验的资源",
+    "locked_future_t_not_in_resources": "采购价格已确定、资源未计入可用量且可按期交付的采购数量",
+    "reserved_unpriced_t": "尚未锁价需求中已分配给其他阶段、有效保险或待确认申请的数量；去重，不与库存或锁价采购重复扣减"
+  },
+  "ledger_requirements": [
+    "同一企业与履约年度统一数量台账",
+    "待确认申请也预占额度",
+    "分阶段数量之和不超过未锁价净需求",
+    "确认时原子预占，取消时释放，状态变化后重新核验"
+  ],
+  "final_quote_requirements": [
+    "企业资料及净需求核验",
+    "最新已核验CEA行情",
+    "保险人容量批准",
+    "条款与费用参数确认",
+    "独立赔款校准通过"
+  ]
+}

@@ -1,0 +1,596 @@
+{
+  "research_date": "2026-10-09",
+  "data_cutoff": "2026-09-30",
+  "rows_all": 895,
+  "rows_2026": 181,
+  "source_counts": {
+    "official_daily": 149,
+    "third_party_republication": 32
+  },
+  "data_start": "2026-01-05",
+  "last_close": 94.96,
+  "last5_closes": [
+    {
+      "date": "2026-09-23",
+      "close": 95.2
+    },
+    {
+      "date": "2026-09-24",
+      "close": 94.99
+    },
+    {
+      "date": "2026-09-28",
+      "close": 94.8
+    },
+    {
+      "date": "2026-09-29",
+      "close": 94.88
+    },
+    {
+      "date": "2026-09-30",
+      "close": 94.96
+    }
+  ],
+  "historical_2026_low": 72.5,
+  "historical_2026_high": 99.69,
+  "daily_log_mean60": 0.0015821857442467706,
+  "daily_log_sd60": 0.008048745431605046,
+  "seed": 2026100903,
+  "n_sim": 100000,
+  "contract": {
+    "k": 94.966,
+    "d": 2.0,
+    "c": 4.7482999999999995,
+    "eta": 0.8
+  },
+  "input_sha256": "cc3041eb296fb6f95884730e3cfcbad3695be2d4f951603b32aa634ab2da64b4",
+  "quotes": [
+    {
+      "model": "zero60",
+      "horizon": 10,
+      "expiry": "2026-10-21",
+      "calendar_days": 21,
+      "quantity_t": 1000,
+      "limit_cny": 3798.6399999999994,
+      "expected_payout_cny": 300.70613147141285,
+      "pure_premium_cny": 300.36031245963744,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 16.100079175693203,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 645.5754895441634,
+      "probability_claim": 0.23869,
+      "mc_se_expected_payout_cny": 2.3140950527284883
+    },
+    {
+      "model": "zero60",
+      "horizon": 20,
+      "expiry": "2026-11-04",
+      "calendar_days": 35,
+      "quantity_t": 1000,
+      "limit_cny": 3798.6399999999994,
+      "expected_payout_cny": 621.016885121047,
+      "pure_premium_cny": 619.8270351512273,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 24.376286908660433,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 1055.2541525748597,
+      "probability_claim": 0.31498,
+      "mc_se_expected_payout_cny": 3.6893618185618102
+    },
+    {
+      "model": "zero60",
+      "horizon": 40,
+      "expiry": "2026-12-02",
+      "calendar_days": 63,
+      "quantity_t": 1000,
+      "limit_cny": 3798.6399999999994,
+      "expected_payout_cny": 941.6298045512464,
+      "pure_premium_cny": 938.3848509709869,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 39.45022297277178,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 1472.2938424296985,
+      "probability_claim": 0.37329,
+      "mc_se_expected_payout_cny": 4.619143425186299
+    },
+    {
+      "model": "zero60",
+      "horizon": 60,
+      "expiry": "2026-12-30",
+      "calendar_days": 91,
+      "quantity_t": 1000,
+      "limit_cny": 3798.6399999999994,
+      "expected_payout_cny": 1101.661472264934,
+      "pure_premium_cny": 1096.1819288373483,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 53.7917909093459,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 1687.467149683368,
+      "probability_claim": 0.39749,
+      "mc_se_expected_payout_cny": 4.981909317752199
+    }
+  ],
+  "forecasts": [
+    {
+      "horizon": 10,
+      "expiry": "2026-10-21",
+      "end_mean": 95.00339908724155,
+      "end_p10": 91.25305390428821,
+      "end_median": 94.75972749724477,
+      "end_p90": 99.03680089914016,
+      "average5_mean": 94.9921541418271,
+      "average5_p10": 91.8733981480552,
+      "average5_median": 94.83866672978704,
+      "average5_p90": 98.4634323098297
+    },
+    {
+      "horizon": 20,
+      "expiry": "2026-11-04",
+      "end_mean": 95.05541225614805,
+      "end_p10": 89.39364903603663,
+      "end_median": 94.97411901127492,
+      "end_p90": 100.88009111164584,
+      "average5_mean": 95.04604478602909,
+      "average5_p10": 89.81620589280192,
+      "average5_median": 94.961537468849,
+      "average5_p90": 100.47256061021727
+    },
+    {
+      "horizon": 40,
+      "expiry": "2026-12-02",
+      "end_mean": 95.153063770933,
+      "end_p10": 87.12798124060907,
+      "end_median": 94.94672963291399,
+      "end_p90": 103.41380826186932,
+      "average5_mean": 95.13835871268462,
+      "average5_p10": 87.37673783300023,
+      "average5_median": 94.95159795694983,
+      "average5_p90": 103.09900906421582
+    },
+    {
+      "horizon": 60,
+      "expiry": "2026-12-30",
+      "end_mean": 95.24330920975898,
+      "end_p10": 85.36368259169528,
+      "end_median": 94.93453299782917,
+      "end_p90": 105.43221623653591,
+      "average5_mean": 95.22950494706055,
+      "average5_p10": 85.61551294851223,
+      "average5_median": 94.94035229897592,
+      "average5_p90": 105.17892156275394
+    }
+  ],
+  "sampling": [
+    {
+      "sampling": "期末单日",
+      "expected_payout_cny": 685.5948575408593,
+      "pure_premium_cny": 684.2812780873883,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 23.880894243522146,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 1135.202715413638,
+      "probability_claim": 0.32662,
+      "mc_se_expected_payout_cny": 3.900344605044788
+    },
+    {
+      "sampling": "末5日均价",
+      "expected_payout_cny": 621.016885121047,
+      "pure_premium_cny": 619.8270351512273,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 24.376286908660433,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 1055.2541525748597,
+      "probability_claim": 0.31498,
+      "mc_se_expected_payout_cny": 3.6893618185618102
+    },
+    {
+      "sampling": "全期间均价",
+      "expected_payout_cny": 300.5638844209884,
+      "pure_premium_cny": 299.9880129151154,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 26.834556503071838,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 658.528211772734,
+      "probability_claim": 0.23217,
+      "mc_se_expected_payout_cny": 2.3140425841007217
+    },
+    {
+      "sampling": "期间最高收盘价",
+      "expected_payout_cny": 1109.549227054868,
+      "pure_premium_cny": 1107.4233635784385,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 20.628641545880434,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 1660.0650064053987,
+      "probability_claim": 0.54737,
+      "mc_se_expected_payout_cny": 4.375260420928487
+    }
+  ],
+  "tiers": [
+    {
+      "quantity_t": 1000,
+      "limit_cny": 3798.6399999999994,
+      "expected_payout_cny": 621.016885121047,
+      "pure_premium_cny": 619.8270351512273,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 24.376286908660433,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 1055.2541525748597,
+      "probability_claim": 0.31498,
+      "mc_se_expected_payout_cny": 3.6893618185618102
+    },
+    {
+      "quantity_t": 10000,
+      "limit_cny": 37986.399999999994,
+      "expected_payout_cny": 6210.168851210471,
+      "pure_premium_cny": 6198.270351512273,
+      "tvar995_cny": 37986.39999999997,
+      "capital_cost_cny": 243.76286908660438,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 8302.541525748597,
+      "probability_claim": 0.31498,
+      "mc_se_expected_payout_cny": 36.8936181856181
+    },
+    {
+      "quantity_t": 50000,
+      "limit_cny": 189931.99999999997,
+      "expected_payout_cny": 31050.84425605235,
+      "pure_premium_cny": 30991.351757561362,
+      "tvar995_cny": 189931.9999999998,
+      "capital_cost_cny": 1218.8143454330216,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 40512.70762874298,
+      "probability_claim": 0.31498,
+      "mc_se_expected_payout_cny": 184.4680909280905
+    }
+  ],
+  "margin": [
+    {
+      "margin_rate": 0.0,
+      "expected_payout_cny": 621.016885121047,
+      "pure_premium_cny": 619.8270351512273,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 24.376286908660433,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 1055.2541525748597,
+      "probability_claim": 0.31498,
+      "mc_se_expected_payout_cny": 3.6893618185618102
+    },
+    {
+      "margin_rate": 0.05,
+      "expected_payout_cny": 621.016885121047,
+      "pure_premium_cny": 619.8270351512273,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 24.376286908660433,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.05,
+      "model_margin_cny": 30.991351757561365,
+      "gross_premium_cny": 1093.9933422718113,
+      "probability_claim": 0.31498,
+      "mc_se_expected_payout_cny": 3.6893618185618102
+    },
+    {
+      "margin_rate": 0.1,
+      "expected_payout_cny": 621.016885121047,
+      "pure_premium_cny": 619.8270351512273,
+      "tvar995_cny": 3798.6399999999962,
+      "capital_cost_cny": 24.376286908660433,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.1,
+      "model_margin_cny": 61.98270351512273,
+      "gross_premium_cny": 1132.7325319687632,
+      "probability_claim": 0.31498,
+      "mc_se_expected_payout_cny": 3.6893618185618102
+    }
+  ],
+  "stages": [
+    {
+      "horizon": 20,
+      "expiry": "2026-11-04",
+      "quantity_t": 400,
+      "limit_cny": 1519.456,
+      "expected_payout_cny": 248.40675404841886,
+      "pure_premium_cny": 247.93081406049095,
+      "tvar995_cny": 1519.455999999998,
+      "capital_cost_cny": 9.75051476346417,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 572.101661029944,
+      "probability_claim": 0.31498,
+      "mc_se_expected_payout_cny": 1.475744727424724
+    },
+    {
+      "horizon": 40,
+      "expiry": "2026-12-02",
+      "quantity_t": 300,
+      "limit_cny": 1139.5919999999999,
+      "expected_payout_cny": 282.4889413653739,
+      "pure_premium_cny": 281.51545529129606,
+      "tvar995_cny": 1139.591999999999,
+      "capital_cost_cny": 11.835066891831538,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 616.6881527289096,
+      "probability_claim": 0.37329,
+      "mc_se_expected_payout_cny": 1.3857430275558897
+    },
+    {
+      "horizon": 60,
+      "expiry": "2026-12-30",
+      "quantity_t": 300,
+      "limit_cny": 1139.5919999999999,
+      "expected_payout_cny": 330.49844167948015,
+      "pure_premium_cny": 328.85457865120446,
+      "tvar995_cny": 1139.591999999999,
+      "capital_cost_cny": 16.137537272803776,
+      "fixed_expense_cny": 200,
+      "model_margin_rate_assumption": 0.0,
+      "model_margin_cny": 0.0,
+      "gross_premium_cny": 681.2401449050103,
+      "probability_claim": 0.39749,
+      "mc_se_expected_payout_cny": 1.4945727953256596
+    }
+  ],
+  "joint": {
+    "total_quantity_t": 1000,
+    "total_limit_cny": 3798.6399999999994,
+    "expected_payout_cny": 861.3941370932728,
+    "pure_premium_cny": 858.3008480029914,
+    "tvar995_cny": 3798.6399999999962,
+    "capital_cost_cny": 58.583972279345055,
+    "fixed_expense_cny": 200,
+    "gross_premium_cny": 1396.1060253529206,
+    "sum_separate_premiums_cny": 1870.029958663864,
+    "capital_release": "all modeled tail capital held to final stage; no stage release",
+    "stage_payout_correlations": [
+      [
+        0.9999999999999999,
+        0.5629777753027578,
+        0.41569703745039704
+      ],
+      [
+        0.5629777753027578,
+        1.0,
+        0.6918135733118874
+      ],
+      [
+        0.41569703745039704,
+        0.6918135733118875,
+        1.0
+      ]
+    ]
+  },
+  "old_contract_same_paths": {
+    "expected_payout_cny": 1006.0926988517101,
+    "pure_premium_cny": 1004.1650550210093,
+    "tvar995_cny": 9999.99999999999,
+    "capital_cost_cny": 68.99435737867175,
+    "fixed_expense_cny": 200,
+    "model_margin_rate_assumption": 0.0,
+    "model_margin_cny": 0.0,
+    "gross_premium_cny": 1591.4492654996016,
+    "probability_claim": 0.32707,
+    "mc_se_expected_payout_cny": 6.317518153321415
+  },
+  "enterprise": {
+    "research_date": "2026-10-09",
+    "data_cutoff": "2026-09-30",
+    "real_enterprise_data_available": false,
+    "live_recommendation_allowed": false,
+    "calibration_status": "previous exploratory replay underestimates payouts; independent validation pending",
+    "scenarios": 100000,
+    "contract": {
+      "k": 94.966,
+      "d": 2.0,
+      "c": 4.7482999999999995,
+      "eta": 0.8
+    },
+    "buyer_assumptions": {
+      "unpriced_gap_t": 10000.0,
+      "initial_cash_budget_cny": 550000.0,
+      "premium_budget_cny": 3500.0,
+      "annual_funding_cost": 0.06,
+      "one_way_fee_rate": 0.001,
+      "assumed_capacity_t": 10000.0,
+      "all_remaining_purchase_executed_in_last_five_days": true,
+      "procurement_index_equals_execution_price": true
+    },
+    "seller_assumptions": {
+      "available_t": 22000.0,
+      "reserved_for_compliance_and_buffer_t": 20000.0,
+      "verified_sellable_surplus_t": 2000.0
+    },
+    "buyer_choices": [
+      {
+        "profile": "期望成本优先",
+        "tail_risk_weight": 0.0,
+        "robust_objective_cny": 956058.692373535,
+        "plan_id": "P10",
+        "purchase_window_end": "2026-10-21",
+        "future_horizon_trading_days": 10,
+        "buy_now_t": 5000.0,
+        "buy_later_t": 5000.0,
+        "insured_t": 0.0,
+        "insured_fraction_of_later_purchase": 0.0,
+        "insured_fraction_of_total_gap": 0.0,
+        "premium_cny": 0.0,
+        "initial_cash_cny": 475274.7999999999,
+        "mean_net_cost_cny": 954548.2840457963,
+        "q95_net_cost_cny": 977994.5987114873,
+        "cvar95_net_cost_cny": 982879.6709479447,
+        "mean_payout_cny": 0.0,
+        "probability_net_cost_above_one_million": 0.0
+      },
+      {
+        "profile": "适度控制尾部成本",
+        "tail_risk_weight": 0.15,
+        "robust_objective_cny": 958668.5604715002,
+        "plan_id": "P14",
+        "purchase_window_end": "2026-10-21",
+        "future_horizon_trading_days": 10,
+        "buy_now_t": 5000.0,
+        "buy_later_t": 5000.0,
+        "insured_t": 5000.0,
+        "insured_fraction_of_later_purchase": 1.0,
+        "insured_fraction_of_total_gap": 0.5,
+        "premium_cny": 2227.877447720817,
+        "initial_cash_cny": 477502.67744772066,
+        "mean_net_cost_cny": 955282.0215407264,
+        "q95_net_cost_cny": 969410.5921638184,
+        "cvar95_net_cost_cny": 970614.960334176,
+        "mean_payout_cny": 1503.5306573570645,
+        "probability_net_cost_above_one_million": 0.0
+      },
+      {
+        "profile": "尾部成本优先",
+        "tail_risk_weight": 0.5,
+        "robust_objective_cny": 963781.0075825488,
+        "plan_id": "P14",
+        "purchase_window_end": "2026-10-21",
+        "future_horizon_trading_days": 10,
+        "buy_now_t": 5000.0,
+        "buy_later_t": 5000.0,
+        "insured_t": 5000.0,
+        "insured_fraction_of_later_purchase": 1.0,
+        "insured_fraction_of_total_gap": 0.5,
+        "premium_cny": 2227.877447720817,
+        "initial_cash_cny": 477502.67744772066,
+        "mean_net_cost_cny": 955282.0215407264,
+        "q95_net_cost_cny": 969410.5921638184,
+        "cvar95_net_cost_cny": 970614.960334176,
+        "mean_payout_cny": 1503.5306573570645,
+        "probability_net_cost_above_one_million": 0.0
+      }
+    ],
+    "fixed20_example": {
+      "profile": "采购日期固定20日且控制尾部成本",
+      "tail_risk_weight": 0.5,
+      "robust_objective_cny": 974070.429872762,
+      "plan_id": "P34",
+      "purchase_window_end": "2026-11-04",
+      "future_horizon_trading_days": 20,
+      "buy_now_t": 5000.0,
+      "buy_later_t": 5000.0,
+      "insured_t": 3750.0,
+      "insured_fraction_of_later_purchase": 0.75,
+      "insured_fraction_of_total_gap": 0.375,
+      "premium_cny": 3269.703072155724,
+      "initial_cash_cny": 478544.5030721556,
+      "mean_net_cost_cny": 954682.3492273607,
+      "q95_net_cost_cny": 977597.9168503602,
+      "cvar95_net_cost_cny": 986926.5865954767,
+      "mean_payout_cny": 2328.8133192039263,
+      "probability_net_cost_above_one_million": 0.00402
+    },
+    "gross_premium_sensitivity": [
+      {
+        "gross_premium_multiplier_assumption": 1.0,
+        "plan_id": "P14",
+        "buy_now_t": 5000.0,
+        "buy_later_t": 5000.0,
+        "insured_t": 5000.0,
+        "future_horizon_trading_days": 10,
+        "adjusted_premium_cny": 2227.877447720817,
+        "robust_objective_cny": 963781.0075825488
+      },
+      {
+        "gross_premium_multiplier_assumption": 1.5,
+        "plan_id": "P14",
+        "buy_now_t": 5000.0,
+        "buy_later_t": 5000.0,
+        "insured_t": 5000.0,
+        "future_horizon_trading_days": 10,
+        "adjusted_premium_cny": 3341.8161715812257,
+        "robust_objective_cny": 964901.3737410805
+      },
+      {
+        "gross_premium_multiplier_assumption": 2.0,
+        "plan_id": "P13",
+        "buy_now_t": 5000.0,
+        "buy_later_t": 5000.0,
+        "insured_t": 3750.0,
+        "future_horizon_trading_days": 10,
+        "adjusted_premium_cny": 3466.8161715812257,
+        "robust_objective_cny": 967209.6011278076
+      }
+    ],
+    "seller_choices": [
+      {
+        "profile": "期望回款优先",
+        "risk_weight": 0.0,
+        "policy": "立即出售",
+        "robust_score_cny": 189730.08000000005
+      },
+      {
+        "profile": "控制回款下行风险",
+        "risk_weight": 0.5,
+        "policy": "立即出售",
+        "robust_score_cny": 189730.07999999996
+      }
+    ],
+    "actual_inputs_needed": [
+      "企业履约需求与不确定性",
+      "可交易库存及受限库存",
+      "采购交付与阶段数量",
+      "预留履约量和安全缓冲",
+      "现金预算及融资成本",
+      "保费预算",
+      "采购价与指数价差",
+      "卖出手续费与滑点",
+      "富余配额未来用途及可结转条件",
+      "企业风险偏好",
+      "保险人条款、容量及价格"
+    ],
+    "boundaries": [
+      "已提前买入或锁价的吨数不再分配给未来采购保险",
+      "现有上涨保障不覆盖富余配额的卖价下跌",
+      "实际出售或采购变更后需重核被保险风险与数量，不能机械保留原赔款",
+      "买方与卖方是两种独立演示企业，不能相加解释为无风险套利",
+      "未模拟订单簿、滑点、需求误差或年份可用性；研究结果不构成可执行交易指令"
+    ],
+    "verification": {
+      "next_session_trigger": "passed",
+      "surplus_reserve": "passed",
+      "partial_coverage_quantity": "passed",
+      "independent_strategy_validation": "not_completed"
+    },
+    "shared_path_seed": 2026100903,
+    "shared_max_horizon": 60
+  },
+  "commercial_quote_allowed": false,
+  "live_trade_recommendation_allowed": false,
+  "validation": "reused exploratory historical replay only; previous payouts underestimated",
+  "code_checks": {
+    "coverage_cap": "passed",
+    "same_paths_between_price_and_enterprise": "passed",
+    "no_daily_duplicate_payout": "passed",
+    "joint_stage_quantity": "passed",
+    "sale_next_session": "passed"
+  }
+}

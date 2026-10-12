@@ -1,0 +1,183 @@
+{
+  "research_date": "2026-10-09",
+  "data_cutoff": "2026-09-30",
+  "real_enterprise_data_available": false,
+  "live_recommendation_allowed": false,
+  "calibration_status": "previous exploratory replay underestimates payouts; independent validation pending",
+  "scenarios": 100000,
+  "contract": {
+    "k": 94.966,
+    "d": 2.0,
+    "c": 4.7482999999999995,
+    "eta": 0.8
+  },
+  "buyer_assumptions": {
+    "unpriced_gap_t": 10000.0,
+    "initial_cash_budget_cny": 550000.0,
+    "premium_budget_cny": 3500.0,
+    "annual_funding_cost": 0.06,
+    "one_way_fee_rate": 0.001,
+    "assumed_capacity_t": 10000.0,
+    "all_remaining_purchase_executed_in_last_five_days": true,
+    "procurement_index_equals_execution_price": true
+  },
+  "seller_assumptions": {
+    "available_t": 22000.0,
+    "reserved_for_compliance_and_buffer_t": 20000.0,
+    "verified_sellable_surplus_t": 2000.0
+  },
+  "buyer_choices": [
+    {
+      "profile": "期望成本优先",
+      "tail_risk_weight": 0.0,
+      "robust_objective_cny": 956058.692373535,
+      "plan_id": "P10",
+      "purchase_window_end": "2026-10-21",
+      "future_horizon_trading_days": 10,
+      "buy_now_t": 5000.0,
+      "buy_later_t": 5000.0,
+      "insured_t": 0.0,
+      "insured_fraction_of_later_purchase": 0.0,
+      "insured_fraction_of_total_gap": 0.0,
+      "premium_cny": 0.0,
+      "initial_cash_cny": 475274.7999999999,
+      "mean_net_cost_cny": 954548.2840457963,
+      "q95_net_cost_cny": 977994.5987114873,
+      "cvar95_net_cost_cny": 982879.6709479447,
+      "mean_payout_cny": 0.0,
+      "probability_net_cost_above_one_million": 0.0
+    },
+    {
+      "profile": "适度控制尾部成本",
+      "tail_risk_weight": 0.15,
+      "robust_objective_cny": 958668.5604715002,
+      "plan_id": "P14",
+      "purchase_window_end": "2026-10-21",
+      "future_horizon_trading_days": 10,
+      "buy_now_t": 5000.0,
+      "buy_later_t": 5000.0,
+      "insured_t": 5000.0,
+      "insured_fraction_of_later_purchase": 1.0,
+      "insured_fraction_of_total_gap": 0.5,
+      "premium_cny": 2227.877447720817,
+      "initial_cash_cny": 477502.67744772066,
+      "mean_net_cost_cny": 955282.0215407264,
+      "q95_net_cost_cny": 969410.5921638184,
+      "cvar95_net_cost_cny": 970614.960334176,
+      "mean_payout_cny": 1503.5306573570645,
+      "probability_net_cost_above_one_million": 0.0
+    },
+    {
+      "profile": "尾部成本优先",
+      "tail_risk_weight": 0.5,
+      "robust_objective_cny": 963781.0075825488,
+      "plan_id": "P14",
+      "purchase_window_end": "2026-10-21",
+      "future_horizon_trading_days": 10,
+      "buy_now_t": 5000.0,
+      "buy_later_t": 5000.0,
+      "insured_t": 5000.0,
+      "insured_fraction_of_later_purchase": 1.0,
+      "insured_fraction_of_total_gap": 0.5,
+      "premium_cny": 2227.877447720817,
+      "initial_cash_cny": 477502.67744772066,
+      "mean_net_cost_cny": 955282.0215407264,
+      "q95_net_cost_cny": 969410.5921638184,
+      "cvar95_net_cost_cny": 970614.960334176,
+      "mean_payout_cny": 1503.5306573570645,
+      "probability_net_cost_above_one_million": 0.0
+    }
+  ],
+  "fixed20_example": {
+    "profile": "采购日期固定20日且控制尾部成本",
+    "tail_risk_weight": 0.5,
+    "robust_objective_cny": 974070.429872762,
+    "plan_id": "P34",
+    "purchase_window_end": "2026-11-04",
+    "future_horizon_trading_days": 20,
+    "buy_now_t": 5000.0,
+    "buy_later_t": 5000.0,
+    "insured_t": 3750.0,
+    "insured_fraction_of_later_purchase": 0.75,
+    "insured_fraction_of_total_gap": 0.375,
+    "premium_cny": 3269.703072155724,
+    "initial_cash_cny": 478544.5030721556,
+    "mean_net_cost_cny": 954682.3492273607,
+    "q95_net_cost_cny": 977597.9168503602,
+    "cvar95_net_cost_cny": 986926.5865954767,
+    "mean_payout_cny": 2328.8133192039263,
+    "probability_net_cost_above_one_million": 0.00402
+  },
+  "gross_premium_sensitivity": [
+    {
+      "gross_premium_multiplier_assumption": 1.0,
+      "plan_id": "P14",
+      "buy_now_t": 5000.0,
+      "buy_later_t": 5000.0,
+      "insured_t": 5000.0,
+      "future_horizon_trading_days": 10,
+      "adjusted_premium_cny": 2227.877447720817,
+      "robust_objective_cny": 963781.0075825488
+    },
+    {
+      "gross_premium_multiplier_assumption": 1.5,
+      "plan_id": "P14",
+      "buy_now_t": 5000.0,
+      "buy_later_t": 5000.0,
+      "insured_t": 5000.0,
+      "future_horizon_trading_days": 10,
+      "adjusted_premium_cny": 3341.8161715812257,
+      "robust_objective_cny": 964901.3737410805
+    },
+    {
+      "gross_premium_multiplier_assumption": 2.0,
+      "plan_id": "P13",
+      "buy_now_t": 5000.0,
+      "buy_later_t": 5000.0,
+      "insured_t": 3750.0,
+      "future_horizon_trading_days": 10,
+      "adjusted_premium_cny": 3466.8161715812257,
+      "robust_objective_cny": 967209.6011278076
+    }
+  ],
+  "seller_choices": [
+    {
+      "profile": "期望回款优先",
+      "risk_weight": 0.0,
+      "policy": "立即出售",
+      "robust_score_cny": 189730.08000000005
+    },
+    {
+      "profile": "控制回款下行风险",
+      "risk_weight": 0.5,
+      "policy": "立即出售",
+      "robust_score_cny": 189730.07999999996
+    }
+  ],
+  "actual_inputs_needed": [
+    "企业履约需求与不确定性",
+    "可交易库存及受限库存",
+    "采购交付与阶段数量",
+    "预留履约量和安全缓冲",
+    "现金预算及融资成本",
+    "保费预算",
+    "采购价与指数价差",
+    "卖出手续费与滑点",
+    "富余配额未来用途及可结转条件",
+    "企业风险偏好",
+    "保险人条款、容量及价格"
+  ],
+  "boundaries": [
+    "已提前买入或锁价的吨数不再分配给未来采购保险",
+    "现有上涨保障不覆盖富余配额的卖价下跌",
+    "实际出售或采购变更后需重核被保险风险与数量，不能机械保留原赔款",
+    "买方与卖方是两种独立演示企业，不能相加解释为无风险套利",
+    "未模拟订单簿、滑点、需求误差或年份可用性；研究结果不构成可执行交易指令"
+  ],
+  "verification": {
+    "next_session_trigger": "passed",
+    "surplus_reserve": "passed",
+    "partial_coverage_quantity": "passed",
+    "independent_strategy_validation": "not_completed"
+  }
+}

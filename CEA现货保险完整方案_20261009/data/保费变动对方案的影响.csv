@@ -1,0 +1,4 @@
+﻿gross_premium_multiplier_assumption,plan_id,buy_now_t,buy_later_t,insured_t,future_horizon_trading_days,adjusted_premium_cny,robust_objective_cny
+1.0,P14,5000.0,5000.0,5000.0,10,2227.877447720817,963781.0075825488
+1.5,P14,5000.0,5000.0,5000.0,10,3341.8161715812257,964901.3737410805
+2.0,P13,5000.0,5000.0,3750.0,10,3466.8161715812257,967209.6011278076

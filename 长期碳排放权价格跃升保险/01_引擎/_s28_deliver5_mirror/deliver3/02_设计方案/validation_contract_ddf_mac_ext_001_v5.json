@@ -1,0 +1,188 @@
+{
+  "contract_id": "ddf_mac_ext_001_forge_scenario_v5",
+  "task_id": "ddf_mac_ext_001",
+  "version": "v5",
+  "scope": "2026-2030 scenario extrapolation (承接 2023-2025 真外推链)",
+  "generated_by": "forge@zhengming-tianwen V1.4L (2026-2030 情景外推代次)",
+  "generated_at": "2026-10-04",
+  "sync_provenance": "同步依据：Forge《ddf_mac_ext_001_forge_2026-2030情景外推设计_v1.md》D1-D8；上游=Scout 路线 M/J、终裁决定书 §4/§6、T-09/T-10/T-11b/T-12、既有 work 契约 ddf_mac_ext_001_forge_v5（对象=2023-2025 链）。判据主干（R_widen 定义式/阈值 1.5/G2-C3 条件/P-11/P-12/R_half 保留条款/reestimate_forbidden/双轴禁并 P-4/O6 定义/theta_B=0.5/W*/ref 半宽）零改动。",
+  "version_lineage_registration": {
+    "conflict": "D7 字面要求「验证契约 v4 -> v5 变更清单」，但既有工作版契约文件名无版本后缀（validation_contract_ddf_mac_ext_001.json）而内部 version=v5（contract_id=ddf_mac_ext_001_forge_v5，对象=2023-2025 链）；对齐矩阵最新带版本号为 v4，无 _v5.md。号位存在口径差。",
+    "disposition": "如实登记，未静默修正。本契约文件名 validation_contract_ddf_mac_ext_001_v5.json（既有目录中不存在，无覆盖）；contract_id 加 scenario 限定词与既有 v5 对象区隔。",
+    "read_as": "设计/对齐代次 v4 -> 本轮 2026-2030 情景外推代次 v5。",
+    "escalation": "若上游要求文件内 version 字段全局单调递增，本契约应改称 v6；属上游裁定事项，Forge 不代判，两读法并列。"
+  },
+  "freeze": {
+    "procedural_freeze": "D-003 已关闭（2023-2025 MAC 值已产出）",
+    "note": "本轮对象=2026-2030；前望段为纯情景代数代入，非拟合、非重估；不外推任何数值（数值产出属 Tester）。g_C/g_K/g_E 等情景增长率取值不属冻结对象。",
+    "parameters_frozen": true,
+    "reestimate_forbidden": true
+  },
+  "scenario_window": {
+    "prospect_years": [2026, 2027, 2028, 2029, 2030],
+    "retro_years": [2023, 2024, 2025],
+    "start_point": "x_{2025,norm} 逐位读自 T-09（T09_output.json），前望段自 2025 起点延续；禁重造",
+    "link_rule": "x_{t,norm}=x_{t-1,norm}*(1+g_t)",
+    "substitution_disclosure": "2026-2030 的 Y(P1)/L(P7) 无分省逐年来源，采全国增速统一代用分省（与 2023-2025 对 L/E 处理同构）；外推年数由 3 增至 8，代用累积误差放大，须披露"
+  },
+  "scenario_params": {
+    "P1_g_Y": {"low": 0.040, "mid": 0.045, "high": 0.050, "unit": "1/yr", "source": "政府工作报告2026(2026年度4.5%-5%)+IMF 4.5%+世行CGE 5.0%+学术潜在增速", "grade": "B", "formula": "Y_{t,norm}=Y_{t-1,norm}*(1+g_Y,t)"},
+    "P2_g_s": {"low": -0.030, "mid": -0.03657030, "high": -0.038, "unit": "1/yr", "source": "官方约束性(累计-17%;2026单年-3.8%)", "grade": "A", "formula": "g_C,t=(1+g_Y,t)(1+g_s,t)-1", "note": "mid=硬锚精确年化;Route M标签-3.4%欠交付1.12pp已登记"},
+    "P3_g_E": {"low": 0.005, "mid": 0.015494, "high": 0.040, "unit": "1/yr", "source": "历史趋势+机构(国能集团展望)", "grade": "B", "formula": "E_{t,norm}=E_{t-1,norm}*(1+g_E,t)", "note": "mid=双锚联立解;low/high与双锚不自洽"},
+    "P4_g_elec": {"low": 0.029, "mid": 0.045, "high": 0.05, "role": "仅E侧交叉校验，非DDF输入"},
+    "P5_nonfossil_share_2030": {"value": 0.25, "base_2025": 0.217, "grade": "A", "formula": "(1+g_{(1-p)})=(0.750/0.783)^(1/5)"},
+    "P6_g_I": {"low": 0.0, "mid": 0.045, "high": 0.088, "unit": "1/yr", "source": "机构(刘伟8.8%->4.3%)+历史(2025固投-3.8%)", "grade": "B", "formula": "g_K,t=r*(1+g_I,t)-delta_t"},
+    "P7_g_L": {"low": -0.008, "mid": -0.005, "high": -0.003, "unit": "1/yr", "source": "联合国WPP+学术(蔡昉)+历史", "grade": "B", "formula": "L_{t,norm}=L_{t-1,norm}*(1+g_L,t)"},
+    "P8_carbon_price": {"value": [92, 96], "unit": "元/吨", "role": "背景参数，不入MAC主链", "grade": "C"}
+  },
+  "D3_consistency": {
+    "name": "双硬锚自洽性约束（核心）",
+    "anchors": {
+      "A_intensity": {"desc": "2030 单位GDP CO2 较2025累计降17%", "cumulative": -0.17, "source": "十五五碳达峰行动方案/政府工作报告2026", "grade": "A"},
+      "B_nonfossil": {"desc": "非化石能源占比2030达25%", "p_2030": 0.25, "p_2025": 0.217, "source": "同上", "grade": "A"}
+    },
+    "equations": [
+      {"id": "D3-1", "expr": "prod_{t=2026..2030}(1+g_s,t)=0.83", "annualized": "g_s*=(0.83)^(1/5)-1=-0.03657030", "tol": 1e-06},
+      {"id": "D3-2", "expr": "(1-p)_2030/(1-p)_2025=0.750/0.783", "annualized": "g_{(1-p)}*=(0.750/0.783)^(1/5)-1=-0.0085746", "tol": 1e-06},
+      {"id": "D3-3", "expr": "(1+g_s,t)=(1+g_{(1-p)},t)*(1+g_E,t)*(1+g_kappa,t)/(1+g_Y,t)", "note": "g_kappa=0 基准;kap=化石能源碳因子"},
+      {"id": "D3-4", "expr": "g_E*(g_Y)=0.9717642*(1+g_Y)-1"},
+      {"id": "D3-5", "expr": "g_Y*(g_E)=1.0290566*(1+g_E)-1"},
+      {"id": "D3-6", "expr": "r_E=g_E^{scenario}-g_E*(g_Y^{scenario}); |r_E|<=0.5pp => 一致"}
+    ],
+    "joint_solution": {"g_Y=0.040": 0.010635, "g_Y=0.045": 0.015494, "g_Y=0.050": 0.020352},
+    "reverse_solution": {"g_E=0.005": "g_Y*=2.91%", "g_E=0.015494": "g_Y*=4.50%", "g_E=0.040": "g_Y*=7.02%"},
+    "per_scenario_verdict": {
+      "S_mid(4.5%,1.55%)": {"residual": 0.0, "verdict": "consistent"},
+      "S_low(4.0%,~0%)": {"residual_pp": -1.06, "verdict": "inconsistent", "deviation": "所需g_Y*=2.91% < P1下限4.0%"},
+      "S_high(5.0%,4.0%)": {"residual_pp": 1.97, "verdict": "inconsistent", "deviation": "所需g_Y*=7.02% > P1上限5.0%;按P1高计2030累计多耗能约+10.0%"}
+    },
+    "must_not_silence": "任一不自洽情景须显式登记偏离量（残差pp与替代口径），禁静默择一"
+  },
+  "preconditions": [
+    {"id": "PRE-1", "desc": "C_LP_v1.json 冻结参数与 SHA-256 已登记，未重估", "required": true},
+    {"id": "PRE-2", "desc": "环境预检全 OK（依赖/输入/只读目录无写入）", "required": true},
+    {"id": "PRE-3", "desc": "五变量输入齐备：2023-2025 承接 T-09；2026-2030 由 P1-P8 生成（Y/L/E 全国代分省；C 由 P2 强度法 g_C=(1+g_Y)(1+g_s)-1；K 走三层）", "required": true},
+    {"id": "PRE-4", "desc": "以 python3 -B 运行；只读目录运行前后无改动（git status --porcelain 比对）", "required": true}
+  ],
+  "anchors": [
+    {"id": "A-1", "name": "2022 省际均值 nanmean(MAC_orig[YEAR==2022])", "target": 190.53058207373442, "unit": "元/吨", "tol": {"type": "abs", "value": 1e-08}},
+    {"id": "A-2", "name": "objective_sumD", "target": 132.83354146398435, "tol": {"type": "exact"}},
+    {"id": "A-3", "name": "15 结构参数", "target": "C_LP_v1.json.params", "tol": {"type": "abs", "value": 0.0}},
+    {"id": "A-4", "name": "2022 识别区间", "target": [168.2073, 555.8009], "unit": "元/吨", "method": "精确求根，步长 2e-3", "note": "半宽=(555.8009-168.2073)/2=193.7968 元/吨，即 R_widen 基准半宽 Ref（仅绑定真外推口径）"},
+    {"id": "A-5", "name": "W* 两段端点", "target": [[-0.3242844303508603, 0.10185339066179176], [0.11016869827632653, 0.1416513547484503]], "tol": {"type": "exact"}},
+    {"id": "A-6", "name": "eta_E 在 W* 内", "target": "max|{aE,aEE,aKE,aLE,dE}| <= 1e-12", "note": "机器零"},
+    {"id": "A-7", "name": "北京 1995 反推 ybar", "target": 7396.985761776982, "unit": "亿元", "tol": {"type": "abs", "value": 1e-08}}
+  ],
+  "falsifiable_criteria": [
+    {"id": "P-1", "violation": "冻结参数被改动或重估", "means": "contract_fail"},
+    {"id": "P-2", "violation": "归一化基准 ybar/bbar 与上游不一致，或纳入 2023+ 数据", "means": "contract_fail", "rule": "HC-2"},
+    {"id": "P-3", "violation": "I_t 用端点值或外推取得而非窗口内逐点枚举", "means": "contract_fail"},
+    {"id": "P-4", "violation": "识别区间(轴1)与口径带(轴2)被合并成单一区间", "means": "contract_fail", "rule": "O2 双轴禁并"},
+    {"id": "P-5", "violation": "P1 的 rho(i,2022) 未与面板 C_raw/E_raw 锚定，或 P3 起点 != 面板 C_raw(i,2022)", "means": "contract_fail"},
+    {"id": "P-6", "violation": "单锚点 MAC 与外推年份 f_t 计算路径混用", "means": "contract_fail"},
+    {"id": "P-7", "violation": "以 K_raw 反推投资序列/替代口径序列（伪装为原口径复算）", "means": "contract_fail"},
+    {"id": "P-8", "violation": "回测期剔除 naive_err=0 的点而无登记，或据回测结果反向调整阈值", "means": "contract_fail"},
+    {"id": "P-9", "violation": "lambda_b=1 的观测被静默丢弃/替换/剔除，或未按 B_t 披露，或据 ceteris paribus 诊断预判某档不可用", "means": "contract_fail", "rule": "O6，裁定 C"},
+    {"id": "P-10", "violation": "以弹性系数乘推（eta_k 线性化）代替三档 g_K 精确代入构造 K 口径带", "means": "contract_fail", "rule": "裁定 A"},
+    {"id": "P-11", "violation": "R_half 与 R_widen 未并列呈现，或 R_half 失败记录被删除/淡化/省略", "means": "contract_fail"},
+    {"id": "P-12", "violation": "R_widen 基准半宽跨口径混用，或 R_widen 定义式含 naive_err 项", "means": "contract_fail"},
+    {"id": "G2-C1", "violation": "cover_U < 5/6 或 cover_I < 4/6", "means": "G2_block"},
+    {"id": "G2-C2", "violation": "R_half > 3.0", "means": "G2_block", "status": "retained_failed", "value_observed": 3.899, "threshold": 3.0, "conclusion": "不通过（保留）", "retention_rule": "保留原式、原阈值、原失败结论；禁删除/淡化/省略；不因 G2-C3 通过而撤销"},
+    {"id": "G2-C3", "violation": "R_widen > 1.5", "means": "G2_block", "threshold": 1.5, "backtest_observed_max": 1.1618, "conclusion": "回测通过（实质检验点 max 1.1618）", "on_block": {"meaning": "R_widen>1.5 时的阻塞处置语义（条件本身不变：R_widen>1.5 -> G2_block）", "auto_pass": false, "auto_abandon": false, "required_actions": ["保留已算出的全部数值（不裁剪任何档/点）", "如实披露（不省略、不淡化）", "将处置权提请用户裁决"], "user_options": ["接受更宽带报告", "调整阈值", "终止"], "threshold_authority": "阈值由用户预设；Forge 与 Tester 均无权调整"}}
+  ],
+  "formula_code_map": [
+    {"formula": "dDdy = b1 + b2(y+b) + dK*k + dL*l + dE*e", "code": "ext_common.mac_orig", "anchor": "beta=1"},
+    {"formula": "dDdb = b1 + 1 + b2(y+b) + dK*k + dL*l + dE*e", "code": "ext_common.mac_orig"},
+    {"formula": "MAC_scaled = -dDdb/dDdy", "code": "ext_common.mac_orig"},
+    {"formula": "MAC_orig = MAC_scaled*(ybar/bbar)*1e4", "code": "ext_common.mac_orig"},
+    {"formula": "dev = MAC_scaled*(ybar/bbar)*C_raw/Y_raw", "code": "ext_common.dev_share", "rule": "O4"},
+    {"formula": "x_{t,norm} = x_{t-1,norm}*(1+g_t)", "code": "ext_stage2_link.chain_var"},
+    {"formula": "ybar/bbar 逐省 1995-2022 均值", "code": "ext_common.frozen_baselines", "rule": "HC-2"},
+    {"formula": "W* = {c: max_i dev_i(c) <= 1}", "code": "ext_stage1_Wstar"},
+    {"formula": "b1 = -1 + c*beta", "code": "s00_common.run_at"},
+    {"formula": "k_{t,norm} = k_{2022,norm}*prod(1+g_K,s) [层丙] / k_{2022,norm}*(1+g_K)^{t-2022} [层甲/乙]", "code": "ext_stage3_gk_band"},
+    {"formula": "P1: C = E*rho, rho(i,2022)=C_raw(i,2022)/E_raw(i,2022)", "code": "ext_stage4_cband"},
+    {"formula": "P3: C_t = C_raw(i,2022)*prod(1+g_C)", "code": "ext_stage4_cband", "rule": "2024 截断见 DG-2025"},
+    {"formula": "lambda_b(i,t;c) = 1 iff dDdb(i,t;c) > 0", "code": "ext_stage6_O6_regularity"},
+    {"formula": "C(i,2025) = C(i,2024)*(1+g_C^{extrap})", "code": "ext_stage7_dg2025"},
+    {"formula": "halfwidth_t(c)=(U_t.hi-U_t.lo)/2; R_widen(t,c)=halfwidth_t(c)/halfwidth_ref(c)", "code": "ext_stage8_widen_ratio", "rule": "尺度不变;不含naive_err;ref同口径;阈值1.5"},
+    {"formula": "x_{2026,norm}=x_{2025,norm}*(1+g_{2026}); g_C,t=(1+g_Y,t)(1+g_s,t)-1", "code": "ext_stage9_prospect_link", "rule": "前望段;起点承接T-09"},
+    {"formula": "g_K,t = r*(1+g_I,t) - delta_t, r=0.12890728324110395", "code": "ext_stage9_prospect_link", "rule": "层丙前望段"},
+    {"formula": "prod(1+g_s,t)=0.83; g_s*=(0.83)^(1/5)-1", "code": "ext_stage10_anchor_consistency", "rule": "D3-1"},
+    {"formula": "(1-p):0.783->0.750; g_{(1-p)}*=(0.750/0.783)^(1/5)-1", "code": "ext_stage10_anchor_consistency", "rule": "D3-2"},
+    {"formula": "g_E*(g_Y)=0.9717642*(1+g_Y)-1; g_Y*(g_E)=1.0290566*(1+g_E)-1", "code": "ext_stage10_anchor_consistency", "rule": "D3-4/D3-5"},
+    {"formula": "r_E = g_E - g_E*(g_Y); |r_E|<=0.5pp", "code": "ext_stage10_anchor_consistency", "rule": "D3-6"},
+    {"formula": "F_t = #{dDdb<=0}/30", "code": "ext_stage6_O6_regularity", "rule": "O6 正向指标"}
+  ],
+  "triggers": {
+    "O4": {"predicate": "Lambda_t(c)=1 iff max_i dev(i,t;c)<=1", "primary_object": "I_t={f_t(c):c in W*}", "audit": "D_t=|{c:Lambda_t=1}|/|W*|", "block": "if empty -> year interval not reportable", "degrade_threshold": 0.95},
+    "O5": {"predicate": "F(i,t;c)=1 iff D(i,t;c)>=0", "rule": "never clip/replace D", "report": "phi_t=#{i:D<0}/30 at c0", "out_of_support": "province D<0 for all c -> flagged, still in 30-prov mean"},
+    "O6": {
+      "name": "∂D/∂b 变号（裁定 C，定义与历史结果冻结）",
+      "predicate": "s_b(i,t;c)=sign(dDdb(i,t;c)); lambda_b(i,t;c)=1 iff s_b>0",
+      "report": "B_t=#{i:lambda_b=1}/30 at c0; 另报 max_c B_t",
+      "degrade_threshold": 0.5,
+      "rules": [
+        "R-O6-2 必须用实际外推输入精确代入，禁用 ceteris paribus 表替代",
+        "R-O6-5 禁静默：lambda_b=1 的观测必须出现在结果表与 HC-3，仍计入 30 省算术平均；禁裁剪/替换/剔除（延伸至前望段）",
+        "R-O6-6 禁预判：不得预先砍掉任一档；三档全保留至实际外推",
+        "R-O6-7 不阻塞：O6 产出带标记的可报告区间"
+      ],
+      "not_blocking": true,
+      "degeneration_disclosure": {
+        "rule": "凡出现 O6「解释降级」标签处，必须同时披露以下三条事实，禁单独使用该标签作外推有效性判据",
+        "facts": {
+          "identity": "b1=-1 且 beta=1 时 dDdb-dDdy≡1（实测 max|dev|=1.11e-16；W*全网格 2.22e-16），故 MAC=-dDdb/(dDdb-1)，MAC>0 <=> 0<dDdb<1",
+          "in_sample_empty_branch": "本样本内 dDdb>=1 观测数=0（全局上界 0.275223），故 lambda_b ≡ 1{MAC>0}，B_t 恒等于 MAC 为正的省份比例",
+          "baseline_degraded": "2022 基准年 B_t=0.9666666666666667 > theta_B=0.5，基准年亦被判「解释降级」——证明该标签为判据结构性属性，非外推特有退化"
+        }
+      }
+    },
+    "O6_positive_indicator": {
+      "name": "分式解释基础失效正向指标（裁定 §4 处置③）",
+      "metric": "F_t = #{i: dDdb(i,t;c0) <= 0}/30",
+      "baseline_2022": 0.03333333333333333,
+      "note": "2022=1/30（青海 dDdb<=0）；2023-2025 逐档逐口径值取自 T-12 §三；与 B_t 并列报告"
+    },
+    "SD": {"name": "源际分歧处理", "SD-1": "全源登记禁删", "SD-2": "禁择一或加权成单点", "SD-3": "以来源集[min,max]包络", "SD-4": "2024跨零标注方向未定", "SD-5": "2025无官方全年值->趋势外延", "route_to": "轴2口径带（禁入轴1）"},
+    "K_band": {
+      "name": "K 口径带构造（裁定 A）",
+      "R-KA-1": "唯一路径：三档 k 轨道逐点精确代入得 f_t^s(c)，包络成带；禁端序预设",
+      "R-KA-2": "禁止以 eta_k 线性化构造 K 口径带（违反 Jensen）",
+      "R-KA-3": "带端序由精确代入结果逐(t,c)判定并登记",
+      "R-KA-4": "K 侧带仍属轴2，禁入轴1（P-4）",
+      "g_K_tiers": {"low": 0.0442, "mid": 0.1281, "high": 0.2067}
+    },
+    "DG_2025": {
+      "name": "2025 降级路径（承接 v3 §4.3）",
+      "DG-2025-1": "P3 连乘只在 2023-2024 执行",
+      "DG-2025-2": "2025 改趋势外延：C(i,2025)=C(i,2024)*(1+g_C^{extrap})",
+      "DG-2025-3": "双分支并列：甲=连乘（待核）；乙=截断+趋势外延（主选）；禁择一而隐其余",
+      "DG-2025-5": "2025 C 输入标「不可比/趋势外延」；该不确定性经链式传递进入前望段起点（M-5 修改项）"
+    },
+    "G2_backtest": {
+      "window": {"pseudo_baseline_years": "1995-2019", "holdout": [2020, 2021, 2022]},
+      "criteria": {"cover_U_min": "5/6", "cover_I_min": "4/6", "R_half_max": 3.0, "R_widen_max": 1.5},
+      "criteria_note": "R_widen 回测实质检验点=3（A-2020=1.0546, A-2021=1.0316, B-2021=1.1618）；平凡点（A/B/C-2022）≡1.000 不计"
+    },
+    "R_widen": {
+      "name": "判据③：外推额外加宽比",
+      "definition": "halfwidth_t(c)=(U_t(c).hi-U_t(c).lo)/2; R_widen(t,c)=halfwidth_t(c)/halfwidth_ref(c)",
+      "ref_rule": "半宽_ref 必须同口径取该外推路径下 2022 年的半宽；禁跨口径混用（P-12）",
+      "ref_true_extrapolation": 193.79677434749794,
+      "ref_note": "t0=2022 未变；外推年份改变只改分子，分母恒为 193.7968",
+      "threshold": 1.5,
+      "threshold_preset_by": "用户（判据设计前预设）",
+      "pass_condition": "R_widen(t,c) <= 1.5",
+      "scale_invariance": "对 MAC 公共乘法缩放 MAC->lambda*MAC（lambda>0），R_widen 恒等不变",
+      "no_naive_err": "定义式仅由两个同口径半宽之比构成，不含 naive_err",
+      "parallel_judgement": "与 R_half 并列、互不替代（P-11）"
+    }
+  },
+  "must_record": {
+    "per_obs_it": ["y_norm", "b_norm", "k_norm", "l_norm", "e_norm", "D", "MAC_scaled", "MAC_orig", "dev", "F_sign", "degenerate_flag", "s_b", "lambda_b", "dDdb_le0"],
+    "per_year_anchor_tc": ["p(c)_15coef", "f_t(c)", "Lambda_t(c)", "N_t(c)"],
+    "per_year_t": ["I_t", "caliber_band U_t (C-side P1/P3 包络 与 K-side g_K 三档 分列)", "C_agreement", "B_t(low|mid|high)", "F_t(dDdb<=0 比例)", "D_t", "phi_t", "R_widen(t,c)", "halfwidth_ref", "R_half(并列,retained_failed)", "D3_residual_t(g_s,g_(1-p),r_E)", "scenario_id", "substitution_flag(Y/L 全国代分省)"]
+  },
+  "reference_carbon_price_yuant": 25.1364
+}

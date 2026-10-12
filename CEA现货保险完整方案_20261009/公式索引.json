@@ -1,0 +1,192 @@
+[
+  {
+    "number": 1,
+    "name": "日对数收益",
+    "latex": "r_j=\\log(S_j/S_{j-1})"
+  },
+  {
+    "number": 2,
+    "name": "收益中心化",
+    "latex": "\\bar r=\\frac1{60}\\sum_{j=1}^{60}r_j,\\quad z_j=r_j-\\bar r"
+  },
+  {
+    "number": 3,
+    "name": "循环区块抽样",
+    "latex": "r^*_{m,t}=z_{(J_{m,b}+j)\\bmod60},\\quad j=0,\\ldots,4"
+  },
+  {
+    "number": 4,
+    "name": "模拟价格路径",
+    "latex": "S^*_{m,t}=S_0\\exp\\left(\\sum_{u=1}^{t}r^*_{m,u}\\right)"
+  },
+  {
+    "number": 5,
+    "name": "历史漂移收缩",
+    "latex": "r^*_{drift}=z_{sample}+0.25\\bar r"
+  },
+  {
+    "number": 6,
+    "name": "近期波动调整",
+    "latex": "a=\\min\\{2,\\max(0.5,\\hat\\sigma_{20}/\\hat\\sigma_{60})\\},\\quad r^*_{vol}=az_{sample}"
+  },
+  {
+    "number": 7,
+    "name": "预算价格",
+    "latex": "K=\\frac15\\sum_{j=0}^{4}S_{t_0-j}"
+  },
+  {
+    "number": 8,
+    "name": "候选价格责任参数",
+    "latex": "d=\\max(2,0.02K),\\quad c=0.05K,\\quad\\eta=0.8"
+  },
+  {
+    "number": 9,
+    "name": "阶段结算指数",
+    "latex": "X_i=\\frac15\\sum_{j=0}^{4}S_{T_i-j}"
+  },
+  {
+    "number": 10,
+    "name": "阶段赔款",
+    "latex": "L_i=\\eta Q_i\\min\\{\\max(X_i-K_i-d_i,0),c_i\\}"
+  },
+  {
+    "number": 11,
+    "name": "阶段责任限额",
+    "latex": "A_i=\\eta Q_i c_i"
+  },
+  {
+    "number": 12,
+    "name": "未锁价净采购需求",
+    "latex": "D=\\max(R-H-C-B,0)"
+  },
+  {
+    "number": 13,
+    "name": "单次承保数量",
+    "latex": "Q=\\min(D,q_{req},q_{cap})"
+  },
+  {
+    "number": 14,
+    "name": "金额容量换算",
+    "latex": "q_{cap}^{amount}=A_{cap}/(\\eta c),\\quad\\eta c>0"
+  },
+  {
+    "number": 15,
+    "name": "预期赔款与纯保费",
+    "latex": "\\hat\\mu=M^{-1}\\sum_{m=1}^M L_m,\\quad\\Pi_{pure}=e^{-r\\tau}\\hat\\mu"
+  },
+  {
+    "number": 16,
+    "name": "模拟尾部赔款",
+    "latex": "\\operatorname{TVaR}_{99.5\\%}=\\frac1{500}\\sum_{j=M-499}^{M}L_{(j)},\\quad M=100000"
+  },
+  {
+    "number": 17,
+    "name": "资本代理及资本费用",
+    "latex": "EC=\\max(\\operatorname{TVaR}_{99.5\\%}-\\hat\\mu,0),\\quad C_{capital}=k\\tau EC"
+  },
+  {
+    "number": 18,
+    "name": "总保费",
+    "latex": "\\Pi=\\frac{\\Pi_{pure}+C_{capital}+F+C_{model}}{1-v-p}"
+  },
+  {
+    "number": 19,
+    "name": "多阶段累计责任",
+    "latex": "L=\\sum_i L_i,\\quad A_{total}=\\sum_i A_i"
+  },
+  {
+    "number": 20,
+    "name": "多阶段纯保费",
+    "latex": "\\Pi_{pure,joint}=\\sum_i e^{-r\\tau_i}E[L_i]"
+  },
+  {
+    "number": 21,
+    "name": "多阶段资本费用",
+    "latex": "C_{capital,joint}=k\\tau_{max}\\max\\{\\operatorname{TVaR}_{99.5\\%}(L)-E[L],0\\}"
+  },
+  {
+    "number": 22,
+    "name": "赔款预测误差",
+    "latex": "RMSE=\\sqrt{n^{-1}\\sum_o(\\hat\\mu_o-L_o)^2}"
+  },
+  {
+    "number": 23,
+    "name": "配额库存守恒",
+    "latex": "I_t=I_{t-1}+a_t+b_t-s_t-v_t"
+  },
+  {
+    "number": 24,
+    "name": "可售余量",
+    "latex": "V_t=\\max(I_t-I^{restricted}_t-R^{safe}_t,0)"
+  },
+  {
+    "number": 25,
+    "name": "交易与保障数量约束",
+    "latex": "0\\le s_t\\le V_t,\\quad0\\le Q_{ins,i}\\le b_{unlocked,i}"
+  },
+  {
+    "number": 26,
+    "name": "部分投保数量比例",
+    "latex": "\\theta=Q_{ins}/D,\\quad\\alpha=Q_{ins}/(D-q_0)"
+  },
+  {
+    "number": 27,
+    "name": "企业净成本框架",
+    "latex": "C_{net}=\\text{采购支出}+\\text{保费}+\\text{交易及资金成本}-\\text{赔款}-\\text{出售净回款}"
+  },
+  {
+    "number": 28,
+    "name": "采购策略风险目标",
+    "latex": "\\min E[C]+\\lambda(\\operatorname{CVaR}_{95\\%}(C)-E[C])"
+  },
+  {
+    "number": 29,
+    "name": "成本尾部风险定义",
+    "latex": "\\operatorname{CVaR}_{95\\%}(C)=\\min_z\\{z+20E[(C-z)^+]\\}"
+  },
+  {
+    "number": 30,
+    "name": "当前支出累积至共同评价时点",
+    "latex": "C^{(0)}_{20}=[q_0S_0(1+f)+\\Pi]e^{r_f\\tau_{20}}"
+  },
+  {
+    "number": 31,
+    "name": "未来采购与赔款现金流",
+    "latex": "C_{20}=C^{(0)}_{20}+[(D-q_0)X_h(1+f)-L_h]e^{r_f(\\tau_{20}-\\tau_h)}"
+  },
+  {
+    "number": 32,
+    "name": "出售净回款现值",
+    "latex": "N_\\tau=e^{-r_f\\tau}VS_\\tau(1-f)"
+  },
+  {
+    "number": 33,
+    "name": "出售利润口径",
+    "latex": "\\text{卖出利润}=\\text{净出售回款}-\\text{取得成本}-\\text{其他未计费用}"
+  },
+  {
+    "number": 34,
+    "name": "出售下行风险目标",
+    "latex": "\\max E[N]-\\lambda(E[N]-\\operatorname{LCVaR}_{95\\%}(N))"
+  },
+  {
+    "number": 35,
+    "name": "辅助理论期货价格",
+    "latex": "F^{model}_{0,T}=S_0e^{(r+u-y)\\tau}+b"
+  },
+  {
+    "number": 36,
+    "name": "期货对冲收益",
+    "latex": "G_{hedge}=q(F_T-F_0)"
+  },
+  {
+    "number": 37,
+    "name": "保险人剩余损失",
+    "latex": "L_{residual}=L-G_{hedge}+\\text{执行及融资成本}"
+  },
+  {
+    "number": 38,
+    "name": "最小方差对冲数量",
+    "latex": "q^*=\\operatorname{Cov}(L,\\Delta F)/\\operatorname{Var}(\\Delta F)"
+  }
+]

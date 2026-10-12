@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>碳保险双产品线 · 可视化面板</title>
+<script src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js" onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js';s.onload=function(){window.dispatchEvent(new Event('echarts-ready'))};document.head.appendChild(s);"></script>
+<script src="https://registry.npmmirror.com/@tencent-ai/workbuddy-cloud-sdk/0.1.3/files/lib/index.global.js" onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@tencent-ai/workbuddy-cloud-sdk@dev/lib/index.global.js';s.onload=function(){window.dispatchEvent(new Event('wbcloud-ready'))};document.head.appendChild(s);"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #f4faf6;
+    --ink: #0f2417;
+    --ink-2: #3f5548;
+    --ink-3: #6b8274;
+    --green: #0d8a4f;
+    --green-deep: #0a6b3d;
+    --green-soft: rgba(13,138,79,0.10);
+    --green-border: rgba(13,138,79,0.38);
+    --green-border-strong: rgba(13,138,79,0.75);
+    --sky: #0284c7;
+    --violet: #7c3aed;
+    --amber: #d97706;
+    --red: #dc2626;
+    --card-shadow: 0 1px 2px rgba(15,36,23,0.05), 0 8px 28px -12px rgba(13,138,79,0.18);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    line-height: 1.65; overflow-x: hidden;
+  }
+  /* ============ 动态光效背景 ============ */
+  .light-field { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .light-field .beam {
+    position: absolute; width: 900px; height: 900px; border-radius: 50%;
+    filter: blur(90px); opacity: .5; mix-blend-mode: multiply;
+    background: radial-gradient(circle, rgba(13,138,79,0.14) 0%, rgba(13,138,79,0) 62%);
+    animation: beamMove 26s ease-in-out infinite alternate;
+  }
+  .light-field .b2 { width: 700px; height: 700px; top: 10%; right: -200px; animation-duration: 32s; animation-delay: -8s;
+    background: radial-gradient(circle, rgba(2,132,199,0.10) 0%, rgba(2,132,199,0) 62%); }
+  .light-field .b3 { width: 640px; height: 640px; bottom: -220px; left: 24%; animation-duration: 38s; animation-delay: -16s;
+    background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, rgba(124,58,237,0) 62%); }
+  @keyframes beamMove {
+    0% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(120px, 60px) scale(1.15) rotate(8deg); }
+    100% { transform: translate(-60px, 100px) scale(1.05) rotate(-6deg); }
+  }
+  .sweeper { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .sweeper i {
+    position: absolute; top: -20%; height: 140%; width: 220px;
+    background: linear-gradient(105deg, transparent 0%, rgba(13,138,79,0.05) 45%, rgba(13,138,79,0.10) 50%, rgba(13,138,79,0.05) 55%, transparent 100%);
+    transform: rotate(12deg); animation: sweep 11s linear infinite;
+  }
+  .sweeper i:nth-child(2) { animation-duration: 17s; animation-delay: -6s; width: 320px; opacity: .7; }
+  @keyframes sweep { from { left: -30%; } to { left: 130%; } }
+
+  .wrap { position: relative; z-index: 1; max-width: 1240px; margin: 0 auto; padding: 0 28px; }
+
+  /* ============ 顶部导航 ============ */
+  .topnav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1.5px solid var(--green-border);
+  }
+  .topnav .inner { max-width: 1240px; margin: 0 auto; padding: 0 28px; display: flex; align-items: center; gap: 26px; height: 62px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .04em; color: var(--green-deep); white-space: nowrap; }
+  .brand .orb {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    background: conic-gradient(from 0deg, #0d8a4f, #34d399, #0284c7, #0d8a4f);
+    box-shadow: 0 0 0 3px var(--green-soft), 0 0 14px rgba(13,138,79,0.45);
+    animation: spin 6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .navlinks { display: flex; gap: 4px; flex: 1; overflow-x: auto; scrollbar-width: none; }
+  .navlinks::-webkit-scrollbar { display: none; }
+  .navlink {
+    position: relative; border: none; background: none; cursor: pointer; font-family: inherit;
+    font-size: 13.5px; color: var(--ink-2); padding: 9px 15px; border-radius: 10px;
+    white-space: nowrap; transition: color .2s, background .2s; letter-spacing: .02em;
+  }
+  .navlink:hover { color: var(--green-deep); background: var(--green-soft); }
+  .navlink.active { color: var(--green-deep); font-weight: 700; background: var(--green-soft); }
+  .navlink.active::after {
+    content: ""; position: absolute; left: 14px; right: 14px; bottom: 3px; height: 2.5px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--green), #34d399);
+    box-shadow: 0 0 8px rgba(13,138,79,0.55);
+    animation: navGlow 2.4s ease-in-out infinite;
+  }
+  @keyframes navGlow { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+  .nav-cta {
+    font-size: 12px; color: var(--green-deep); border: 1.5px solid var(--green-border);
+    border-radius: 999px; padding: 4px 14px; white-space: nowrap;
+    background: linear-gradient(120deg, rgba(52,211,153,0.12), rgba(2,132,199,0.08));
+    background-size: 200% 200%; animation: gradShift 5s ease infinite;
+  }
+  @keyframes gradShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+  /* ============ 页面容器 ============ */
+  .page { display: none; padding: 40px 0 30px; }
+  .page.active { display: block; animation: pageIn .5s ease both; }
+  @keyframes pageIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+  .hero { text-align: center; padding: 8px 0 26px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--green-deep);
+    border: 1.5px solid var(--green-border); border-radius: 999px; padding: 5px 16px; margin-bottom: 18px;
+    background: var(--bg-soft); position: relative; overflow: hidden;
+  }
+  .hero-badge::after {
+    content: ""; position: absolute; top: 0; left: -80%; width: 60%; height: 100%;
+    background: linear-gradient(105deg, transparent, rgba(52,211,153,0.25), transparent);
+    animation: shine 3.2s ease infinite;
+  }
+  @keyframes shine { 0% { left: -80%; } 60%,100% { left: 130%; } }
+  .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2.2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  h1 {
+    font-size: clamp(30px, 4.6vw, 50px); font-weight: 800; letter-spacing: .04em;
+    background: linear-gradient(120deg, #0a6b3d 10%, #0d8a4f 45%, #0284c7 90%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero-sub { margin: 14px auto 0; max-width: 700px; color: var(--ink-3); font-size: 15px; }
+  .hero-meta { margin-top: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .hero-meta span { font-size: 12px; color: var(--ink-2); border: 1px solid var(--green-border); border-radius: 8px; padding: 3px 12px; background: #fff; }
+
+  section { padding: 22px 0; }
+  .sec-title { display: flex; align-items: baseline; gap: 13px; margin-bottom: 18px; flex-wrap: wrap; }
+  .sec-title .num { font-size: 12.5px; color: var(--green); letter-spacing: .2em; font-family: Consolas, monospace; font-weight: 700; }
+  .sec-title h2 { font-size: 20px; font-weight: 700; letter-spacing: .05em; color: var(--ink); }
+  .sec-title .line { flex: 1; height: 1.5px; min-width: 40px; background: linear-gradient(90deg, var(--green-border), transparent); }
+  .sec-title .note { font-size: 12px; color: var(--ink-3); }
+
+  .card {
+    background: #fff; border: 1.5px solid var(--green-border); border-radius: 16px;
+    box-shadow: var(--card-shadow); position: relative; overflow: hidden;
+  }
+  .card.glow::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; z-index: 1;
+    background: linear-gradient(90deg, transparent, #34d399, #0284c7, transparent);
+    background-size: 200% 100%; animation: flow 4.5s linear infinite; opacity: .85;
+  }
+  @keyframes flow { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+  .card.hoverlift { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+  .card.hoverlift:hover { transform: translateY(-4px); border-color: var(--green-border-strong); box-shadow: 0 2px 4px rgba(15,36,23,.06), 0 16px 40px -12px rgba(13,138,79,0.3); }
+
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ============ KPI ============ */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+  .kpi { padding: 20px 20px 17px; }
+  .kpi .label { font-size: 12.5px; color: var(--ink-3); margin-bottom: 8px; display: flex; align-items: center; gap: 7px; }
+  .kpi .label .src { font-size: 10.5px; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--green-border); color: var(--green-deep); }
+  .kpi .value { font-size: 30px; font-weight: 800; font-family: Consolas, "Segoe UI", monospace; color: var(--green-deep); }
+  .kpi .unit { font-size: 13px; color: var(--ink-3); margin-left: 4px; font-weight: 400; }
+  .kpi .note { font-size: 11.5px; color: var(--ink-3); margin-top: 6px; }
+
+  /* ============ 速览带（波浪迷你图） ============ */
+  .glance { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+  .glance .g { padding: 15px 16px 13px; }
+  .glance .g h4 { font-size: 12px; color: var(--ink-3); font-weight: 600; letter-spacing: .05em; display: flex; align-items: center; gap: 6px; }
+  .glance .g h4 .live { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 2.5px var(--green-soft); animation: pulse 1.8s infinite; }
+  .glance .g canvas { width: 100%; height: 82px; display: block; margin: 8px 0 6px; }
+  .glance .g .n { font-size: 21px; font-weight: 800; font-family: Consolas, monospace; color: var(--green-deep); }
+  .glance .g .n small { font-size: 11.5px; color: var(--ink-3); font-weight: 400; margin-left: 5px; font-family: inherit; }
+
+  /* ============ 双产品卡 ============ */
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .prod { padding: 24px 22px 20px; }
+  .prod .tag-line { font-size: 11.5px; letter-spacing: .16em; color: var(--ink-3); margin-bottom: 5px; }
+  .prod h3 { font-size: 19px; font-weight: 800; letter-spacing: .02em; }
+  .prod .hl { margin: 8px 0 14px; font-size: 13px; font-weight: 600; }
+  .prod.pA .hl { color: var(--green); } .prod.pB .hl { color: var(--violet); }
+  .prod table { width: 100%; border-collapse: collapse; font-size: 12.8px; }
+  .prod td { padding: 7px 4px; border-top: 1px solid rgba(13,138,79,0.14); vertical-align: top; }
+  .prod td:first-child { color: var(--ink-3); white-space: nowrap; width: 84px; padding-right: 13px; }
+  .prod .state { margin-top: 13px; font-size: 11.8px; color: var(--ink-2); border: 1.2px dashed var(--green-border); border-radius: 10px; padding: 7px 12px; background: var(--bg-soft); }
+
+  /* ============ 时间轴 ============ */
+  .timeline { position: relative; padding-left: 25px; }
+  .timeline::before { content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px;
+    background: linear-gradient(180deg, var(--green), var(--sky), var(--violet)); opacity: .5; border-radius: 2px; }
+  .phase { position: relative; padding: 0 0 24px 18px; }
+  .phase:last-child { padding-bottom: 2px; }
+  .phase::before { content: ""; position: absolute; left: -25px; top: 6px; width: 15px; height: 15px;
+    border-radius: 50%; background: #fff; border: 3px solid var(--green); box-shadow: 0 0 0 4px var(--green-soft); transition: transform .25s; }
+  .phase:hover::before { transform: scale(1.25); }
+  .phase .head { display: flex; align-items: center; gap: 11px; flex-wrap: wrap; }
+  .phase h3 { font-size: 15.5px; font-weight: 700; }
+  .phase .when { font-size: 11.5px; color: var(--sky); font-family: Consolas, monospace; border: 1px solid rgba(2,132,199,.35); border-radius: 999px; padding: 1px 11px; }
+  .phase .goal { margin-top: 4px; font-size: 12.3px; color: var(--amber); font-weight: 600; }
+  .phase .body { margin-top: 5px; font-size: 13px; color: var(--ink-2); max-width: 800px; }
+
+  /* ============ 图表卡 ============ */
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .chart-grid + .chart-grid { margin-top: 15px; }
+  .chart-card { padding: 20px; }
+  .chart-card h3 { font-size: 14.5px; font-weight: 700; letter-spacing: .04em; margin-bottom: 3px; }
+  .chart-card .sub { font-size: 11.8px; color: var(--ink-3); margin-bottom: 8px; }
+  .chart { width: 100%; height: 300px; }
+
+  /* ============ 蒙特卡洛实验室 ============ */
+  .mc-lab { padding: 22px; }
+  .mc-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  .mc-head h3 { font-size: 15.5px; font-weight: 800; display: flex; align-items: center; gap: 9px; }
+  .mc-head h3 .live { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px var(--green-soft); animation: pulse 1.6s infinite; }
+  .mc-btns { display: flex; gap: 8px; }
+  .mc-btns button {
+    font-family: inherit; font-size: 12.5px; cursor: pointer; border-radius: 9px; padding: 6px 16px;
+    border: 1.5px solid var(--green-border); background: #fff; color: var(--green-deep); font-weight: 600;
+    transition: all .2s;
+  }
+  .mc-btns button:hover { background: var(--green-soft); border-color: var(--green-border-strong); }
+  .mc-btns button.primary { background: linear-gradient(120deg, var(--green), #12a35f); color: #fff; border-color: transparent; }
+  .mc-body { display: grid; grid-template-columns: 1.6fr 1fr; gap: 15px; }
+  .mc-panel { border: 1.2px solid rgba(13,138,79,0.25); border-radius: 12px; background: var(--bg-soft); padding: 10px; position: relative; }
+  .mc-panel .cap { position: absolute; top: 14px; left: 16px; font-size: 11px; color: var(--ink-3); letter-spacing: .08em; z-index: 2; }
+  .mc-panel canvas { width: 100%; height: 300px; display: block; }
+  .mc-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-top: 13px; }
+  .mc-stat { border: 1.2px solid rgba(13,138,79,0.25); border-radius: 11px; padding: 10px 13px; background: #fff; }
+  .mc-stat .k { font-size: 11px; color: var(--ink-3); margin-bottom: 3px; }
+  .mc-stat .v { font-size: 17px; font-weight: 800; font-family: Consolas, monospace; color: var(--green-deep); }
+  .mc-stat .v small { font-size: 11px; color: var(--ink-3); font-weight: 400; }
+  .mc-steps { margin-top: 13px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .mc-step { border: 1.2px solid rgba(13,138,79,0.25); border-radius: 11px; padding: 9px 11px; background: #fff; font-size: 11.3px; color: var(--ink-2); position: relative; overflow: hidden; transition: border-color .3s, box-shadow .3s; }
+  .mc-step b { display: block; color: var(--green-deep); font-size: 11.5px; margin-bottom: 2px; }
+  .mc-step.on { border-color: var(--green-border-strong); box-shadow: 0 0 0 3px var(--green-soft); }
+  .mc-step .lit { position: absolute; bottom: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg, var(--green), #34d399); transition: width .4s; }
+
+  /* ============ 链路 / 分层示意 ============ */
+  .layer-diagram { display: flex; flex-direction: column; gap: 8px; padding: 8px 2px; }
+  .lband { display: grid; grid-template-columns: 150px 1fr 200px; align-items: center; gap: 12px; }
+  .lband .lbl { font-size: 12px; color: var(--ink-2); text-align: right; }
+  .lband .lbl b { display: block; color: var(--ink); font-size: 12.8px; }
+  .lband .bar { height: 30px; border-radius: 8px; position: relative; border: 1.2px solid var(--green-border); overflow: hidden; background: rgba(13,138,79,0.04); }
+  .lband .bar i { position: absolute; top: 0; bottom: 0; left: 0; width: 0; border-radius: 7px 0 0 7px; transition: width 1.4s cubic-bezier(.2,.7,.3,1); }
+  .lband .val { font-size: 11.8px; font-family: Consolas, monospace; color: var(--ink-2); }
+
+  /* ============ 智能体问答 ============ */
+  .lp-card { margin-bottom: 22px; padding: 22px 24px; }
+  .lp-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+  .lp-price { display: flex; align-items: baseline; gap: 10px; }
+  .lp-price b { font-size: clamp(30px, 4vw, 44px); font-weight: 700; color: var(--green); letter-spacing: -1px; }
+  .lp-price span { font-size: 12.5px; color: var(--ink-soft); }
+  .lp-meta { font-size: 12px; color: var(--ink-soft); text-align: right; line-height: 1.6; }
+  .lp-ctrl { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 4px; }
+  .lp-ctrl input { flex: 1; min-width: 160px; background: var(--bg-soft); border: 1.2px solid var(--green-border); border-radius: 9px; padding: 9px 12px; font: inherit; font-size: 13px; color: var(--ink); }
+  .lp-ctrl input:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(34,168,96,.12); }
+  .lp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+  .lp-box { border: 1.2px solid var(--green-border); border-radius: 12px; padding: 14px 16px; background: var(--bg-soft); }
+  .lp-box h4 { font-size: 13px; font-weight: 700; color: var(--green); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .lp-box .lp-note { font-size: 11px; color: var(--ink-soft); margin-top: 8px; line-height: 1.55; }
+  .lp-row { display: flex; justify-content: space-between; font-size: 12.3px; padding: 3.5px 0; border-bottom: 1px dashed rgba(34,168,96,.18); }
+  .lp-row:last-of-type { border-bottom: none; }
+  .lp-row b { font-variant-numeric: tabular-nums; }
+  .lp-tag { font-size: 10.5px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--green-border); color: var(--green); }
+  @media (max-width: 760px) { .lp-grid { grid-template-columns: 1fr; } }
+  .qa-card { display: grid; grid-template-columns: 300px 1fr; min-height: 620px; }
+  .qa-side { border-right: 1.5px solid var(--green-border); padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; background: var(--bg-soft); }
+  .qa-side .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--green-deep); }
+  .qa-side .brand .orb { width: 32px; height: 32px; border-radius: 50%; background: conic-gradient(from 0deg, #0d8a4f, #34d399, #0284c7, #0d8a4f); box-shadow: 0 0 12px rgba(13,138,79,0.4); animation: spin 6s linear infinite; }
+  .qa-side .tip { font-size: 12.3px; color: var(--ink-2); }
+  .chips { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+  .chip { text-align: left; font-size: 12.3px; color: var(--ink); cursor: pointer; border: 1.2px solid var(--green-border);
+    background: #fff; border-radius: 10px; padding: 8px 13px; transition: all .2s; font-family: inherit; }
+  .chip:hover { border-color: var(--green-border-strong); background: var(--green-soft); transform: translateY(-1px); }
+  .qa-main { display: flex; flex-direction: column; }
+  .qa-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1.5px solid var(--green-border); gap: 10px; }
+  .qa-bar .status { font-size: 12.3px; color: var(--ink-2); display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .qa-bar .st-txt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .qa-bar select { background: #fff; color: var(--ink); border: 1.2px solid var(--green-border); border-radius: 8px; padding: 5px 10px; font-size: 12.3px; max-width: 230px; font-family: inherit; }
+  .msgs { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 13px; }
+  .msgs::-webkit-scrollbar { width: 6px; }
+  .msgs::-webkit-scrollbar-thumb { background: rgba(13,138,79,.25); border-radius: 3px; }
+  .msg { max-width: 84%; padding: 11px 15px; border-radius: 13px; font-size: 13.8px; white-space: pre-wrap; word-break: break-word; animation: pageIn .35s ease both; }
+  .msg.user { align-self: flex-end; background: linear-gradient(135deg, rgba(13,138,79,.12), rgba(2,132,199,.08)); border: 1.2px solid var(--green-border); border-bottom-right-radius: 4px; }
+  .msg.bot { align-self: flex-start; background: var(--bg-soft); border: 1.2px solid rgba(13,138,79,0.22); border-bottom-left-radius: 4px; }
+  .msg.bot.err { color: var(--red); border-color: rgba(220,38,38,.4); }
+  .typing { display: inline-flex; gap: 5px; align-items: center; }
+  .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 1.2s infinite; }
+  .typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
+  .think { display: inline-flex; gap: 9px; align-items: center; }
+  .think-txt { color: var(--green); font-size: 13px; letter-spacing: .5px; transition: opacity .3s; }
+  .think-txt.swap { opacity: 0; }
+  @keyframes blink { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+  .qa-input { display: flex; gap: 10px; padding: 14px 20px; border-top: 1.5px solid var(--green-border); }
+  .qa-input textarea { flex: 1; resize: none; height: 44px; border-radius: 11px; padding: 11px 15px;
+    background: #fff; color: var(--ink); border: 1.2px solid var(--green-border); font-size: 13.8px; font-family: inherit; outline: none; transition: border-color .2s, box-shadow .2s; }
+  .qa-input textarea:focus { border-color: var(--green-border-strong); box-shadow: 0 0 0 3px var(--green-soft); }
+  .qa-input button { border: none; border-radius: 11px; padding: 0 24px; font-size: 13.8px; cursor: pointer;
+    background: linear-gradient(120deg, var(--green), #12a35f); color: #fff; font-weight: 700; letter-spacing: .06em;
+    transition: opacity .2s, transform .2s; font-family: inherit; }
+  .qa-input button:hover { transform: translateY(-1px); }
+  .qa-input button:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+  .qa-input button.stop { background: #fff; border: 1.5px solid var(--green-border); color: var(--ink-2); font-weight: 400; }
+
+  footer { text-align: center; padding: 30px 0; font-size: 11.8px; color: var(--ink-3); line-height: 1.9; border-top: 1.5px solid var(--green-border); margin-top: 20px; }
+
+  @media (max-width: 960px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid, .duo, .mc-body { grid-template-columns: 1fr; }
+    .mc-steps { grid-template-columns: repeat(2, 1fr); }
+    .mc-stats { grid-template-columns: repeat(2, 1fr); }
+    .qa-card { grid-template-columns: 1fr; }
+    .qa-side { border-right: none; border-bottom: 1.5px solid var(--green-border); }
+    .chips { margin-top: 0; }
+    .nav-cta { display: none; }
+    .lband { grid-template-columns: 110px 1fr; }
+    .lband .val { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="light-field"><span class="beam"></span><span class="beam b2"></span><span class="beam b3"></span></div>
+<div class="sweeper"><i></i><i></i></div>
+
+<!-- ============ 顶部导航 ============ -->
+<nav class="topnav">
+  <div class="inner">
+    <div class="brand"><span class="orb"></span>碳保险双产品线</div>
+    <div class="navlinks" id="navlinks">
+      <button class="navlink" data-page="price">规划实时碳价</button>
+      <button class="navlink active" data-page="overview">总览</button>
+      <button class="navlink" data-page="p1">产品1 · CEA现货采购保险</button>
+      <button class="navlink" data-page="p2">产品2 · 长期碳价跃升保险</button>
+      <button class="navlink" data-page="agent">智能体</button>
+    </div>
+    <div class="nav-cta">研究口径 · 非正式报价</div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ================= 页：总览 ================= -->
+  <div class="page active" id="page-overview">
+    <div class="hero">
+      <div class="hero-badge"><span class="dot"></span>碳保险产品线 · 探讨与规划</div>
+      <h1>碳保险双产品线面板</h1>
+      <p class="hero-sub">CEA 现货采购保险 × 长期碳价跃升保险 —— 一页式研讨面板：实时碳价、双产品结构、计算过程与规划节奏，附智能体问答。</p>
+      <div class="hero-meta">
+        <span>行情截至 2026-09-30</span><span>研究日期 2026-10-10</span><span>断言 27+15 项 · 0 FAIL</span>
+      </div>
+    </div>
+
+    <section class="reveal" style="padding-top:6px;">
+      <div class="glance">
+        <div class="card glow g">
+          <h4><span class="live"></span>真实日行情</h4>
+          <canvas data-glance="spark"></canvas>
+          <div class="n"><span data-count="181">0</span><small>条连续收盘 · 2026-01→09</small></div>
+        </div>
+        <div class="card glow g">
+          <h4><span class="live"></span>蒙特卡洛路径</h4>
+          <canvas data-glance="paths"></canvas>
+          <div class="n"><span data-count="100000">0</span><small>条价格路径 · 统一种子</small></div>
+        </div>
+        <div class="card glow g">
+          <h4><span class="live"></span>期限档保费</h4>
+          <canvas data-glance="bars"></canvas>
+          <div class="n"><span data-count="4">0</span><small>档期限 · 10/20/40/60 交易日</small></div>
+        </div>
+        <div class="card glow g">
+          <h4><span class="live"></span>压力测试网格</h4>
+          <canvas data-glance="grid"></canvas>
+          <div class="n"><span data-count="42">0</span><small>项验收断言 · 0 FAIL</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="sec-title"><span class="num">01</span><h2>关键指标</h2><span class="line"></span></div>
+      <div class="kpi-grid">
+        <div class="card glow kpi"><div class="label">CEA 最新收盘 <span class="src">现货</span></div><div class="value"><span data-count="94.96" data-dec="2">0</span><span class="unit">元/吨</span></div><div class="note">2026-09-30 · 年内区间 72.50–99.69</div></div>
+        <div class="card glow kpi"><div class="label">现货险 20 日示范保费 <span class="src">产品1</span></div><div class="value"><span data-count="1055.25" data-dec="2">0</span><span class="unit">元/千吨</span></div><div class="note">末5日均价 · 免赔2元 · 赔付80%</div></div>
+        <div class="card glow kpi"><div class="label">跃升险首年报价 <span class="src">产品2</span></div><div class="value"><span data-count="12.82" data-dec="2">0</span><span class="unit">元/吨</span></div><div class="note">份额 10% · 全额口径 128.18</div></div>
+        <div class="card glow kpi"><div class="label">压力覆盖率天花板 <span class="src">产品2</span></div><div class="value"><span data-count="90.1" data-dec="1">0</span><span class="unit">%</span></div><div class="note">碳价 +300% · CAP 无上限口径</div></div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="sec-title"><span class="num">02</span><h2>双产品对照</h2><span class="line"></span></div>
+      <div class="duo">
+        <div class="card glow hoverlift prod pA">
+          <div class="tag-line">PRODUCT A · 现货线</div>
+          <h3>CEA 现货采购保险</h3>
+          <div class="hl">保障企业「未锁价采购缺口」的成本上涨风险</div>
+          <table>
+            <tr><td>承保对象</td><td>有经核验未来 CEA 现货采购需求的企业（申报制）</td></tr>
+            <tr><td>期限</td><td>10 / 20 / 40 / 60 交易日单阶段，或多阶段主保单</td></tr>
+            <tr><td>采价</td><td>阶段末 5 个交易日收盘均价，一次结算</td></tr>
+            <tr><td>条款</td><td>预算价 K = 94.966 · 免赔 max(2, 2%K) · 赔付 80% · 价差上限 5%K = 4.7483 元/吨</td></tr>
+            <tr><td>赔付边界</td><td>触发价 96.966 → 封顶价 101.7143 元/吨；千吨最高赔款 3,798.64 元</td></tr>
+            <tr><td>保费（千吨）</td><td>10日 645.58 · 20日 1,055.25 · 40日 1,472.29 · 60日 1,687.47 元</td></tr>
+          </table>
+          <div class="state">状态：计算原型完成；商业报价未开放（commercial_quote_allowed = false）</div>
+        </div>
+        <div class="card glow hoverlift prod pB">
+          <div class="tag-line">PRODUCT B · 长期线</div>
+          <h3>长期碳价跃升保险</h3>
+          <div class="hl">现金 + 影子双给付，保障年度碳成本的跃升风险</div>
+          <table>
+            <tr><td>承保对象</td><td>年度碳成本跃升（价格 P 单因子 · 比例式保额与保费）</td></tr>
+            <tr><td>期限</td><td>1 年 · 日度观察 + 年度累计（N_MAX = 5），年后 15 个交易日确认支付</td></tr>
+            <tr><td>锚与起赔</td><td>P₀ = 97.9 元/吨（2026-08 收盘）· κ = 1.3 起赔 · CAP 随价格同步放大</td></tr>
+            <tr><td>责任上限</td><td>现金层 CAP 195.8 · 影子层 CAP 826.64 元/吨 · 两层独立分层（q75 / q99.5）</td></tr>
+            <tr><td>报价</td><td>份额 10% 首年 12.82 元/吨 · 影子占层赔付 88.5% · 并集触发频率 30%</td></tr>
+            <tr><td>越界条款</td><td>2028 年起 MAC 越界 → 影子给付失效、仅现金给付，产品不失效</td></tr>
+          </table>
+          <div class="state">状态：验收断言 27 项 0 FAIL；三项结构性缺口已在「披露前置」主动登记</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="sec-title"><span class="num">03</span><h2>规划节奏</h2><span class="line"></span></div>
+      <div class="card glow" style="padding:22px 24px;">
+        <div class="timeline">
+          <div class="phase">
+            <div class="head"><h3>P0 · 限额与台账</h3><span class="when">现货线 · 近期</span></div>
+            <div class="goal">目标：每一步都可审计、可回滚</div>
+            <div class="body">真实企业资料去重、保险人容量授权、统一数量台账（按企业 / 履约年度 / 需求批次预占并去重）。资料未知保持未知，不静默缩减申请量。</div>
+          </div>
+          <div class="phase">
+            <div class="head"><h3>P1 · 价格责任核验</h3><span class="when">现货线</span></div>
+            <div class="goal">目标：条款与真实采购计划严格贴合</div>
+            <div class="body">固定行情源与收盘定义、采购窗口匹配、采价窗口事先约定、舍入与异常处理；转载行情逐日完成官方交叉验证后方可进入正式报价。</div>
+          </div>
+          <div class="phase">
+            <div class="head"><h3>P2 · 保费校准与独立验证</h3><span class="when">双线并行</span></div>
+            <div class="goal">目标：修复低估，再谈降价</div>
+            <div class="body">现货线按预注册流程校准后段低估（1.845×）并做独立验证；长期线完成 ρ(P,Q) 符号域检验（当前 −0.40 未接入定价），补上基差风险这道指数保险必答题。</div>
+          </div>
+          <div class="phase">
+            <div class="head"><h3>P3 · 结构决策</h3><span class="when">长期线</span></div>
+            <div class="goal">目标：保障力度与产品定位重新对齐</div>
+            <div class="body">CAP 改为分层结构：基准层（CAP_MULT = 2，已定价可行）+ 跃升层（独立定价 / 再保险 / 巨灾债券）。先修归因表述（零成本），再动结构（高成本）。</div>
+          </div>
+          <div class="phase">
+            <div class="head"><h3>P4 · 产品接入</h3><span class="when">双线</span></div>
+            <div class="goal">目标：从计算原型走向可交付流程</div>
+            <div class="body">智能体交互界面、证据核验系统、并发台账、变更与理赔流程接入；正式报价保持关闭至真实费用、容量与独立验证全部到位。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= 页：规划实时碳价 ================= -->
+  <div class="page" id="page-price">
+    <div class="hero">
+      <div class="hero-badge"><span class="dot"></span>MARKET · 碳价监控</div>
+      <h1 style="font-size:clamp(26px,3.6vw,38px);">规划实时碳价</h1>
+      <p class="hero-sub">全国碳市场 CEA 现货行情与价格情景预测 —— 现货线定价的统一数据底座。</p>
+    </div>
+
+    <section class="reveal">
+      <div class="sec-title"><span class="num">M1</span><h2>行情走势</h2><span class="line"></span><span class="note">数据冻结于 2026-09-30（研究口径）</span></div>
+      <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:15px;">
+        <div class="card kpi"><div class="label">最新收盘</div><div class="value" style="font-size:24px;"><span data-count="94.96" data-dec="2">0</span><span class="unit">元/吨</span></div></div>
+        <div class="card kpi"><div class="label">年内最高</div><div class="value" style="font-size:24px;color:var(--red);"><span data-count="99.69" data-dec="2">0</span><span class="unit">元/吨</span></div></div>
+        <div class="card kpi"><div class="label">年内最低</div><div class="value" style="font-size:24px;color:var(--sky);"><span data-count="72.50" data-dec="2">0</span><span class="unit">元/吨</span></div></div>
+        <div class="card kpi"><div class="label">近60日日收益 σ</div><div class="value" style="font-size:24px;"><span data-count="0.805" data-dec="3">0</span><span class="unit">%</span></div></div>
+        <div class="card kpi"><div class="label">样本条数</div><div class="value" style="font-size:24px;"><span data-count="181">0</span><span class="unit">条</span></div></div>
+      </div>
+      <div class="card glow chart-card">
+        <div class="sub">2026-01-05 → 09-30 · 149 条官方 + 32 条转载 · 三条条款线：预算价 / 触发价 / 封顶价 · 支持缩放</div>
+        <div id="chartPrice" class="chart" style="height:380px;"></div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="sec-title"><span class="num">M2</span><h2>价格情景预测</h2><span class="line"></span></div>
+      <div class="chart-grid">
+        <div class="card glow chart-card">
+          <h3>阶段末 5 日均价预测区间</h3>
+          <div class="sub">P10 – 中位数 – P90 · 元/吨 · 10 万条路径 · 统一种子 2026100903</div>
+          <div id="chartBand" class="chart"></div>
+        </div>
+        <div class="card glow chart-card">
+          <h3>模拟配置与口径</h3>
+          <div class="sub">三个候选模型共用同一区块起点</div>
+          <div class="layer-diagram" style="padding-top:14px;">
+            <div class="lband"><div class="lbl"><b>收益率窗口</b></div><div class="bar"><i style="background:linear-gradient(90deg,#0d8a4f,#34d399);" data-w="100"></i></div><div class="val">最近 60 个对数收益</div></div>
+            <div class="lband"><div class="lbl"><b>区块重采样</b></div><div class="bar"><i style="background:linear-gradient(90deg,#0284c7,#7dd3fc);" data-w="42"></i></div><div class="val">5 日循环区块 × 12 块</div></div>
+            <div class="lband"><div class="lbl"><b>路径条数</b></div><div class="bar"><i style="background:linear-gradient(90deg,#7c3aed,#c4b5fd);" data-w="76"></i></div><div class="val">100,000 条 / 60 交易日</div></div>
+            <div class="lband"><div class="lbl"><b>候选模型</b></div><div class="bar"><i style="background:linear-gradient(90deg,#d97706,#fcd34d);" data-w="58"></i></div><div class="val">基准 / 漂移收缩 / 波动调整</div></div>
+            <div class="lband"><div class="lbl"><b>预算价基准</b></div><div class="bar"><i style="background:linear-gradient(90deg,#dc2626,#fca5a5);" data-w="64"></i></div><div class="val">五日均值 94.966 元/吨</div></div>
+          </div>
+          <div class="state" style="font-size:11.8px;color:var(--ink-2);border:1.2px dashed var(--green-border);border-radius:10px;padding:8px 12px;margin-top:10px;background:var(--bg-soft);">
+            预测分位是模型区间，不是校准后的覆盖概率承诺；报价起点为 9 月 30 日，不含 10 月新行情。
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= 页：产品1 CEA现货采购保险 ================= -->
+  <div class="page" id="page-p1">
+    <div class="hero">
+      <div class="hero-badge"><span class="dot"></span>PRODUCT A · 现货线</div>
+      <h1 style="font-size:clamp(26px,3.6vw,38px);">CEA 现货采购保险</h1>
+      <p class="hero-sub">以 CEA 现货指数承保企业未锁价采购缺口：末 5 日均价结算 · 免赔 2 元 · 赔付 80% · 价差上限 5%K。</p>
+    </div>
+
+    <section class="reveal">
+      <div class="sec-title"><span class="num">A1</span><h2>关键指标总览</h2><span class="line"></span></div>
+      <div class="kpi-grid">
+        <div class="card glow kpi"><div class="label">预算价 K</div><div class="value"><span data-count="94.966" data-dec="3">0</span><span class="unit">元/吨</span></div><div class="note">2026-09-23→30 五日均值</div></div>
+        <div class="card glow kpi"><div class="label">触发价 K+d</div><div class="value"><span data-count="96.966" data-dec="3">0</span><span class="unit">元/吨</span></div><div class="note">免赔 d = max(2, 2%K)</div></div>
+        <div class="card glow kpi"><div class="label">封顶价 K+d+c</div><div class="value"><span data-count="101.714" data-dec="3">0</span><span class="unit">元/吨</span></div><div class="note">c = 5%K = 4.7483 元/吨</div></div>
+        <div class="card glow kpi"><div class="label">千吨最高赔款</div><div class="value"><span data-count="3798.64" data-dec="2">0</span><span class="unit">元</span></div><div class="note">η = 80% · Q = 1,000 吨</div></div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="sec-title"><span class="num">A2</span><h2>蒙特卡洛定价实验室</h2><span class="line"></span><span class="note">浏览器实时模拟 · 演示 2,000 条（报告为 100,000 条）</span></div>
+      <div class="card glow mc-lab">
+        <div class="mc-head">
+          <h3><span class="live"></span>定价计算过程 · 区块自助重采样</h3>
+          <div class="mc-btns">
+            <button class="primary" id="mcRun">运行</button>
+            <button id="mcReset">重置</button>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-panel">
+            <span class="cap">价格路径扇形（元/吨 · 前 150 条）</span>
+            <canvas id="mcPaths"></canvas>
+          </div>
+          <div class="mc-panel">
+            <span class="cap">阶段指数 X 分布与责任区间</span>
+            <canvas id="mcHist"></canvas>
+          </div>
+        </div>
+        <div class="mc-stats">
+          <div class="mc-stat"><div class="k">已模拟路径</div><div class="v" id="mcN">0 <small>/ 2,000</small></div></div>
+          <div class="mc-stat"><div class="k">预期赔款 Ê[L]（千吨）</div><div class="v" id="mcEL">— <small>元</small></div></div>
+          <div class="mc-stat"><div class="k">触发概率（L &gt; 0）</div><div class="v" id="mcP">— <small>%</small></div></div>
+          <div class="mc-stat"><div class="k">折现纯保费（35 日 · r=2%）</div><div class="v" id="mcPure">— <small>元</small></div></div>
+        </div>
+        <div class="mc-steps" id="mcSteps">
+          <div class="mc-step"><b>① 读取行情</b>连续 181 条收盘价，取起点前 60 个对数收益并去均值<div class="lit"></div></div>
+          <div class="mc-step"><b>② 区块抽样</b>每路径抽 12 个区块起点，每块连续 5 个中心化收益，循环回头<div class="lit"></div></div>
+          <div class="mc-step"><b>③ 生成路径</b>S* = S₀·exp(Σr*)，60 个未来交易日，共用随机种子<div class="lit"></div></div>
+          <div class="mc-step"><b>④ 逐路径赔款</b>X = 末 5 日均价 → L = η·Q·clip(X−K−d, 0, c)<div class="lit"></div></div>
+          <div class="mc-step"><b>⑤ 汇总定价</b>Ê[L] → 折现纯保费 → 加资本费用与固定费 → 总保费<div class="lit"></div></div>
+        </div>
+        <div class="state" style="font-size:11.8px;color:var(--ink-2);border:1.2px dashed var(--green-border);border-radius:10px;padding:8px 12px;margin-top:12px;background:var(--bg-soft);">
+          演示仅累加纯保费部分；报告版在此基础上加 TVaR 99.5% 资本费用（20 日 24.38 元）与固定费用 200 元，再除以 0.8 得总保费 1,055.25 元。浏览器演示收敛值与报告值存在抽样差异。
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="sec-title"><span class="num">A3</span><h2>关键图表</h2><span class="line"></span></div>
+      <div class="chart-grid">
+        <div class="card glow chart-card">
+          <h3>赔款函数</h3>
+          <div class="sub">每千吨 · L = 800 × clip(X − 96.966, 0, 4.7483)</div>
+          <div id="chartPayoff" class="chart"></div>
+        </div>
+        <div class="card glow chart-card">
+          <h3>单阶段保费曲线</h3>
+          <div class="sub">每千吨 · 纯保费与总保费 · 同一 10 万条路径</div>
+          <div id="chartPrem" class="chart"></div>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <div class="card glow chart-card">
+          <h3>20 日采价口径比较</h3>
+          <div class="sub">四种采价方式共用同一价格路径 · 总保费 元/千吨</div>
+          <div id="chartSettle" class="chart"></div>
+        </div>
+        <div class="card glow chart-card">
+          <h3>固定 20 日方案 · 压力情景</h3>
+          <div class="sub">投保 3,750 吨 · 未来采购均价 85→115 元/吨</div>
+          <div id="chartStress1" class="chart"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= 页：产品2 长期碳价跃升保险 ================= -->
+  <div class="page" id="page-p2">
+    <div class="hero">
+      <div class="hero-badge"><span class="dot"></span>PRODUCT B · 长期线</div>
+      <h1 style="font-size:clamp(26px,3.6vw,38px);">长期碳价跃升保险</h1>
+      <p class="hero-sub">现金 + 影子双给付 · κ = 1.3 起赔 · 日度观察、年度累计（N_MAX = 5）· 比例式保额随价格同步放大。</p>
+    </div>
+
+    <section class="reveal">
+      <div class="sec-title"><span class="num">B1</span><h2>关键指标总览</h2><span class="line"></span></div>
+      <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);">
+        <div class="card glow kpi"><div class="label">锚价 P₀</div><div class="value"><span data-count="97.9" data-dec="1">0</span><span class="unit">元/吨</span></div><div class="note">2026-08 收盘</div></div>
+        <div class="card glow kpi"><div class="label">起赔线 κ·P₀</div><div class="value"><span data-count="127.27" data-dec="2">0</span><span class="unit">元/吨</span></div><div class="note">κ = 1.3</div></div>
+        <div class="card glow kpi"><div class="label">首年报价（10% 份额）</div><div class="value"><span data-count="12.82" data-dec="2">0</span><span class="unit">元/吨</span></div><div class="note">全额口径 128.18</div></div>
+        <div class="card glow kpi"><div class="label">影子占层赔付</div><div class="value"><span data-count="88.5" data-dec="1">0</span><span class="unit">%</span></div><div class="note">E[影子层] 4.709 vs 现金层 0.61</div></div>
+        <div class="card glow kpi"><div class="label">并集触发频率</div><div class="value"><span data-count="30.0" data-dec="1">0</span><span class="unit">%</span></div><div class="note">现金 22.8% · 影子 27.4%</div></div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="sec-title"><span class="num">B2</span><h2>计算过程 · 结算链路与责任分层</h2><span class="line"></span></div>
+      <div class="chart-grid">
+        <div class="card glow chart-card">
+          <h3>年度结算链路</h3>
+          <div class="sub">纯 P 承保 · 比例式日度累计</div>
+          <div class="layer-diagram" style="padding-top:12px;">
+            <div class="lband"><div class="lbl"><b>① 日度观察</b></div><div class="bar"><i style="background:linear-gradient(90deg,#0d8a4f,#34d399);" data-w="88"></i></div><div class="val">P_d &gt; 1.3 × P₀ 记当日赔付</div></div>
+            <div class="lband"><div class="lbl"><b>② 年度累计</b></div><div class="bar"><i style="background:linear-gradient(90deg,#0284c7,#7dd3fc);" data-w="70"></i></div><div class="val">逐日累加，N_MAX = 5 封顶</div></div>
+            <div class="lband"><div class="lbl"><b>③ 双给付分层</b></div><div class="bar"><i style="background:linear-gradient(90deg,#7c3aed,#c4b5fd);" data-w="92"></i></div><div class="val">现金 / 影子独立分层 q75–q99.5</div></div>
+            <div class="lband"><div class="lbl"><b>④ 确认支付</b></div><div class="bar"><i style="background:linear-gradient(90deg,#d97706,#fcd34d);" data-w="56"></i></div><div class="val">年度终了后 15 个交易日支付</div></div>
+            <div class="lband"><div class="lbl"><b>⑤ 越界条款</b></div><div class="bar"><i style="background:linear-gradient(90deg,#dc2626,#fca5a5);" data-w="40"></i></div><div class="val">2028 起影子失效 · 仅现金给付</div></div>
+          </div>
+        </div>
+        <div class="card glow chart-card">
+          <h3>责任分层示意（锚年）</h3>
+          <div class="sub">元/吨 · 两份责任独立设 CAP · φ = 1.0 不施加分散收益</div>
+          <div class="layer-diagram" style="padding-top:12px;">
+            <div class="lband"><div class="lbl"><b>现金层 CAP</b></div><div class="bar"><i style="background:linear-gradient(90deg,#0d8a4f,#6ee7b7);" data-w="24"></i></div><div class="val">195.80 元/吨</div></div>
+            <div class="lband"><div class="lbl"><b>影子层 CAP</b></div><div class="bar"><i style="background:linear-gradient(90deg,#7c3aed,#c4b5fd);" data-w="100"></i></div><div class="val">826.64 元/吨</div></div>
+            <div class="lband"><div class="lbl"><b>层宽 q75→q99.5</b></div><div class="bar"><i style="background:linear-gradient(90deg,#0284c7,#7dd3fc);" data-w="95"></i></div><div class="val">93.01 元/吨</div></div>
+            <div class="lband"><div class="lbl"><b>D₁ 模糊度</b></div><div class="bar"><i style="background:linear-gradient(90deg,#d97706,#fcd34d);" data-w="2"></i></div><div class="val">1.84 元/吨（γ₁ = 0 冻结档）</div></div>
+          </div>
+          <div class="state" style="font-size:11.8px;color:var(--ink-2);border:1.2px dashed var(--green-border);border-radius:10px;padding:8px 12px;margin-top:10px;background:var(--bg-soft);">
+            γ₁ = 0、β = 1 是唯一被独立复核的标度档；γ₁ 标度自由度按「模糊性」披露而非按风险加价。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="sec-title"><span class="num">B3</span><h2>关键图表</h2><span class="line"></span></div>
+      <div class="chart-grid">
+        <div class="card glow chart-card">
+          <h3>压力情景下的责任上限覆盖率</h3>
+          <div class="sub">年度累计口径 · 定额 / 比例 CAP vs 无上限天花板（%）</div>
+          <div id="chartStress2" class="chart"></div>
+        </div>
+        <div class="card glow chart-card">
+          <h3>提高 CAP 的真实代价</h3>
+          <div class="sub">CAP_MULT 扫描 · 覆盖率上升而保费恒为 5.076 元/吨</div>
+          <div id="chartCap" class="chart"></div>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <div class="card glow chart-card">
+          <h3>给付结构分解</h3>
+          <div class="sub">预期层赔付贡献 · 元/吨 · 影子给付是主责任</div>
+          <div id="chartPayout" class="chart"></div>
+        </div>
+        <div class="card glow chart-card">
+          <h3>费率稳健性</h3>
+          <div class="sub">σ 网格报价区间 0.15–0.34 元/吨 · 波动率状态依赖 θ 扫描</div>
+          <div id="chartVol" class="chart"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= 页：智能体 ================= -->
+  <div class="page" id="page-agent">
+    <div class="hero">
+      <div class="hero-badge"><span class="dot"></span>AGENT · 智能体问答</div>
+      <h1 style="font-size:clamp(26px,3.6vw,38px);">碳保险规划助手</h1>
+      <p class="hero-sub">已注入两份产品的研究口径，并接入实时碳价：联网获取最新 CEA 价格后自动重算短期与长期保费，问答以实时行情为上下文 —— 追问定价推导、结构取舍与下一步安排。</p>
+    </div>
+
+    <section class="reveal">
+      <div class="card glow lp-card">
+        <div class="lp-top">
+          <div class="lp-price"><b id="lpVal">--</b><span>元/吨 · CEA 最新价</span></div>
+          <div class="lp-meta" id="lpMeta">尚未取价 · 基准锚 K = 94.966 元/吨（2026-09-30 收盘 99.69）</div>
+        </div>
+        <div class="lp-ctrl">
+          <button class="chip" id="lpFetch" style="flex-shrink:0;">▸ 联网获取实时碳价</button>
+          <input id="lpInput" type="number" step="0.01" min="1" placeholder="或手动输入最新 CEA 价格（元/吨）">
+          <button class="chip" id="lpApply" style="flex-shrink:0;">▸ 应用并重算保费</button>
+        </div>
+        <div class="lp-grid">
+          <div class="lp-box">
+            <h4>短期 · CEA 现货采购保险<span class="lp-tag">20日档</span></h4>
+            <div class="lp-row"><span>预算价 K（新锚）</span><b id="lpK">94.966</b></div>
+            <div class="lp-row"><span>触发价 K+d</span><b id="lpTrig">96.966</b></div>
+            <div class="lp-row"><span>封顶价 K+c</span><b id="lpCap">101.7143</b></div>
+            <div class="lp-row"><span>每千吨最高赔款</span><b id="lpPay">3,798.64</b></div>
+            <div class="lp-row"><span>20日示范总保费</span><b id="lpPrem" style="color:var(--green);">1,055.25 元</b></div>
+            <div class="lp-note">取价后由浏览器端区块自助重采样蒙特卡洛实时重算（10,000 条路径 · 20 交易日 · 末 5 日均价采价），为纯保费口径（不含费用与资本附加）；正式报价以原方案 100,000 条路径数据包为准。</div>
+          </div>
+          <div class="lp-box">
+            <h4>长期 · 碳价跃升保险<span class="lp-tag">一年期</span></h4>
+            <div class="lp-row"><span>锚价格 P₀（新锚）</span><b id="lpP0">97.90</b></div>
+            <div class="lp-row"><span>κ=1.3 起赔价</span><b id="lpKappa">127.27</b></div>
+            <div class="lp-row"><span>CAP 现金 / 影子层</span><b id="lpCap2">195.80 / 826.64</b></div>
+            <div class="lp-row"><span>首年费率（全额口径）</span><b id="lpRate" style="color:var(--green);">128.18 元/吨</b></div>
+            <div class="lp-row"><span>10% 份额口径</span><b id="lpShare">12.82 元/吨</b></div>
+            <div class="lp-note">取价后由浏览器端 GBM 年度模拟实时重算（10,000 条路径 × 250 交易日 · 日度观察年度累计 · N_MAX=5 · κ=1.3 · CAP 现金层 2P₀），以基准锚 97.9 校准到报告费率 128.18 元/吨；影子层 8.4424×P₀ 同步缩放。</div>
+          </div>
+        </div>
+      </div>
+      <div class="card glow lp-card">
+        <div class="lp-top">
+          <div class="lp-price" style="font-size:15px;font-weight:700;color:var(--ink);">采购决策工作台<span class="lp-tag" style="margin-left:8px;">何时买 · 买多少 · 怎么买 · 组合成本最少</span></div>
+          <div class="lp-meta">填写企业需求后生成结构化决策咨询，助手按组合配置框架给出短期 / 长期 / 期货 / 其他衍生品的建议配置</div>
+        </div>
+        <div class="lp-ctrl">
+          <input id="dqVol" type="number" step="0.1" min="0.1" placeholder="年度未锁价采购缺口（千吨），如 30">
+          <input id="dqK" type="number" step="0.01" min="1" placeholder="预算价 K（元/吨），默认 94.966">
+          <select id="dqRisk" style="background:var(--bg-soft);border:1.2px solid var(--green-border);border-radius:9px;padding:9px 12px;font:inherit;font-size:13px;color:var(--ink);">
+            <option value="保守">风险偏好：保守（锁价优先）</option>
+            <option value="均衡" selected>风险偏好：均衡（成本与保障折中）</option>
+            <option value="进取">风险偏好：进取（保留上行弹性）</option>
+          </select>
+          <select id="dqFut" style="background:var(--bg-soft);border:1.2px solid var(--green-border);border-radius:9px;padding:9px 12px;font:inherit;font-size:13px;color:var(--ink);">
+            <option value="unavailable">期货/衍生品：暂不可用</option>
+            <option value="available">期货/衍生品：可用（预留接口）</option>
+          </select>
+          <button class="chip" id="dqGo" style="flex-shrink:0;">▸ 生成决策咨询</button>
+        </div>
+        <div class="lp-note" style="font-size:11px;color:var(--ink-soft);margin-top:6px;">接口约定：决策上下文以 JSON 注入问答（<code>decision_context</code>：缺口吨数 / 预算价 / 实时价 / 两产品保费成本 / 期货与衍生品可用性）；期货与期权模块为预制扩展位，行情与保证金参数接入后无需改动问答链路。</div>
+      </div>
+      <div class="card glow qa-card">
+        <div class="qa-side">
+          <div class="brand"><span class="orb"></span>规划助手</div>
+          <div class="tip">围绕面板内研究口径作答；研究口径之外的开放问题也可交流，助手会明示边界。</div>
+          <div class="chips">
+            <button class="chip" data-q="20日示范保费 1,055.25 元是怎么一步步算出来的？">▸ 20日保费怎么算出来的？</button>
+            <button class="chip" data-q="为什么说「免费提升 CAP」是陷阱？正确做法是什么？">▸ 为什么免费提升 CAP 是陷阱？</button>
+            <button class="chip" data-q="层宽为 0 的真正原因是什么？和分位层有什么关系？">▸ 层宽为 0 的真正原因？</button>
+            <button class="chip" data-q="一家有未锁价采购缺口的企业，该怎么在两份产品之间选择？">▸ 两份产品之间怎么选？</button>
+            <button class="chip" data-q="结合当前实时碳价，短期与长期保费报价有什么变化？该关注什么？">▸ 实时碳价下保费怎么变？</button>
+          </div>
+        </div>
+        <div class="qa-main">
+          <div class="qa-bar">
+            <div class="status"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex-shrink:0;"></span><span class="st-txt" id="qaStatus">正在连接模型…</span></div>
+            <select id="modelSelect"><option>加载中…</option></select>
+          </div>
+          <div class="msgs" id="msgs">
+            <div class="msg bot">你好，我是碳保险规划助手 ⚖️ 可以问我 CEA 现货保险的定价推导、跃升保险的结构取舍，或两份产品的选择逻辑 —— 所有回答均基于面板内研究口径。</div>
+          </div>
+          <div class="qa-input">
+            <textarea id="input" placeholder="输入问题，Enter 发送 / Shift+Enter 换行"></textarea>
+            <button id="sendBtn">发送</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    面板内全部数值为研究 / 规划口径（commercial_quote_allowed = false · live_trade_recommendation_allowed = false）<br>
+    不构成正式保险报价、投保建议或市场交易指令 · 蒙特卡洛实验室为浏览器演示版，收敛值以原方案数据包 100,000 条路径结果为准
+  </footer>
+</div>
+
+<script>
+/* ===== CDN 护栏：任一库加载失败时页面核心功能（行情/重算/决策）不受影响 ===== */
+if (typeof echarts === 'undefined') {
+  const stub = { setOption() {}, resize() {}, dispose() {}, on() {}, getZr() { return { on() {} }; } };
+  window.echarts = { init: () => stub, graphic: new Proxy(function () {}, { get: () => () => ({}), apply: () => ({}) }) };
+  console.warn('echarts 未加载（CDN 受限），图表暂以占位模式运行；核心计算功能正常。');
+}
+/* ================= 行情数据（181 条，与完整方案附录一致） ================= */
+const RAW = "2026-01-05=74.63,2026-01-06=74.63,2026-01-07=77.97,2026-01-08=78.61,2026-01-09=75.96,2026-01-12=78.31,2026-01-13=78.31,2026-01-14=72.50,2026-01-15=78.50,2026-01-16=78.50,2026-01-19=81.00,2026-01-20=73.00,2026-01-21=78.60,2026-01-22=77.27,2026-01-23=81.00,2026-01-26=81.79,2026-01-27=78.48,2026-01-28=78.57,2026-01-29=78.50,2026-01-30=79.00,2026-02-02=81.00,2026-02-03=81.00,2026-02-04=78.74,2026-02-05=78.74,2026-02-06=76.14,2026-02-09=80.56,2026-02-10=80.50,2026-02-11=78.70,2026-02-12=78.70,2026-02-13=78.70,2026-02-24=81.00,2026-02-25=81.00,2026-02-26=81.00,2026-02-27=80.50,2026-03-02=80.50,2026-03-03=80.55,2026-03-04=80.70,2026-03-05=81.85,2026-03-06=81.85,2026-03-09=82.80,2026-03-10=82.00,2026-03-11=79.00,2026-03-12=82.45,2026-03-13=81.83,2026-03-16=81.95,2026-03-17=81.58,2026-03-18=81.58,2026-03-19=80.18,2026-03-20=80.16,2026-03-23=80.80,2026-03-24=80.22,2026-03-25=79.95,2026-03-26=79.75,2026-03-27=79.90,2026-03-30=79.91,2026-03-31=79.54,2026-04-01=79.54,2026-04-02=79.54,2026-04-03=79.87,2026-04-07=79.87,2026-04-08=79.55,2026-04-09=79.52,2026-04-10=79.50,2026-04-13=79.54,2026-04-14=79.52,2026-04-15=78.02,2026-04-16=78.93,2026-04-17=79.56,2026-04-20=78.61,2026-04-21=76.14,2026-04-22=75.81,2026-04-23=76.22,2026-04-24=77.59,2026-04-27=79.00,2026-04-28=78.30,2026-04-29=78.89,2026-04-30=79.50,2026-05-06=80.01,2026-05-07=80.00,2026-05-08=80.06,2026-05-11=81.06,2026-05-12=82.10,2026-05-13=82.56,2026-05-14=83.95,2026-05-15=84.91,2026-05-18=84.08,2026-05-19=82.64,2026-05-20=81.70,2026-05-21=80.43,2026-05-22=80.16,2026-05-25=80.09,2026-05-26=80.01,2026-05-27=80.06,2026-05-28=80.30,2026-05-29=80.77,2026-06-01=82.01,2026-06-02=81.84,2026-06-03=81.97,2026-06-04=82.03,2026-06-05=82.87,2026-06-08=82.25,2026-06-09=82.30,2026-06-10=81.64,2026-06-11=81.23,2026-06-12=81.42,2026-06-15=81.45,2026-06-16=81.81,2026-06-17=82.04,2026-06-18=82.34,2026-06-22=82.05,2026-06-23=82.41,2026-06-24=82.68,2026-06-25=83.12,2026-06-26=83.11,2026-06-29=83.14,2026-06-30=83.34,2026-07-01=83.90,2026-07-02=84.82,2026-07-03=85.72,2026-07-06=86.22,2026-07-07=86.36,2026-07-08=86.24,2026-07-09=86.21,2026-07-10=86.95,2026-07-13=87.42,2026-07-14=87.89,2026-07-15=89.81,2026-07-16=90.13,2026-07-17=90.02,2026-07-20=90.15,2026-07-21=90.54,2026-07-22=91.03,2026-07-23=92.54,2026-07-24=93.58,2026-07-27=93.77,2026-07-28=94.67,2026-07-29=95.65,2026-07-30=96.61,2026-07-31=98.59,2026-08-03=99.69,2026-08-04=98.56,2026-08-05=97.56,2026-08-06=97.44,2026-08-07=98.54,2026-08-10=98.52,2026-08-11=98.32,2026-08-12=98.31,2026-08-13=98.15,2026-08-14=98.21,2026-08-17=97.60,2026-08-18=97.41,2026-08-19=97.40,2026-08-20=97.81,2026-08-21=97.97,2026-08-24=97.82,2026-08-25=98.32,2026-08-26=98.52,2026-08-27=98.52,2026-08-28=98.50,2026-08-31=97.90,2026-09-01=97.02,2026-09-02=95.45,2026-09-03=94.40,2026-09-04=93.66,2026-09-07=92.86,2026-09-08=94.95,2026-09-09=96.26,2026-09-10=95.90,2026-09-11=94.84,2026-09-14=95.64,2026-09-15=96.23,2026-09-16=95.89,2026-09-17=95.89,2026-09-18=95.63,2026-09-21=95.64,2026-09-22=95.41,2026-09-23=95.20,2026-09-24=94.99,2026-09-28=94.80,2026-09-29=94.88,2026-09-30=94.96";
+const PRICES = RAW.split(",").map(s => s.split("="));
+const DATES = PRICES.map(p => p[0].slice(5));
+const VALS  = PRICES.map(p => +p[1]);
+
+/* ================= 动效 ================= */
+const counterIO = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  counterIO.unobserve(e.target);
+  const el = e.target, target = parseFloat(el.dataset.count), dec = +(el.dataset.dec || 0), t0 = performance.now();
+  (function tick(t) {
+    const p = Math.min((t - t0) / 1400, 1), ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = dec === 0 && target >= 1000
+      ? Math.round(target * ease).toLocaleString('en-US')
+      : (target * ease).toFixed(dec);
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+}), { threshold: .5 });
+document.querySelectorAll('[data-count]').forEach(el => counterIO.observe(el));
+
+const revealIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); }
+}), { threshold: .05 });
+document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+const barIO = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  barIO.unobserve(e.target);
+  e.target.querySelectorAll('[data-w]').forEach((b, i) => setTimeout(() => { b.style.width = b.dataset.w + '%'; }, i * 130));
+}), { threshold: .3 });
+document.querySelectorAll('.layer-diagram').forEach(el => barIO.observe(el));
+
+/* ================= 速览带：波浪渐变动画 ================= */
+function fitCv(c) {
+  const dpr = window.devicePixelRatio || 1, w = c.clientWidth, h = c.clientHeight;
+  if (c.width !== Math.round(w * dpr)) { c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); }
+  const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return [g, w, h];
+}
+const glanceCfg = {
+  spark: { hues: [[13,138,79],[2,132,199]], spd: 0.9, amp: 0.20, base: 0.66 },
+  paths: { hues: [[13,138,79],[52,211,153]], spd: 1.3, amp: 0.30, base: 0.58 },
+  bars:  { hues: [[124,58,237],[2,132,199]], spd: 0.7, amp: 0.24, base: 0.62 },
+  grid:  { hues: [[217,119,6],[13,138,79]], spd: 1.1, amp: 0.26, base: 0.60 }
+};
+/* 各卡静态叠层：预生成一次 */
+const glanceExtra = {};
+(function buildGlanceExtra() {
+  let s = 42;
+  const rand = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+  glanceExtra.paths = Array.from({ length: 26 }, () => {
+    const p = []; let v = 0.5;
+    for (let i = 0; i < 40; i++) { v += (rand() - 0.5) * 0.09; v = Math.max(0.08, Math.min(0.92, v)); p.push(v); }
+    return p;
+  });
+  glanceExtra.sparkLine = VALS.map((v, i) => [i / (VALS.length - 1), (v - 70) / (102 - 70)]);
+  glanceExtra.barsH = [0.38, 0.62, 0.82, 0.96];
+})();
+function drawGlance(ts) {
+  document.querySelectorAll('canvas[data-glance]').forEach(c => {
+    if (!c.closest('.page').classList.contains('active')) return;
+    const type = c.dataset.glance, cfg = glanceCfg[type];
+    const [g, w, h] = fitCv(c);
+    g.clearRect(0, 0, w, h);
+    const t = ts / 1000;
+    /* 三层波浪渐变 */
+    cfg.hues.concat([[255,255,255]]).slice(0, 3).forEach((rgb, li) => {
+      const ph = t * cfg.spd * (0.6 + li * 0.35) + li * 2.1;
+      const amp = h * cfg.amp * (1 - li * 0.22);
+      const base = h * cfg.base + li * h * 0.07;
+      g.beginPath(); g.moveTo(0, h);
+      for (let x = 0; x <= w; x += 4) {
+        const y = base - amp * (Math.sin(x / w * Math.PI * 2.2 + ph) * 0.6 + Math.sin(x / w * Math.PI * 4.7 - ph * 1.4) * 0.4);
+        g.lineTo(x, y);
+      }
+      g.lineTo(w, h); g.closePath();
+      const grad = g.createLinearGradient(0, base - amp, 0, h);
+      grad.addColorStop(0, 'rgba(' + rgb.join(',') + ',0.30)');
+      grad.addColorStop(1, 'rgba(' + rgb.join(',') + ',0.02)');
+      g.fillStyle = grad; g.fill();
+    });
+    /* 静态叠层 */
+    if (type === 'spark') {
+      g.strokeStyle = 'rgba(10,107,61,0.9)'; g.lineWidth = 1.8; g.beginPath();
+      glanceExtra.sparkLine.forEach(([fx, fy], i) => { const x = 2 + fx * (w - 4), y = h - 6 - fy * (h - 16); i ? g.lineTo(x, y) : g.moveTo(x, y); });
+      g.stroke();
+      const last = glanceExtra.sparkLine[glanceExtra.sparkLine.length - 1];
+      g.fillStyle = '#0a6b3d'; g.beginPath(); g.arc(2 + last[0] * (w - 4), h - 6 - last[1] * (h - 16), 3, 0, 7); g.fill();
+    }
+    if (type === 'paths') {
+      glanceExtra.paths.forEach(p => {
+        g.strokeStyle = 'rgba(10,107,61,0.14)'; g.lineWidth = 1; g.beginPath();
+        p.forEach((v, i) => { const x = 2 + i / (p.length - 1) * (w - 4), y = h - 6 - v * (h - 16); i ? g.lineTo(x, y) : g.moveTo(x, y); });
+        g.stroke();
+      });
+    }
+    if (type === 'bars') {
+      const bw = (w - 12) / 4;
+      glanceExtra.barsH.forEach((bh, i) => {
+        const x = 4 + i * bw;
+        const grad = g.createLinearGradient(0, h - 6 - bh * (h - 16), 0, h - 6);
+        grad.addColorStop(0, '#0d8a4f'); grad.addColorStop(1, 'rgba(52,211,153,0.25)');
+        g.fillStyle = grad;
+        g.beginPath(); g.roundRect(x + bw * 0.18, h - 6 - bh * (h - 16), bw * 0.64, bh * (h - 16), [4, 4, 0, 0]); g.fill();
+      });
+    }
+    if (type === 'grid') {
+      const cols = 7, rows = 3, cw = (w - 10) / cols, ch = (h - 14) / rows;
+      let s2 = 7;
+      for (let r = 0; r < rows; r++) for (let cc = 0; cc < cols; cc++) {
+        s2 = (s2 * 48271) % 2147483647; const q = s2 / 2147483647;
+        g.fillStyle = q > 0.86 ? 'rgba(220,38,38,0.5)' : q > 0.55 ? 'rgba(13,138,79,0.55)' : 'rgba(13,138,79,0.16)';
+        g.beginPath(); g.roundRect(4 + cc * cw, 6 + r * ch, cw - 3, ch - 3, 3); g.fill();
+      }
+    }
+  });
+  requestAnimationFrame(drawGlance);
+}
+requestAnimationFrame(drawGlance);
+
+/* ================= 分页导航 ================= */
+const charts = {};
+const pageInit = {};
+function showPage(id) {
+  document.querySelectorAll('.navlink').forEach(b => b.classList.toggle('active', b.dataset.page === id));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo({ top: 0 });
+  if (pageInit[id] && !pageInit[id].done) { pageInit[id].done = true; pageInit[id].fn(); }
+  setTimeout(() => Object.values(charts).forEach(c => c.resize()), 60);
+}
+document.querySelectorAll('.navlink').forEach(b => b.onclick = () => showPage(b.dataset.page));
+
+/* ================= ECharts 通用 ================= */
+const C = { green: '#0d8a4f', greenL: '#34d399', sky: '#0284c7', violet: '#7c3aed', amber: '#d97706', red: '#dc2626', dim: '#6b8274' };
+const axis = {
+  axisLine: { lineStyle: { color: 'rgba(15,36,23,0.22)' } },
+  axisLabel: { color: C.dim, fontSize: 11.5 },
+  splitLine: { lineStyle: { color: 'rgba(15,36,23,0.08)' } }
+};
+const TIP = { backgroundColor: 'rgba(255,255,255,0.97)', borderColor: 'rgba(13,138,79,0.45)', textStyle: { color: '#0f2417', fontSize: 12.5 }, extraCssText: 'box-shadow:0 8px 24px -8px rgba(13,138,79,.35);border-radius:10px;' };
+function mk(id) { const c = echarts.init(document.getElementById(id)); charts[id] = c; return c; }
+
+/* ---------- 页：规划实时碳价 ---------- */
+pageInit.price = { done: false, fn() {
+  mk('chartPrice').setOption({
+    tooltip: { trigger: 'axis', ...TIP, valueFormatter: v => (+v).toFixed(2) + ' 元/吨' },
+    grid: { left: 52, right: 22, top: 28, bottom: 48 },
+    xAxis: { type: 'category', data: DATES, boundaryGap: false, ...axis, axisLabel: { color: C.dim, fontSize: 11, interval: 21 } },
+    yAxis: { type: 'value', min: 68, max: 104, ...axis },
+    dataZoom: [{ type: 'inside' }, { type: 'slider', height: 20, bottom: 6,
+      borderColor: 'rgba(13,138,79,0.3)', backgroundColor: 'rgba(13,138,79,0.04)',
+      fillerColor: 'rgba(13,138,79,0.14)', handleStyle: { color: C.green }, textStyle: { color: C.dim, fontSize: 10 } }],
+    series: [{
+      name: 'CEA 收盘价', type: 'line', data: VALS, symbol: 'none', smooth: 0.15,
+      lineStyle: { width: 2.4, color: C.green, shadowColor: 'rgba(13,138,79,0.35)', shadowBlur: 10 },
+      areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        { offset: 0, color: 'rgba(13,138,79,0.22)' }, { offset: 1, color: 'rgba(13,138,79,0.01)' }]) },
+      markLine: { silent: true, symbol: 'none', data: [
+        { yAxis: 94.966, lineStyle: { color: C.amber, type: 'dashed', width: 1.5 }, label: { formatter: '预算价 94.966', color: C.amber, position: 'insideEndTop', fontSize: 11 } },
+        { yAxis: 96.966, lineStyle: { color: C.sky, type: 'dotted', width: 1.5 }, label: { formatter: '触发价 96.966', color: C.sky, position: 'insideEndTop', fontSize: 11 } },
+        { yAxis: 101.714, lineStyle: { color: C.red, type: 'dotted', width: 1.5 }, label: { formatter: '封顶价 101.714', color: C.red, position: 'insideEndTop', fontSize: 11 } }
+      ] },
+      markPoint: { silent: true, symbol: 'circle', symbolSize: 8, data: [
+        { coord: [DATES[VALS.indexOf(72.50)], 72.50], itemStyle: { color: C.sky }, label: { show: true, formatter: '低点 72.50', color: C.sky, position: 'bottom', fontSize: 11 } },
+        { coord: [DATES[VALS.indexOf(99.69)], 99.69], itemStyle: { color: C.red }, label: { show: true, formatter: '高点 99.69', color: C.red, position: 'top', fontSize: 11 } }
+      ] },
+      animationDuration: 2000, animationEasing: 'cubicOut'
+    }]
+  });
+
+  const FH = ['10日 (→10-21)', '20日 (→11-04)', '40日 (→12-02)', '60日 (→12-30)'];
+  const P10 = [91.87, 89.82, 87.38, 85.62], MED = [94.84, 94.96, 94.95, 94.94], P90 = [98.46, 100.47, 103.10, 105.18], MEAN = [94.99, 95.05, 95.14, 95.23];
+  mk('chartBand').setOption({
+    tooltip: { trigger: 'axis', ...TIP, valueFormatter: v => v == null ? '—' : (+v).toFixed(2) + ' 元/吨' },
+    legend: { bottom: 0, textStyle: { color: C.dim, fontSize: 11.5 }, itemWidth: 14 },
+    grid: { left: 54, right: 26, top: 28, bottom: 58 },
+    xAxis: { type: 'category', data: FH, boundaryGap: false, ...axis, axisLabel: { color: C.dim, fontSize: 10.5 } },
+    yAxis: { type: 'value', min: 82, max: 108, ...axis },
+    series: [
+      { name: 'P90', type: 'line', data: P90, stack: 'ci', symbol: 'none', lineStyle: { opacity: 0 }, silent: true },
+      { name: 'P10–P90 区间', type: 'line', data: P10.map((v, i) => P90[i] - v), stack: 'ci', symbol: 'none', silent: true,
+        lineStyle: { opacity: 0 }, areaStyle: { color: 'rgba(2,132,199,0.14)' } },
+      { name: 'P90 上沿', type: 'line', data: P90, symbol: 'none', lineStyle: { width: 1.4, type: 'dashed', color: C.sky }, itemStyle: { color: C.sky } },
+      { name: 'P10 下沿', type: 'line', data: P10, symbol: 'none', lineStyle: { width: 1.4, type: 'dashed', color: C.sky }, itemStyle: { color: C.sky } },
+      { name: '中位数', type: 'line', data: MED, lineStyle: { width: 2.4, color: C.green }, itemStyle: { color: C.green }, symbol: 'circle', symbolSize: 7 },
+      { name: '均值', type: 'scatter', data: MEAN, symbolSize: 8, itemStyle: { color: C.amber } },
+      { name: '预算价', type: 'line', data: [94.966, 94.966, 94.966, 94.966], symbol: 'none', silent: true, lineStyle: { width: 1.4, type: 'dotted', color: C.red }, tooltip: { show: false } },
+      { name: '封顶价', type: 'line', data: [101.714, 101.714, 101.714, 101.714], symbol: 'none', silent: true, lineStyle: { width: 1.4, type: 'dotted', color: C.violet }, tooltip: { show: false } }
+    ]
+  });
+}};
+
+/* ---------- 页：产品1 图表 ---------- */
+pageInit.p1 = { done: false, fn() {
+  const xs = [], ys = [];
+  for (let x = 90; x <= 110.001; x += 0.25) { xs.push(x.toFixed(2)); ys.push(+(800 * Math.min(Math.max(x - 96.966, 0), 4.7483)).toFixed(2)); }
+  mk('chartPayoff').setOption({
+    tooltip: { trigger: 'axis', ...TIP, valueFormatter: v => (+v).toFixed(2) + ' 元' },
+    grid: { left: 62, right: 24, top: 30, bottom: 40 },
+    xAxis: { type: 'category', data: xs, ...axis, axisLabel: { color: C.dim, fontSize: 10.5, interval: 15 } },
+    yAxis: { type: 'value', max: 3800, ...axis },
+    series: [{
+      name: '阶段赔款（千吨）', type: 'line', data: ys, symbol: 'none',
+      lineStyle: { width: 2.6, color: C.green },
+      areaStyle: { color: 'rgba(13,138,79,0.10)' },
+      markLine: { silent: true, symbol: 'none', data: [
+        { xAxis: '96.97', lineStyle: { color: C.sky, type: 'dashed' }, label: { formatter: '起赔 96.97', color: C.sky, fontSize: 10.5 } },
+        { xAxis: '101.72', lineStyle: { color: C.red, type: 'dashed' }, label: { formatter: '封顶 101.72', color: C.red, fontSize: 10.5 } },
+        { yAxis: 3798.64, lineStyle: { color: C.amber, type: 'dotted' }, label: { formatter: '最高赔款 3,798.64', color: C.amber, fontSize: 10.5, position: 'insideEndTop' } }
+      ] },
+      animationDuration: 1600
+    }]
+  });
+
+  const H = ['10日', '20日', '40日', '60日'];
+  mk('chartPrem').setOption({
+    tooltip: { trigger: 'axis', ...TIP, valueFormatter: v => (+v).toFixed(2) + ' 元' },
+    legend: { bottom: 0, textStyle: { color: C.dim, fontSize: 11.5 }, itemWidth: 14 },
+    grid: { left: 62, right: 22, top: 30, bottom: 54 },
+    xAxis: { type: 'category', data: H, ...axis },
+    yAxis: { type: 'value', ...axis },
+    series: [
+      { name: '总保费', type: 'bar', data: [645.58, 1055.25, 1472.29, 1687.47], barWidth: 32,
+        itemStyle: { borderRadius: [7, 7, 0, 0], color: new echarts.graphic.LinearGradient(0, 0, 0, 1,
+          [{ offset: 0, color: C.green }, { offset: 1, color: 'rgba(13,138,79,0.25)' }]) },
+        label: { show: true, position: 'top', color: C.dim, fontSize: 11, formatter: v => v.value.toFixed(0) },
+        animationDelay: i => i * 170 },
+      { name: '纯保费（折现）', type: 'line', data: [300.36, 619.83, 938.38, 1096.18],
+        lineStyle: { width: 2.4, color: C.sky }, itemStyle: { color: C.sky }, symbol: 'circle', symbolSize: 7, animationDuration: 1700 }
+    ]
+  });
+
+  mk('chartSettle').setOption({
+    tooltip: { trigger: 'axis', ...TIP, valueFormatter: v => (+v).toFixed(2) + ' 元' },
+    grid: { left: 62, right: 22, top: 30, bottom: 44 },
+    xAxis: { type: 'category', data: ['全期间均价', '末5日均价\n(现行)', '期末单日', '期间最高收盘'], ...axis, axisLabel: { color: C.dim, fontSize: 10.5 } },
+    yAxis: { type: 'value', ...axis },
+    series: [{
+      name: '20日总保费', type: 'bar', data: [
+        { value: 658.53, itemStyle: { color: '#94d3b5', borderRadius: [7,7,0,0] } },
+        { value: 1055.25, itemStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:C.green},{offset:1,color:'rgba(13,138,79,0.25)'}]), borderRadius: [7,7,0,0] } },
+        { value: 1135.20, itemStyle: { color: '#7fc4e8', borderRadius: [7,7,0,0] } },
+        { value: 1660.07, itemStyle: { color: '#c4a8f5', borderRadius: [7,7,0,0] } }
+      ], barWidth: 40,
+      label: { show: true, position: 'top', color: C.dim, fontSize: 11, formatter: v => v.value.toFixed(2) },
+      animationDelay: i => i * 150
+    }]
+  });
+
+  mk('chartStress1').setOption({
+    tooltip: { trigger: 'axis', ...TIP },
+    legend: { bottom: 0, textStyle: { color: C.dim, fontSize: 11.5 }, itemWidth: 14 },
+    grid: { left: 70, right: 70, top: 30, bottom: 54 },
+    xAxis: { type: 'category', data: ['85元', '90元', '95元', '100元', '105元', '115元'], ...axis },
+    yAxis: [
+      { type: 'value', name: '赔款 元', nameTextStyle: { color: C.dim }, ...axis },
+      { type: 'value', min: 850000, max: 1080000, name: '净成本 元', splitLine: { show: false },
+        axisLine: { lineStyle: { color: 'rgba(15,36,23,0.22)' } }, axisLabel: { color: C.dim, fontSize: 10.5, formatter: v => (v/10000).toFixed(0) + '万' }, nameTextStyle: { color: C.dim } }
+    ],
+    series: [
+      { name: '保险赔款', type: 'bar', data: [0, 0, 0, 9102.00, 14244.90, 14244.90], barWidth: 26,
+        itemStyle: { borderRadius: [6,6,0,0], color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:C.green},{offset:1,color:'rgba(13,138,79,0.2)'}]) },
+        label: { show: true, position: 'top', color: C.dim, fontSize: 10.5, formatter: v => v.value ? v.value.toFixed(0) : '' },
+        animationDelay: i => i * 130 },
+      { name: '企业净成本', type: 'line', yAxisIndex: 1, data: [906730.71, 931755.71, 956780.71, 972703.71, 992585.81, 1042635.81],
+        lineStyle: { width: 2.4, color: C.red }, itemStyle: { color: C.red }, symbol: 'circle', symbolSize: 7, animationDuration: 1700 }
+    ]
+  });
+
+  startMC();
+}};
+
+/* ---------- 页：产品2 图表 ---------- */
+pageInit.p2 = { done: false, fn() {
+  const SC = ['碳价 +50%', '碳价 +100%', '碳价 +300%'];
+  mk('chartStress2').setOption({
+    tooltip: { trigger: 'axis', ...TIP, valueFormatter: v => (+v).toFixed(2) + ' %' },
+    legend: { bottom: 0, textStyle: { color: C.dim, fontSize: 11.5 }, itemWidth: 14 },
+    grid: { left: 52, right: 22, top: 30, bottom: 56 },
+    xAxis: { type: 'category', data: SC, ...axis },
+    yAxis: { type: 'value', max: 100, ...axis, axisLabel: { color: C.dim, fontSize: 11, formatter: '{value}%' } },
+    series: [
+      { name: 'CAP 无上限天花板', type: 'bar', data: [44.6, 70.7, 90.1], barWidth: 24,
+        itemStyle: { borderRadius: [6,6,0,0], color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:C.sky},{offset:1,color:'rgba(2,132,199,0.2)'}]) },
+        label: { show: true, position: 'top', color: C.sky, fontSize: 11, formatter: '{c}%' }, animationDelay: i => i * 140 },
+      { name: '比例式 CAP（现行）', type: 'bar', data: [2.41, 1.62, 1.08], barWidth: 24,
+        itemStyle: { borderRadius: [6,6,0,0], color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:C.violet},{offset:1,color:'rgba(124,58,237,0.2)'}]) },
+        label: { show: true, position: 'top', color: C.violet, fontSize: 11, formatter: '{c}%' }, animationDelay: i => i * 140 + 110 },
+      { name: '定额 CAP（已废弃口径）', type: 'bar', data: [1.62, 0.81, 0.27], barWidth: 24,
+        itemStyle: { borderRadius: [6,6,0,0], color: 'rgba(220,38,38,0.55)' },
+        label: { show: true, position: 'top', color: C.red, fontSize: 11, formatter: '{c}%' }, animationDelay: i => i * 140 + 220 }
+    ]
+  });
+
+  const CM = ['2×（现行）', '20×', '80×', '371×'];
+  mk('chartCap').setOption({
+    tooltip: { trigger: 'axis', ...TIP },
+    legend: { bottom: 0, textStyle: { color: C.dim, fontSize: 11.5 }, itemWidth: 14 },
+    grid: { left: 52, right: 60, top: 30, bottom: 56 },
+    xAxis: { type: 'category', data: CM, ...axis },
+    yAxis: [
+      { type: 'value', max: 100, name: '覆盖率 %', nameTextStyle: { color: C.dim }, ...axis, axisLabel: { color: C.dim, fontSize: 11, formatter: '{value}%' } },
+      { type: 'value', min: 0, max: 10, name: '保费 元/吨', splitLine: { show: false },
+        axisLine: { lineStyle: { color: 'rgba(15,36,23,0.22)' } }, axisLabel: { color: C.dim, fontSize: 11 }, nameTextStyle: { color: C.dim } }
+    ],
+    series: [
+      { name: '覆盖 1.5×', type: 'bar', data: [3.2, 25.6, 44.4, 44.6], barWidth: 17, itemStyle: { borderRadius: [5,5,0,0], color: 'rgba(13,138,79,0.85)' } },
+      { name: '覆盖 2.0×', type: 'bar', data: [1.6, 16.0, 58.1, 70.7], barWidth: 17, itemStyle: { borderRadius: [5,5,0,0], color: 'rgba(2,132,199,0.85)' } },
+      { name: '覆盖 4.0×', type: 'bar', data: [0.5, 5.4, 21.5, 87.5], barWidth: 17, itemStyle: { borderRadius: [5,5,0,0], color: 'rgba(124,58,237,0.85)' } },
+      { name: '基准年保费（恒定）', type: 'line', yAxisIndex: 1, data: [5.076, 5.076, 5.076, 5.076],
+        lineStyle: { width: 2.4, color: C.amber, type: 'dashed' }, itemStyle: { color: C.amber }, symbol: 'circle', symbolSize: 7, animationDuration: 1700 }
+    ]
+  });
+
+  mk('chartPayout').setOption({
+    tooltip: { trigger: 'item', ...TIP, formatter: '{b}<br/>{c} 元/吨（{d}%）' },
+    legend: { bottom: 0, textStyle: { color: C.dim, fontSize: 11.5 }, itemWidth: 14 },
+    series: [{
+      type: 'pie', radius: ['48%', '72%'], center: ['50%', '44%'],
+      data: [
+        { name: '影子层给付', value: 4.709, itemStyle: { color: C.violet } },
+        { name: '现金层给付', value: 0.61, itemStyle: { color: C.green } },
+        { name: '仅现金触发贡献', value: 0.0167, itemStyle: { color: '#94d3b5' } },
+        { name: '仅影子触发贡献', value: 0.5742, itemStyle: { color: '#c4a8f5' } }
+      ],
+      label: { color: C.dim, fontSize: 11.5, formatter: '{b}\n{c}' },
+      itemStyle: { borderColor: '#fff', borderWidth: 2 },
+      animationType: 'scale', animationEasing: 'elasticOut', animationDuration: 1200
+    }]
+  });
+
+  mk('chartVol').setOption({
+    tooltip: { trigger: 'axis', ...TIP, valueFormatter: v => (+v).toFixed(3) + ' 元/吨' },
+    grid: { left: 62, right: 26, top: 30, bottom: 40 },
+    xAxis: { type: 'category', data: ['θ = 0.0', 'θ = 0.3', 'θ = 0.5'], ...axis },
+    yAxis: { type: 'value', min: 0.10, max: 0.56, ...axis },
+    series: [{
+      name: 'GP 报价', type: 'line', data: [0.51, 0.475, 0.447],
+      lineStyle: { width: 2.6, color: C.sky }, itemStyle: { color: C.sky }, symbol: 'circle', symbolSize: 9,
+      areaStyle: { color: 'rgba(2,132,199,0.10)' },
+      markArea: { silent: true, itemStyle: { color: 'rgba(13,138,79,0.06)' },
+        data: [[{ yAxis: 0.15, name: 'σ 网格区间 0.15–0.34' }, { yAxis: 0.34 }]] },
+      animationDuration: 1500
+    }]
+  });
+}};
+
+/* ================= 蒙特卡洛实验室（产品1） ================= */
+const MCK = 94.966, MCQ = 1000, MCTARGET = 2000;
+let mcZ = null, mcRng = null, mcPaths = [], mcStats = null, mcRunning = false;
+
+function mulberry32(a) { return function() { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function buildMCZ() {
+  const rets = [];
+  for (let i = VALS.length - 60; i < VALS.length; i++) rets.push(Math.log(VALS[i] / VALS[i - 1]));
+  const mu = rets.reduce((a, b) => a + b, 0) / 60;
+  mcZ = rets.map(r => r - mu);
+}
+function mcResetState() {
+  mcRng = mulberry32(2026100903);
+  mcPaths = [];
+  mcStats = { n: 0, sumL: 0, trig: 0, hist: new Array(40).fill(0), xMin: 86, xMax: 106 };
+}
+function mcGenPath() {
+  const path = new Float64Array(60);
+  let logS = 0;
+  for (let b = 0; b < 12; b++) {
+    const J = Math.floor(mcRng() * 60);
+    for (let j = 0; j < 5; j++) {
+      const t = b * 5 + j;
+      logS += mcZ[(J + j) % 60];
+      path[t] = MCK * Math.exp(logS);
+    }
+  }
+  return path;
+}
+function mcStepBatch(batch) {
+  for (let k = 0; k < batch && mcStats.n < MCTARGET; k++) {
+    const p = mcGenPath();
+    if (mcPaths.length < 150) mcPaths.push(p);
+    let X = 0; for (let t = 55; t < 60; t++) X += p[t]; X /= 5;
+    const L = 0.8 * MCQ * Math.min(Math.max(X - MCK - 2, 0), 4.7483);
+    mcStats.n++; mcStats.sumL += L; if (L > 0) mcStats.trig++;
+    if (X >= mcStats.xMin && X <= mcStats.xMax) mcStats.hist[Math.min(39, Math.floor((X - mcStats.xMin) / (mcStats.xMax - mcStats.xMin) * 40))]++;
+  }
+}
+function fitCanvas(c) {
+  const dpr = window.devicePixelRatio || 1;
+  const w = c.clientWidth, h = c.clientHeight;
+  if (c.width !== Math.round(w * dpr)) { c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); }
+  const g = c.getContext('2d');
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return [g, w, h];
+}
+function mcDraw() {
+  const c1 = document.getElementById('mcPaths'), c2 = document.getElementById('mcHist');
+  if (!c1 || !c2) return;
+  /* 路径扇形 */
+  const [g, w, h] = fitCanvas(c1);
+  g.clearRect(0, 0, w, h);
+  const yMin = 84, yMax = 112, pad = 8;
+  const X = i => pad + i / 59 * (w - 2 * pad), Y = v => h - pad - (v - yMin) / (yMax - yMin) * (h - 2 * pad);
+  g.strokeStyle = 'rgba(15,36,23,0.08)'; g.lineWidth = 1;
+  [90, 95, 100, 105, 110].forEach(v => { g.beginPath(); g.moveTo(pad, Y(v)); g.lineTo(w - pad, Y(v)); g.stroke(); });
+  [['rgba(217,119,6,0.55)', 94.966], ['rgba(2,132,199,0.5)', 96.966], ['rgba(220,38,38,0.5)', 101.714]].forEach(([col, v]) => {
+    g.strokeStyle = col; g.setLineDash([5, 4]); g.beginPath(); g.moveTo(pad, Y(v)); g.lineTo(w - pad, Y(v)); g.stroke(); g.setLineDash([]);
+  });
+  mcPaths.forEach(p => {
+    g.strokeStyle = 'rgba(13,138,79,0.10)'; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(X(0), Y(p[0]));
+    for (let t = 1; t < 60; t++) g.lineTo(X(t), Y(p[t]));
+    g.stroke();
+  });
+  /* 直方图 */
+  const [g2, w2, h2] = fitCanvas(c2);
+  g2.clearRect(0, 0, w2, h2);
+  const maxC = Math.max(1, ...mcStats.hist), pad2 = 8, bw = (w2 - 2 * pad2) / 40;
+  mcStats.hist.forEach((cnt, i) => {
+    if (!cnt) return;
+    const bh = cnt / maxC * (h2 - 30);
+    const grad = g2.createLinearGradient(0, h2 - pad2 - bh, 0, h2 - pad2);
+    grad.addColorStop(0, 'rgba(13,138,79,0.85)'); grad.addColorStop(1, 'rgba(52,211,153,0.35)');
+    g2.fillStyle = grad;
+    g2.fillRect(pad2 + i * bw + 0.5, h2 - pad2 - bh, bw - 1, bh);
+  });
+  const xm = v => pad2 + (v - mcStats.xMin) / (mcStats.xMax - mcStats.xMin) * (w2 - 2 * pad2);
+  [['起赔 96.97', 96.966, 'rgba(2,132,199,0.75)'], ['封顶 101.71', 101.714, 'rgba(220,38,38,0.75)']].forEach(([lbl, v, col]) => {
+    g2.strokeStyle = col; g2.setLineDash([4, 3]); g2.beginPath(); g2.moveTo(xm(v), 14); g2.lineTo(xm(v), h2 - pad2); g2.stroke(); g2.setLineDash([]);
+    g2.fillStyle = col; g2.font = '10px Consolas, monospace'; g2.fillText(lbl, xm(v) + 3, 20);
+  });
+  /* 统计与步骤 */
+  document.getElementById('mcN').innerHTML = mcStats.n + ' <small>/ ' + MCTARGET + '</small>';
+  if (mcStats.n > 0) {
+    const eL = mcStats.sumL / mcStats.n;
+    const pure = Math.exp(-0.02 * 35 / 365) * eL;
+    document.getElementById('mcEL').innerHTML = eL.toFixed(2) + ' <small>元</small>';
+    document.getElementById('mcP').innerHTML = (mcStats.trig / mcStats.n * 100).toFixed(2) + ' <small>%</small>';
+    document.getElementById('mcPure').innerHTML = pure.toFixed(2) + ' <small>元</small>';
+  }
+  const prog = mcStats.n / MCTARGET;
+  document.querySelectorAll('#mcSteps .mc-step').forEach((s, i) => {
+    s.classList.toggle('on', prog >= i / 5 - 0.001);
+    s.querySelector('.lit').style.width = Math.max(0, Math.min(1, prog * 5 - i)) * 100 + '%';
+  });
+}
+function mcLoop() {
+  if (!mcRunning) return;
+  if (mcStats.n >= MCTARGET) { mcRunning = false; document.getElementById('mcRun').textContent = '重新运行'; return; }
+  mcStepBatch(25);
+  mcDraw();
+  requestAnimationFrame(mcLoop);
+}
+function startMC() {
+  if (!mcZ) buildMCZ();
+  if (!mcStats) mcResetState();
+  if (mcStats.n >= MCTARGET || mcRunning) return;
+  mcRunning = true;
+  document.getElementById('mcRun').textContent = '暂停';
+  requestAnimationFrame(mcLoop);
+}
+document.getElementById('mcRun').onclick = () => {
+  if (mcRunning) { mcRunning = false; document.getElementById('mcRun').textContent = '继续'; return; }
+  if (!mcStats || mcStats.n >= MCTARGET) mcResetState();
+  startMC();
+};
+document.getElementById('mcReset').onclick = () => {
+  mcRunning = false; mcResetState(); mcDraw();
+  document.getElementById('mcRun').textContent = '运行';
+};
+window.addEventListener('resize', () => { Object.values(charts).forEach(c => c.resize()); if (mcStats && mcStats.n > 0) mcDraw(); });
+
+/* ================= 智能体问答（云服务免密钥 LLM） ================= */
+let cloud = (typeof WorkBuddyCloud !== 'undefined' && WorkBuddyCloud.createWorkBuddyCloud)
+  ? WorkBuddyCloud.createWorkBuddyCloud({
+      endpoint: 'https://agent-app-panel.app.workbuddy.host',
+      publishableKey: 'wbpk_hi7MmxWCO7cWJIC366bJaC_OwQK0dvIsAJYFdSeHOsKHvfXI0sSTWHc'
+    })
+  : null; /* SDK 未加载（CDN 受限）时问答降级，其余功能不受影响 */
+const SYSTEM_PROMPT = [
+  '你是「碳保险双产品线面板」的问答助手，只基于以下研究口径作答，用简体中文，简明、结构化、先结论后依据。',
+  '',
+  '【产品一：CEA现货采购保险】以CEA现货指数承保企业未锁价采购缺口；期限10/20/40/60交易日；采价为阶段末5个交易日收盘均价；预算价K=94.966元/吨（2026-09-23至09-30五日均值）；免赔d=max(2, 2%K)=2元/吨；赔付比例80%；最高保障价差c=5%K=4.7483元/吨；触发价96.966、封顶价101.7143元/吨；每千吨最高赔款3,798.64元；10/20/40/60日示范总保费分别为645.58/1,055.25/1,472.29/1,687.47元（每千吨）；20日赔付概率31.50%；三阶段主保单（400+300+300吨）总保费1,396.11元 vs 分投1,870.03元，阶段赔款相关系数0.42–0.69；历史回放后段实际赔款为基准模型预期的1.845倍（低估待校准）；行情2026-01-05至09-30共181条（149官方+32转载），区间72.50–99.69元/吨。',
+  '',
+  '【产品二：长期碳价跃升保险】一年期，现金+影子双给付，比例式保额与保费；锚P0=97.9元/吨（2026-08收盘）；κ=1.3起赔；日度观察、年度累计，N_MAX=5；CAP现金层195.8、影子层826.64元/吨，两层独立分层（q75/q99.5），φ=1.0；承保份额10%首年报价12.82元/吨（全额口径128.18元/吨），影子占层赔付88.5%，并集触发频率30%；2028年起MAC越界→影子给付失效、仅现金给付，产品不失效；压力情景（碳价+50%/+100%/+300%）下现行比例式CAP覆盖率仅2.41%/1.62%/1.08%，同口径天花板44.6%/70.7%/90.1%，κ免赔再吃掉其中9.9%–55.4%；CAP_MULT从2提到371（185倍）基准年保费恒为5.076元/吨但1.5×情景赔付责任放大14倍——未定价尾部风险，正确解法是分层定价（基准层已定价+跃升层独立定价/再保）；q75≈q99.5层宽为0的真因是CAP打满频率≥25%导致的赔付分布左删失，而非分位层不适配（判据在21/21个格子吻合）；缺口量Q未建模（ρ(P,Q)=−0.40未接入定价），基差风险未计量。',
+  '',
+  '【口径】全部数值为研究/规划口径（示意），非正式保险报价（commercial_quote_allowed=false），不构成投保建议或交易指令。若问题超出上述范围，可给一般性解释但须明说不在此面板研究口径内。回答控制在 300 字以内，可用短列表。'
+].join('\n');
+
+/* ================= 实时碳价接入 + 短期/长期保费动态重算 ================= */
+const BASE = { K: 94.966, prem20: 1055.25, P0: 97.9, rateFull: 128.18, rateShare: 12.82 };
+const CAP_SHADOW_R = 826.64 / 97.9; /* 影子层 = 8.4425 × P₀ */
+let LIVE = null; /* { price, source, time } */
+
+function fmt(n, d) { return n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+function recalc(P) {
+  const K = P;
+  const d = Math.max(2, 0.02 * K), c = 0.05 * K;
+  document.getElementById('lpK').textContent    = fmt(K, 3);
+  document.getElementById('lpTrig').textContent = fmt(K + d, 4);
+  document.getElementById('lpCap').textContent  = fmt(K + c, 4);
+  document.getElementById('lpPay').textContent  = fmt(0.8 * 1000 * c, 2);
+  document.getElementById('lpPrem').textContent = fmt(BASE.prem20 * (K / BASE.K), 2) + ' 元';
+  document.getElementById('lpP0').textContent    = fmt(P, 2);
+  document.getElementById('lpKappa').textContent = fmt(1.3 * P, 2);
+  document.getElementById('lpCap2').textContent  = fmt(2 * P, 2) + ' / ' + fmt(CAP_SHADOW_R * P, 2);
+  document.getElementById('lpRate').textContent  = fmt(BASE.rateFull * (P / BASE.P0), 2) + ' 元/吨';
+  document.getElementById('lpShare').textContent = fmt(BASE.rateShare * (P / BASE.P0), 2) + ' 元/吨';
+}
+function applyLive(price, source, time) {
+  LIVE = { price: +price, source, time: time || new Date().toLocaleString('zh-CN', { hour12: false }) };
+  document.getElementById('lpVal').textContent = fmt(LIVE.price, 2);
+  document.getElementById('lpMeta').innerHTML = '来源：' + source + ' · ' + LIVE.time + '<br>锚已切换 · 正在重算（蒙特卡洛 10,000 条路径）…';
+  recalc(+price);
+  setTimeout(() => {
+    const r = repriceMC(+price);
+    document.getElementById('lpPrem').textContent = fmt(r.prem20kt, 2) + ' 元';
+    document.getElementById('lpRate').textContent = fmt(r.rateFull, 2) + ' 元/吨';
+    document.getElementById('lpShare').textContent = fmt(r.rateShare, 2) + ' 元/吨';
+    LIVE.prem20kt = r.prem20kt; LIVE.rateFull = r.rateFull; LIVE.rateShare = r.rateShare;
+    document.getElementById('lpMeta').innerHTML = '来源：' + source + ' · ' + LIVE.time + '<br>重算完成 · 浏览器端蒙特卡洛 10,000 条路径（锚定实时价）';
+  }, 40);
+}
+/* 真实重算引擎：区块自助重采样（短期）+ GBM 年度模拟（长期），全部锚定实时价 */
+let RAW_BASE_LONG = null; /* 基准锚 97.9 的原始层赔付，用于校准到报告费率 128.18 */
+function repriceMC(P) {
+  const rets = [];
+  for (let i = 1; i < VALS.length; i++) rets.push(Math.log(VALS[i] / VALS[i - 1]));
+  const N60 = rets.slice(-60), mu = N60.reduce((a, b) => a + b, 0) / N60.length;
+  const Z = N60.map(r => r - mu);
+  const mean = rets.reduce((a, b) => a + b, 0) / rets.length;
+  const sigma = Math.sqrt(rets.reduce((a, b) => a + (b - mean) * (b - mean), 0) / (rets.length - 1));
+  /* —— 短期：20 交易日，末 5 日均价采价，d=max(2,2%K)，c=5%K，赔付比例 80% —— */
+  const K = P, d = Math.max(2, 0.02 * K), c = 0.05 * K, N = 10000;
+  const rngS = mulberry32(2026101200 + Math.round(P * 100));
+  let sumS = 0;
+  for (let n = 0; n < N; n++) {
+    let logS = 0, X = 0;
+    for (let b = 0; b < 4; b++) {
+      const J = Math.floor(rngS() * 60);
+      for (let j = 0; j < 5; j++) {
+        logS += Z[(J + j) % 60];
+        if (b === 3) X += P * Math.exp(logS);
+      }
+    }
+    X /= 5;
+    sumS += 0.8 * Math.min(Math.max(X - K - d, 0), c);
+  }
+  const prem20kt = sumS / N * 1000; /* 元/千吨（纯保费） */
+  /* —— 长期：一年 250 交易日 GBM，日度观察年度累计，N_MAX=5，κ=1.3，CAP 现金层 2P₀ —— */
+  function rawLayer(P0, seed) {
+    const rng = mulberry32(seed);
+    let sum = 0;
+    for (let n = 0; n < N; n++) {
+      let logS = 0; const exc = [];
+      for (let t = 0; t < 250; t++) {
+        const u1 = Math.max(rng(), 1e-12), u2 = rng();
+        const g = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        logS += (mean - 0.5 * sigma * sigma) + sigma * g; /* mean/σ 为日频，250 步即一年交易日 */
+        const s = P0 * Math.exp(logS);
+        if (s / P0 > 1.3) exc.push(Math.min(s / P0 - 1.3, 0.7));
+      }
+      exc.sort((a, b) => b - a);
+      for (let i = 0; i < Math.min(5, exc.length); i++) sum += exc[i];
+    }
+    return sum / N;
+  }
+  if (RAW_BASE_LONG === null) RAW_BASE_LONG = rawLayer(97.9, 2026101297);
+  const raw = rawLayer(P, 2026101200 + Math.round(P * 100));
+  const rateFull = 128.18 * raw / RAW_BASE_LONG;
+  return { prem20kt, rateFull, rateShare: rateFull * 0.1 };
+}
+function systemWithLive() {
+  const base = SYSTEM_PROMPT + DECISION_FRAMEWORK;
+  if (!LIVE) return base;
+  const P = LIVE.price;
+  const premTxt = LIVE.prem20kt
+    ? '短期 20 日档纯保费重算值 ' + fmt(LIVE.prem20kt, 2) + ' 元/千吨（区块自助重采样 10,000 条路径），长期全额费率重算值 ' + fmt(LIVE.rateFull, 2) + ' 元/吨、10% 份额 ' + fmt(LIVE.rateShare, 2) + ' 元/吨（GBM 年度模拟 10,000 条路径，基准锚校准）'
+    : '保费重算进行中，可按比例外推口径先行说明（K=' + fmt(P, 3) + ' 时约 ' + fmt(BASE.prem20 * P / BASE.K, 2) + ' 元/千吨）';
+  return base + '\n\n【实时碳价上下文】用户刚通过实时取价模块获得 CEA 最新价 ' + fmt(P, 2) + ' 元/吨（来源：' + LIVE.source + '，' + LIVE.time + '）。' + premTxt + '。结构参数：短期——新锚 K=' + fmt(P, 3) + '，触发价 ' + fmt(P + Math.max(2, 0.02 * P), 2) + '、封顶价 ' + fmt(P * 1.05, 2) + '、每千吨最高赔款 ' + fmt(800 * P * 0.05, 2) + '；长期——新锚 P₀=' + fmt(P, 2) + '，κ=1.3 起赔 ' + fmt(1.3 * P, 2) + '，CAP 现金 ' + fmt(2 * P, 2) + '/影子 ' + fmt(CAP_SHADOW_R * P, 2) + '。回答涉及实时行情时以上述数字为准，并提醒：重算为浏览器端 10,000 条路径纯保费示意，正式承保以原方案 100,000 条路径数据包为准。';
+}
+
+const lpFetch = document.getElementById('lpFetch');
+const lpInput = document.getElementById('lpInput');
+lpFetch.onclick = async () => {
+  lpFetch.textContent = '▸ 正在获取实时碳价…';
+  /* 通道A：云端同步 —— 本机定时任务抓官方接口写入云数据库，前端读云库（无 CORS/反爬问题） */
+  try {
+    if (cloud && cloud.database) {
+      const res = await cloud.database.from('cea_price').select('*').order('id', { ascending: false }).limit(1);
+      const rows = res && (res.data || res.rows || res);
+      const row = Array.isArray(rows) ? rows[0] : null;
+      if (row && row.price) {
+        applyLive(row.price, '全国碳市场官方接口 · 云端同步', (row.trade_date || '') + ' ' + (row.trade_time || ''));
+        lpFetch.textContent = '▸ 重新获取实时碳价';
+        return;
+      }
+    }
+  } catch (e) { /* 落到通道B */ }
+  /* 通道B：官方 JSON（/zhhq/jsonData/prodinf.json）经公共代理 —— 官方站对数据中心 IP 有 WAF 黑名单，成功率低 */
+  const enc = encodeURIComponent('https://www.cneeex.com/zhhq/jsonData/prodinf.json');
+  const proxies = [
+    { name: '官方接口 · 代理B1', url: 'https://api.codetabs.com/v1/proxy?quest=' + enc },
+    { name: '官方接口 · 代理B2', url: 'https://api.allorigins.win/raw?url=' + enc },
+    { name: '官方接口 · 转读B3', url: 'https://r.jina.ai/https://www.cneeex.com/zhhq/jsonData/prodinf.json' }
+  ];
+  for (const s of proxies) {
+    try {
+      const res = await fetch(s.url, { signal: AbortSignal.timeout(8000) });
+      if (!res.ok) continue;
+      const txt = await res.text();
+      const m = txt.match(/"lastPrice"\s*:\s*"?([\d.]+)/);
+      const dt = (txt.match(/"currDate"\s*:\s*"?(\d{8})/) || ['', ''])[1];
+      const tm = (txt.match(/"currTime"\s*:\s*"?([\d:]{4,5})/) || ['', ''])[1];
+      if (m) {
+        applyLive(m[1], s.name + '（' + dt + ' ' + tm + '）', dt + ' ' + tm);
+        lpFetch.textContent = '▸ 重新获取实时碳价';
+        return;
+      }
+    } catch (e) { /* 尝试下一个通道 */ }
+  }
+  lpFetch.textContent = '▸ 云端暂无新数据，请手动输入';
+  document.getElementById('lpMeta').innerHTML = '通道A（云端同步）暂无数据 · 通道B 被官方站 WAF 拦截 · 请手动输入最新 CEA 价格（重算链路完全一致）';
+};
+lpInput.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('lpApply').click(); });
+document.getElementById('lpApply').onclick = () => {
+  const v = parseFloat(lpInput.value);
+  if (!v || v < 1 || v > 2000) { lpInput.style.borderColor = '#d06'; setTimeout(() => lpInput.style.borderColor = '', 1200); return; }
+  applyLive(v, '手动输入');
+};
+
+/* ================= 采购决策问答（组合配置框架 + 预制接口） ================= */
+const DECISION_FRAMEWORK = [
+  '',
+  '【采购决策组合框架】企业购买决策问答按此框架作答：',
+  '（1）工具池与成本锚：① 短期工具=CEA现货采购保险（分阶段主保单 400+300+300 吨，三阶段赔款相关系数 0.42–0.69，总保费 1,396.11 元 vs 分投 1,870.03 元，分阶段投保优于一次性）；② 长期工具=碳价跃升保险（一年期现金+影子双给付，10% 份额首年 12.82 元/吨）；③ 期货（预留：套保比例、基差、保证金占用，行情接口未接入前仅作定性讨论并明示）；④ 其他衍生品（场外期权/领口结构等，预留）。',
+  '（2）配置逻辑：按风险偏好分层——保守型以短期保险+高比例锁价为主（约 60–80% 短期、20–40% 长期，期货可用时以期货替代部分保险预算）；均衡型约 40–60% 短期 + 30–50% 长期；进取型加大长期跃升份额保留上行弹性。比例须结合 decision_context 中的缺口吨数、预算价与实时价偏离度给出，并说明总保费成本（元）与未覆盖敞口比例。',
+  '（3）必答四问：哪天买（结合采价口径=阶段末 5 个交易日收盘均价，给出分阶段建仓时点建议）；买多少（缺口分层：每阶段锁价比例 + 保险覆盖吨数）；怎么买（分阶段主保单 vs 分投的取舍、免赔与封顶档位选择）；组合成本最少（对比各组合总成本，给出最省组合与其次备选）。',
+  '（4）输出格式：先一行结论 → 配置比例表（工具/吨数/成本/覆盖比例）→ 关键依据（≤3 条）→ 风险提示（含研究口径免责：示意测算，非正式报价）。回答控制在 350 字以内。'
+].join('\n');
+function buildDecisionContext() {
+  const vol = parseFloat(document.getElementById('dqVol').value);
+  if (!vol || vol <= 0) { alert('请先填写年度未锁价采购缺口（千吨）'); return null; }
+  const K = parseFloat(document.getElementById('dqK').value) || BASE.K;
+  const P = LIVE ? LIVE.price : 99.69;
+  const P0 = LIVE ? LIVE.price : BASE.P0;
+  const prem20kt = LIVE && LIVE.prem20kt ? LIVE.prem20kt : BASE.prem20 * (K / BASE.K); /* 元/千吨：优先取实时重算值 */
+  const costShort = prem20kt * vol;                      /* 元 */
+  const rateShare = LIVE && LIVE.rateFull ? LIVE.rateFull * 0.1 : BASE.rateShare * (P0 / BASE.P0); /* 元/吨 */
+  const costLong = rateShare * vol * 1000;               /* 元 */
+  return {
+    decision_context: {
+      采购缺口_千吨: vol, 未锁价名义金额_元: Math.round(vol * 1000 * P),
+      预算价K: K, 实时碳价: P, 偏离度: +(100 * (P / K - 1)).toFixed(2) + '%',
+      短期保险_20日档_保费_元每千吨: +prem20kt.toFixed(2), 短期总保费_元: +costShort.toFixed(2),
+      长期跃升险_份额费率_元每吨: +rateShare.toFixed(2), 长期总保费_元: +costLong.toFixed(2),
+      期货: document.getElementById('dqFut').value === 'available' ? '可用（行情接口预留未接入，定性讨论）' : '暂不可用',
+      其他衍生品: '预留接口，未接入',
+      风险偏好: document.getElementById('dqRisk').value
+    }
+  };
+}
+document.getElementById('dqGo').onclick = () => {
+  const ctx = buildDecisionContext();
+  if (!ctx) return;
+  send('我们企业要做年度碳配额采购决策。请基于以下结构化上下文，回答：哪天买、买多少、怎么买、组合成本最少，并给出短期/长期/期货/其他衍生品的配置比例。\n\n' + JSON.stringify(ctx, null, 1));
+};
+/* 预制接口：供期货行情、衍生品报价等外部数据源接入 */
+window.CarbonPanelAPI = {
+  getLivePrice: () => LIVE,                      /* 实时价 {price, source, time} 或 null */
+  recalcPremiums: recalc,                        /* (price) => 重算短期/长期保费并刷新面板 */
+  buildDecisionContext,                          /* () => decision_context JSON（决策问答输入接口） */
+  registerInstrument: (name, fn) => {            /* 预制扩展位：接入期货/期权行情后调用 */
+    DECISION_FRAMEWORK.push('【已接入工具：' + name + '】' + fn);
+  }
+};
+
+const msgsEl = document.getElementById('msgs');
+const inputEl = document.getElementById('input');
+const sendBtn = document.getElementById('sendBtn');
+const statusEl = document.getElementById('qaStatus');
+const modelSel = document.getElementById('modelSelect');
+let MODEL = null, generating = false, ctrl = null;
+
+function addMsg(cls, text) {
+  const d = document.createElement('div');
+  d.className = 'msg ' + cls; d.textContent = text;
+  msgsEl.appendChild(d); msgsEl.scrollTop = msgsEl.scrollHeight;
+  return d;
+}
+function setBusy(b) {
+  generating = b; sendBtn.disabled = b;
+  sendBtn.textContent = b ? '生成中…' : '发送';
+  sendBtn.classList.toggle('stop', b);
+}
+function errMsg(e) {
+  const code = (e && e.error && e.error.code) || '';
+  if (code.startsWith('auth_')) return '连接被拒绝：面板需从已发布的域名访问（云服务校验来源）。请发布后在正式链接中使用问答。';
+  if (code.startsWith('quota_')) return '额度不足或被限流' + (e.retryAfterMs ? ('，约 ' + Math.ceil(e.retryAfterMs / 1000) + ' 秒后可重试') : '') + '。';
+  if (code.startsWith('gateway_') || code.startsWith('model_')) return '模型服务暂不可用，请重新发送重试。';
+  if (code.startsWith('request_')) return '请求参数不受支持，请更换模型或稍后再试。';
+  return '请求失败，请稍后重试。';
+}
+/* 首 token 等待期的轮动状态提示：思考中 → 正在检索文献 → 正在进行建模检算 */
+const THINK_STEPS = ['思考中', '正在检索文献', '正在进行建模检算'];
+let thinkTimer = null;
+function startThinking(holder) {
+  let i = 0;
+  holder.innerHTML = '<span class="think"><span class="typing"><i></i><i></i><i></i></span><span class="think-txt"></span></span>';
+  const txt = holder.querySelector('.think-txt');
+  txt.textContent = THINK_STEPS[0];
+  thinkTimer = setInterval(() => {
+    txt.classList.add('swap');
+    setTimeout(() => { i = (i + 1) % THINK_STEPS.length; txt.textContent = THINK_STEPS[i]; txt.classList.remove('swap'); }, 280);
+  }, 1500);
+}
+function stopThinking() { if (thinkTimer) { clearInterval(thinkTimer); thinkTimer = null; } }
+async function send(q) {
+  if (generating) { if (ctrl) ctrl.abort(); return; }
+  const text = (q || inputEl.value).trim();
+  if (!text) return;
+  if (!cloud || !MODEL) {
+    addMsg('user', text);
+    addMsg('bot', '模型服务暂不可用（云 SDK 未能加载，多为网络受限所致）。实时取价、保费重算与决策工作台不受影响，可继续使用；问答请在网络恢复或发布环境使用。');
+    return;
+  }
+  inputEl.value = '';
+  addMsg('user', text);
+  const holder = addMsg('bot', '');
+  startThinking(holder);
+  setBusy(true); ctrl = new AbortController();
+  let acc = '';
+  try {
+    for await (const chunk of cloud.llm.chat.completions.create({
+      model: MODEL.id,
+      messages: [{ role: 'system', content: systemWithLive() }, { role: 'user', content: text }],
+      stream: true, temperature: 0.7, signal: ctrl.signal
+    })) {
+      const delta = chunk.choices[0] && chunk.choices[0].delta;
+      if (delta && delta.content) {
+        if (!acc) stopThinking(); /* 首 token 到达：停轮动，开始渲染正文 */
+        acc += delta.content; holder.textContent = acc; msgsEl.scrollTop = msgsEl.scrollHeight;
+      }
+    }
+    if (!acc) { stopThinking(); holder.textContent = '（模型未返回内容，请重试）'; }
+  } catch (e) {
+    stopThinking();
+    if (e && e.name === 'AbortError') holder.textContent = acc ? acc + '\n（已停止）' : '（已停止）';
+    else { holder.classList.add('err'); holder.textContent = errMsg(e); }
+  } finally { setBusy(false); ctrl = null; stopThinking(); }
+}
+sendBtn.onclick = () => send();
+inputEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
+document.querySelectorAll('.chip[data-q]').forEach(b => b.onclick = () => send(b.dataset.q)); /* 仅快捷提问 chip；功能按钮（取价/重算/决策）各自独立绑定 */
+
+async function initCloud() {
+  if (!cloud || MODEL) return;
+  try {
+    const models = await cloud.llm.models.list();
+    const usable = models.filter(m => m.disabled !== true);
+    if (!usable.length) { statusEl.textContent = '无可用模型，问答暂不可用'; modelSel.innerHTML = '<option>—</option>'; return; }
+    modelSel.innerHTML = usable.map(m => '<option value="' + m.id + '">' + (m.name || m.id) + '</option>').join('');
+    /* 默认选快模型：轻量模型首 token 更快、更适合高频咨询；用户可在下拉切回大模型 */
+    const fastRe = /flash|lite|mini|fast|turbo|small|air|instant|8b|tier-1/i;
+    usable.sort((a, b) => (fastRe.test((a.id || '') + (a.name || '')) ? 0 : 1) - (fastRe.test((b.id || '') + (b.name || '')) ? 0 : 1));
+    MODEL = usable[0];
+    statusEl.textContent = '已就绪 · ' + (MODEL.name || MODEL.id);
+    modelSel.onchange = () => { MODEL = usable.find(m => m.id === modelSel.value) || usable[0]; statusEl.textContent = '已就绪 · ' + (MODEL.name || MODEL.id); };
+  } catch (e) {
+    statusEl.textContent = '模型连接失败（本地预览受限，发布后可用）';
+  }
+}
+initCloud();
+window.addEventListener('wbcloud-ready', () => {
+  if (typeof WorkBuddyCloud !== 'undefined' && !cloud) {
+    try { cloud = WorkBuddyCloud.createWorkBuddyCloud({ endpoint: 'https://agent-app-panel.app.workbuddy.host', publishableKey: 'wbpk_hi7MmxWCO7cWJIC366bJaC_OwQK0dvIsAJYFdSeHOsKHvfXI0sSTWHc' }); } catch (e) { return; }
+    statusEl.textContent = '云 SDK 已恢复加载，正在接线…'; initCloud();
+  }
+});
+window.addEventListener('echarts-ready', () => {
+  Object.values(pageInit).forEach(p => { p.done = false; });
+  const active = document.querySelector('.page.active');
+  if (active) showPage(active.id.replace('page-', ''));
+});
+</script>
+</body>
+</html>

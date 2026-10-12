@@ -1,0 +1,53 @@
+group,param,value,unit,source,source_grade,reestimate_allowed,test_grid,note
+structural,a0,-0.3213320445639149,,C_LP_v1.json,A,NO,,冻结
+structural,aK,0.7556593437835261,,C_LP_v1.json,A,NO,,冻结
+structural,aL,1.0334216870872497,,C_LP_v1.json,A,NO,,冻结
+structural,aE,1.1109858983317174e-15,,C_LP_v1.json,A,NO,,冻结;机器零
+structural,b1,-1.0,,C_LP_v1.json,A,NO,,冻结;锚定值
+structural,b2,0.0184131630261132,,C_LP_v1.json,A,NO,,冻结
+structural,aKK,0.05554505232611091,,C_LP_v1.json,A,NO,,冻结
+structural,aLL,-1.050053625065053,,C_LP_v1.json,A,NO,,冻结
+structural,aEE,-1.006854972801082e-15,,C_LP_v1.json,A,NO,,冻结;机器零
+structural,aKL,-0.007647725411076936,,C_LP_v1.json,A,NO,,冻结
+structural,aKE,-1.4039476039851682e-15,,C_LP_v1.json,A,NO,,冻结;机器零
+structural,aLE,-1.2793347761311774e-15,,C_LP_v1.json,A,NO,,冻结;机器零
+structural,dK,-0.06807725664514291,,C_LP_v1.json,A,NO,,冻结
+structural,dL,0.1601595309824152,,C_LP_v1.json,A,NO,,冻结
+structural,dE,1.4567582006664212e-15,,C_LP_v1.json,A,NO,,冻结;机器零
+design_const,beta,1.0,,"契约/direction=g=(1,-1.0)",A,NO,,方向比
+design_const,tau,1.0,,契约/deliver2,A,NO,"{0.8,1.0,1.25}",合法性阈值
+design_const,ref_carbon_price,25.1364,元/吨,deliver2/T05,A,NO,,政策倍数分母
+design_const,c_K,0.7341,,Scout-A/T02,A,NO,,2010价->1995价换算(与PIM重建解耦 v2§6 R18)
+extrap_input,g_Y_2023,30省指数(上年=100),-,中国统计年鉴2024表3-9,A,NO,"{修订前,修订后}",五经普修订断点
+extrap_input,g_Y_2024,30省指数(上年=100),-,中国统计年鉴2025表3-9,A,NO,,由指数-100得
+extrap_input,g_Y_2025,30省实际增长率,%,30省2025统计公报,A,NO,{},最终核实数待年鉴2026
+extrap_input,g_L_2023,30/30,%,中国统计年鉴2024表4-3,A,NO,,年末就业人员
+extrap_input,g_L_2024,30/30,%,中国统计年鉴2025表4-3,A,NO,{},2024起劳资口径变更
+extrap_input,g_L_2025,趋势外延,%,近3-5年均值或保持g_L2024,C,NO,"{近3年,近5年,保持2024}",不可得
+extrap_input,g_E_nat_2023,+5.7%,%,Scout-G主表(stats.gov公报),B,NO,{},直接通道正交eta_E=0;P1下经C=rho*E间接传导(eta_b中位0.847)
+extrap_input,g_E_nat_2024,+4.3%(可比口径),%,Scout-G主表,B,NO,{可比口径},2024起GB/T28398-2023折标口径调整;间接传导同2023
+extrap_input,g_E_nat_2025,+3.5%,%,Scout-G主表,B,NO,{},间接传导;口径调整延续
+extrap_input,g_C_2023,"P3a源间包络[+2.5%,+4.9%] ∪ P3b候选(强度0%)",%,Scout-F/G,B,NO,"{P3a包络,P3b候选}",R-04口径经Scout-I证实(分母不变价);差异归轴2口径带
+extrap_input,g_C_2024,"P3a跨零包络[-0.3%,+0.6%],方向未定 ∪ P3b候选(强度-3.4%)",%,Scout-G,B,NO,"{各源,P3b}",SD-4方向未定;2024区间跨C_2022;P3b分母不变价已证实
+extrap_input,g_C_2025,"无官方全年值;P3b候选(强度-5.0%)∪预测源(GCP+0.4%,CREA H1-1%)",%,Scout-G,C,NO,"{P3b,预测源}",SD-5缺失/降级;2025不可比(BR-2025-1/2)→DG-2025截断+趋势外延(主选分支乙)
+ratio,rho_C_over_E,"量级≈2.46吨CO2/吨标煤;上游2020分省中位≈2.6;按燃料结构校正",吨CO2/吨标煤,Scout-F目标5,C,NO,"{物理系数,分省稳定值}",电力调入调出口径须界定;2024起非化石扣减改变E边界
+ratio,rho_2022_anchor,"rho(i,2022)=C_raw(i,2022)/E_raw(i,2022) 逐省锚定",吨CO2/吨标煤,上游面板,A,NO,,P1桥接锚;契约P-5
+k_caliber,g_K_low,0.0442,%,T06§七真值p05+关系式,B,NO,"[0.03,0.06]",口径带下界;设计选择无经验校准(R-02)
+k_caliber,g_K_mid,0.1281,%,T06§七真值中位+关系式,B,NO,"[0.10,0.16]",口径带中枢;同上
+k_caliber,g_K_high,0.2067,%,T06§七真值p95+关系式,B,NO,"[0.18,0.22]",口径带上界;同上
+k_caliber,g_K_basis,g_K≈I/K-δ,-,T06/关系式,B,NO,,原口径回溯偏差无经验校准;R-03链接只需g_K
+k_caliber,delta_2023_2025,delta(2022)保持不变,%,T02未核验项,C,NO,{±扰动},假设DA-07
+elasticity,eta_b,"p05-p95=[0.289,4.946];median=0.847",-,T05,B,NO,,C侧弹性;速估用
+elasticity,eta_E,~0(机器零),-,T05/T04,A,NO,,仅直接通道冗余(见v2§2)
+caliber,GB_T_28398_2023,采信(真实存在;2024折标口径依据),-,Scout-G§六/R-01,A,NO,,《煤炭企业能源消费统计规范》2023-11-27发布实施
+caliber,P3b_candidate,"g_C≈(1+g_GDP实际)(1+强度变化率)-1",-,Scout-G主表第1行/R-04+Scout-I,A,NO,"{不变价,现价}",分母不变价前提经公报注释[21](2020年价)证实;2025断裂见设计v3§4.3 DG-2025
+anchor,anchor_2022_mean,190.53058207373442,元/吨,T01,A,NO,,核对锚点A-1
+anchor,obj_sumD,132.83354146398435,-,C_LP_v1/T01,A,NO,,核对锚点A-2
+anchor,R_2022_identified,"[168.2073,555.8009]",元/吨,deliver2精确求根,A,NO,,核对锚点A-4
+anchor,Wstar_seg1,"[-0.3242844303508603, 0.10185339066179176]",-,deliver2 s17,A,NO,,核对锚点A-5
+anchor,Wstar_seg2,"[0.11016869827632653, 0.1416513547484503]",-,deliver2 s17,A,NO,,核对锚点A-5
+criterion,R_widen_max,1.5,-,用户预设(判据设计前)/契约v5,A,NO,{},外推额外加宽比门槛;判据③;尺度不变;不含naive_err;阻塞后提请用户裁决(契约G2-C3.on_block/R-04);阈值由用户预设Forge/Tester无权调整
+criterion,halfwidth_ref_2022,193.7968,元/吨,deliver2精确求根/A-4,A,NO,{},基准半宽=(555.8009-168.2073)/2;R_widen分母;仅绑定真外推口径(R-01)
+criterion,halfwidth_ref_caliber_rule,同口径取该外推路径2022年半宽,-,v5§2/契约P-12,A,NO,{},分子分母必须同读法;禁跨口径混用;回测须就地取该子测试2022半宽(A=196.1/B=179.2/C=187.9);禁硬编码193.7968(R-01)
+criterion,R_half_max,3.0,-,v2§5.3/契约G2-C2,B,NO,{},retained_failed;保留原式原阈值原失败结论(实测中位3.899);禁删除淡化省略;不因R_widen通过而撤销
+criterion,R_widen_backtest_max,1.1618,-,v5§2.4(T08§5.3推算),A,NO,{},实质检验点3个(A-2020=1.0546/A-2021=1.0316/B-2021=1.1618)最大;平凡点(A/B/C各自2022)≡1.000不计;剔除后最坏值1.162不变;≤1.5通过

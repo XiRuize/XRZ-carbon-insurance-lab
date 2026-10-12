@@ -1,0 +1,98 @@
+group,param,value,unit,source,source_grade,reestimate_allowed,test_grid,note
+structural,a0,-0.3213320445639149,,C_LP_v1.json,A,NO,,冻结
+structural,aK,0.7556593437835261,,C_LP_v1.json,A,NO,,冻结
+structural,aL,1.0334216870872497,,C_LP_v1.json,A,NO,,冻结
+structural,aE,1.1109858983317174e-15,,C_LP_v1.json,A,NO,,冻结;机器零
+structural,b1,-1.0,,C_LP_v1.json,A,NO,,冻结;锚定值
+structural,b2,0.0184131630261132,,C_LP_v1.json,A,NO,,冻结
+structural,aKK,0.05554505232611091,,C_LP_v1.json,A,NO,,冻结
+structural,aLL,-1.050053625065053,,C_LP_v1.json,A,NO,,冻结
+structural,aEE,-1.006854972801082e-15,,C_LP_v1.json,A,NO,,冻结;机器零
+structural,aKL,-0.007647725411076936,,C_LP_v1.json,A,NO,,冻结
+structural,aKE,-1.4039476039851682e-15,,C_LP_v1.json,A,NO,,冻结;机器零
+structural,aLE,-1.2793347761311774e-15,,C_LP_v1.json,A,NO,,冻结;机器零
+structural,dK,-0.06807725664514291,,C_LP_v1.json,A,NO,,冻结
+structural,dL,0.1601595309824152,,C_LP_v1.json,A,NO,,冻结
+structural,dE,1.4567582006664212e-15,,C_LP_v1.json,A,NO,,冻结;机器零
+design_const,beta,1.0,,"契约/direction=g=(1,-1.0)",A,NO,,方向比
+design_const,tau,1.0,,契约/deliver2,A,NO,"{0.8,1.0,1.25}",合法性阈值
+design_const,ref_carbon_price,25.1364,元/吨,deliver2/T05,A,NO,,政策倍数分母
+design_const,c_K,0.7341,,Scout-A/T02,A,NO,,2010价->1995价换算(与PIM重建解耦 v2§6 R18)
+extrap_input,g_Y_2023,30省指数(上年=100),-,中国统计年鉴2024表3-9,A,NO,"{修订前,修订后}",五经普修订断点
+extrap_input,g_Y_2024,30省指数(上年=100),-,中国统计年鉴2025表3-9,A,NO,,由指数-100得
+extrap_input,g_Y_2025,30省实际增长率,%,30省2025统计公报,A,NO,{},最终核实数待年鉴2026
+extrap_input,g_L_2023,30/30,%,中国统计年鉴2024表4-3,A,NO,,年末就业人员
+extrap_input,g_L_2024,30/30,%,中国统计年鉴2025表4-3,A,NO,{},2024起劳资口径变更
+extrap_input,g_L_2025,趋势外延,%,近3-5年均值或保持g_L2024,C,NO,"{近3年,近5年,保持2024}",不可得
+extrap_input,g_E_nat_2023,+5.7%,%,Scout-G主表(stats.gov公报),B,NO,{},直接通道正交eta_E=0;P1下经C=rho*E间接传导(eta_b中位0.847)
+extrap_input,g_E_nat_2024,+4.3%(可比口径),%,Scout-G主表,B,NO,{可比口径},2024起GB/T28398-2023折标口径调整;间接传导同2023
+extrap_input,g_E_nat_2025,+3.5%,%,Scout-G主表,B,NO,{},间接传导;口径调整延续
+extrap_input,g_C_2023,"P3a源间包络[+2.5%,+4.9%] ∪ P3b候选(强度0%)",%,Scout-F/G,B,NO,"{P3a包络,P3b候选}",R-04口径经Scout-I证实(分母不变价);差异归轴2口径带
+extrap_input,g_C_2024,"P3a跨零包络[-0.3%,+0.6%],方向未定 ∪ P3b候选(强度-3.4%)",%,Scout-G,B,NO,"{各源,P3b}",SD-4方向未定;2024区间跨C_2022;P3b分母不变价已证实
+extrap_input,g_C_2025,"无官方全年值;P3b候选(强度-5.0%)∪预测源(GCP+0.4%,CREA H1-1%)",%,Scout-G,C,NO,"{P3b,预测源}",SD-5缺失/降级;2025不可比(BR-2025-1/2)→DG-2025截断+趋势外延(主选分支乙)
+ratio,rho_C_over_E,"量级≈2.46吨CO2/吨标煤;上游2020分省中位≈2.6;按燃料结构校正",吨CO2/吨标煤,Scout-F目标5,C,NO,"{物理系数,分省稳定值}",电力调入调出口径须界定;2024起非化石扣减改变E边界
+ratio,rho_2022_anchor,"rho(i,2022)=C_raw(i,2022)/E_raw(i,2022) 逐省锚定",吨CO2/吨标煤,上游面板,A,NO,,P1桥接锚;契约P-5
+k_caliber,g_K_low,0.0442,%,T06§七真值p05+关系式,B,NO,"[0.03,0.06]",口径带下界;设计选择无经验校准(R-02)
+k_caliber,g_K_mid,0.1281,%,T06§七真值中位+关系式,B,NO,"[0.10,0.16]",口径带中枢;同上
+k_caliber,g_K_high,0.2067,%,T06§七真值p95+关系式,B,NO,"[0.18,0.22]",口径带上界;同上
+k_caliber,g_K_basis,g_K≈I/K-δ,-,T06/关系式,B,NO,,原口径回溯偏差无经验校准;R-03链接只需g_K
+k_caliber,delta_2023_2025,delta(2022)保持不变,%,T02未核验项,C,NO,{±扰动},假设DA-07
+elasticity,eta_b,"p05-p95=[0.289,4.946];median=0.847",-,T05,B,NO,,C侧弹性;速估用
+elasticity,eta_E,~0(机器零),-,T05/T04,A,NO,,仅直接通道冗余(见v2§2)
+caliber,GB_T_28398_2023,采信(真实存在;2024折标口径依据),-,Scout-G§六/R-01,A,NO,,《煤炭企业能源消费统计规范》2023-11-27发布实施
+caliber,P3b_candidate,"g_C≈(1+g_GDP实际)(1+强度变化率)-1",-,Scout-G主表第1行/R-04+Scout-I,A,NO,"{不变价,现价}",分母不变价前提经公报注释[21](2020年价)证实;2025断裂见设计v3§4.3 DG-2025
+anchor,anchor_2022_mean,190.53058207373442,元/吨,T01,A,NO,,核对锚点A-1
+anchor,obj_sumD,132.83354146398435,-,C_LP_v1/T01,A,NO,,核对锚点A-2
+anchor,R_2022_identified,"[168.2073,555.8009]",元/吨,deliver2精确求根,A,NO,,核对锚点A-4
+anchor,Wstar_seg1,"[-0.3242844303508603, 0.10185339066179176]",-,deliver2 s17,A,NO,,核对锚点A-5
+anchor,Wstar_seg2,"[0.11016869827632653, 0.1416513547484503]",-,deliver2 s17,A,NO,,核对锚点A-5
+criterion,R_widen_max,1.5,-,用户预设(判据设计前)/契约v5,A,NO,{},外推额外加宽比门槛;判据③;尺度不变;不含naive_err;阻塞后提请用户裁决(契约G2-C3.on_block/R-04);阈值由用户预设Forge/Tester无权调整
+criterion,halfwidth_ref_2022,193.7968,元/吨,deliver2精确求根/A-4,A,NO,{},基准半宽=(555.8009-168.2073)/2;R_widen分母;仅绑定真外推口径(R-01);外推年份改变不改此分母
+criterion,halfwidth_ref_caliber_rule,同口径取该外推路径2022年半宽,-,v5§2/契约P-12,A,NO,{},分子分母必须同读法;禁跨口径混用;回测须就地取该子测试2022半宽(A=196.1/B=179.2/C=187.9);禁硬编码193.7968(R-01)
+criterion,R_half_max,3.0,-,v2§5.3/契约G2-C2,B,NO,{},retained_failed;保留原式原阈值原失败结论(实测中位3.899);禁删除淡化省略;不因R_widen通过而撤销
+criterion,R_widen_backtest_max,1.1618,-,v5§2.4(T08§5.3推算),A,NO,{},实质检验点3个(A-2020=1.0546/A-2021=1.0316/B-2021=1.1618)最大;平凡点(A/B/C各自2022)≡1.000不计;剔除后最坏值1.162不变;≤1.5通过
+scenario_2026_2030,P1_g_Y_low,0.040,-,Route M P1(政府工作报告2026/IMF/学术),B,NO,"{0.038,0.040,0.042}",全国代分省;2026-2030各年同值;机构预测+学术潜在增速
+scenario_2026_2030,P1_g_Y_mid,0.045,-,Route M P1(政府工作报告2026 2026年度4.5%-5%;IMF 4.5%),B,NO,"{0.044,0.045,0.046}",主报告;全国代分省
+scenario_2026_2030,P1_g_Y_high,0.050,-,Route M P1(世行CGE 2026-2030年均5.0%),B,NO,"{0.048,0.050,0.052}",全国代分省
+scenario_2026_2030,P2_g_s_low,-0.030,-,Route M P2低档,B,NO,"{-0.032,-0.030,-0.028}",5年累积0.8587=-14.13%;欠交付锚2.87pp
+scenario_2026_2030,P2_g_s_mid,-0.03657030,-,硬锚精确年化(D3-1):(0.83)^(1/5)-1,A,NO,"{-0.0366,-0.03657,-0.0365}",主报告锚口径;5年严格-17%;Route M标签-3.4%欠交付1.12pp(登记)
+scenario_2026_2030,P2_g_s_high,-0.038,-,Route M P2高档(2026单年-3.8%),A,NO,"{-0.039,-0.038,-0.037}",拉平5年=-17.61%;超交付0.61pp
+scenario_2026_2030,P3_g_E_low,0.005,-,Route M P3低档(近零),C,NO,"{0.0,0.005,0.010}",与双锚不自洽(隐含g_Y*=2.91%);残差-1.06pp
+scenario_2026_2030,P3_g_E_mid,0.015494,-,D3-4双锚联立解(0.9717642*1.045-1),A,NO,"{0.0150,0.01549,0.0160}",主报告;与P1中自洽;落Route M P3中档1.5-2%
+scenario_2026_2030,P3_g_E_high,0.040,-,Route M P3高档(>4%),C,NO,"{0.040,0.045,0.050}",与双锚不自洽(隐含g_Y*=7.02%>上限);按P1高计2030累计多耗能约+10%
+scenario_2026_2030,P4_g_elec_mid,0.045,-,Route M P4(国能集团展望十五五年均4.5%),B,NO,,仅E侧校验非DDF输入
+scenario_2026_2030,P5_nonfossil_2030,0.25,-,官方目标(碳达峰行动方案/政府工作报告2026),A,NO,{0.25},2025基期0.217;非化石消费占比
+scenario_2026_2030,P5_fossil_share_annual,-0.0085746,-,D3-2:(0.750/0.783)^(1/5)-1,A,NO,{},化石份额(1-p)年化;与非化石锚恒等
+scenario_2026_2030,P6_g_I_low,0.0,-,Route M P6低档(近零或负),C,NO,"{-0.038,0.0,0.02}",2025固投-3.8%参照;层丙g_K=g_I经r/δ换算
+scenario_2026_2030,P6_g_I_mid,0.045,-,Route M P6中档(4-5%),B,NO,"{0.040,0.045,0.050}",主报告
+scenario_2026_2030,P6_g_I_high,0.088,-,Route M P6高档(刘伟8.8%),C,NO,"{0.080,0.088,0.096}",趋势下移;机构预测
+scenario_2026_2030,P7_g_L_low,-0.008,-,Route M P7低档/-0.8%,B,NO,"{-0.009,-0.008,-0.007}",全国代分省
+scenario_2026_2030,P7_g_L_mid,-0.005,-,Route M P7中档/-0.5%,B,NO,"{-0.006,-0.005,-0.004}",主报告;全国代分省
+scenario_2026_2030,P7_g_L_high,-0.003,-,Route M P7高档/-0.3%,B,NO,"{-0.004,-0.003,-0.002}",全国代分省
+scenario_2026_2030,P8_carbon_price,92-96,元/吨,二手成交+易纲2026绿金委,C,NO,,背景参数;不入MAC主链
+prospect_link,r_pathbing,0.12890728324110395,-,T10 I/K(2015-2022)中位,A,NO,"{0.1104,0.1289,0.1369}",层丙r;g_K=r*(1+g_I)-δ
+prospect_link,delta_tiers,"{0.074,0.0638,0.057}",-,论文正文L269省际区间,A,NO,{0.074,0.0638,0.057},层丙g_K三档δ;δ大g_K小
+prospect_link,g_K_bing_mid_2026_2030,0.070908,-,D2.3:r*1.045-0.0638 (g_I=4.5%),A,NO,{},层丙中档前望段;三档6.071%/7.091%/7.771%
+prospect_link,start_point,"x_2025,norm 读自 T09_output.json 逐位",-,T-09承接,A,NO,,前望段起点;禁重造
+prospect_link,k_tiers_jia,"{0.023129487985159403,0.07918513851595121,0.14334993787482503}",-,T10路径甲窗分位(2015-2022),B,NO,,层甲;标量档幂
+prospect_link,k_tiers_yi,"{0.0442,0.1281,0.2067}",-,T09/D-005压力层三档,B,NO,,层乙(D-005);承载R_widen_max_cross=1.8299
+consistency_D3,anchor_A_intensity_cum,-0.17,-,十五五碳达峰行动方案/政府工作报告2026,A,NO,{},2030 vs 2025累计;官方约束性
+consistency_D3,g_s_star,-0.03657030,-,D3-1年化(0.83)^(1/5)-1,A,NO,{},锚A等强度年化
+consistency_D3,anchor_B_nonfossil_2025_base,0.217,-,Route M P5/官方,A,NO,{},非化石占比2025基期
+consistency_D3,g_fossil_share_star,-0.0085746,-,D3-2年化(0.750/0.783)^(1/5)-1,A,NO,{},锚B化石份额年化
+consistency_D3,g_E_star_formula,0.9717642*(1+g_Y)-1,-,D3-4双锚联立,A,NO,{},g_κ=0假设;燃料结构漂移入敏感性
+consistency_D3,g_E_star_mid,0.015494,-,D3-4代入g_Y=0.045,A,NO,{},与P3中档一致
+consistency_D3,g_E_star_low,0.010635,-,D3-4代入g_Y=0.040,A,NO,{},P3低档偏离-1.06pp
+consistency_D3,g_E_star_high,0.020352,-,D3-4代入g_Y=0.050,A,NO,{},P3高档偏离+1.97pp
+consistency_D3,g_Y_star_formula,1.0290566*(1+g_E)-1,-,D3-5反向解,A,NO,{},g_κ=0
+consistency_D3,residual_rule,|r_E|<=0.5pp判一致,-,D3-6,A,NO,{},不自洽须登记偏离量;禁静默
+tier_2026_2030,layer_C_primary,路径丙g_K=r*(1+g_I)-δ;mid中央,-,设计D4/D-004,B,NO,,主报告现实情形
+tier_2026_2030,layer_A_quantile,路径甲近窗分位;mid中央,-,T10/D-004,B,NO,,口径对照
+tier_2026_2030,layer_B_stress,路径乙三档(0.0442/0.1281/0.2067);mid中央,-,D-005,B,NO,,压力测试上界;承载R_widen_max_cross
+tier_2026_2030,diag_D_B1,单high档0.2067(降诊断不删除),-,T11b§3/D-005,B,NO,,R_widen_max_cross=0.8957471841436361;不构成上界
+o6_disposal,O6_definition,lambda_b=1 iff dDdb>0;B_t=#{lambda_b=1}/30;theta_B=0.5,-,设计D5/终裁§4,A,NO,,定义与历史结果保留;禁反向调整
+o6_disposal,O6_degeneration_facts,"dDdb-dDdy=1(b1=-1); dDdb>=1计数0(上界0.275223); B_2022=0.9666666666666667",-,T-12/设计D5§5.2,A,NO,,凡出现"解释降级"须同时披露
+o6_disposal,O6_positive_indicator,F_t=#{dDdb<=0}/30,-,设计D5§5.3/T-12§三,A,NO,{,},分式解释基础失效正向指标;2022=1/30
+o6_disposal,O6_no_silence,lambda_b=1观测须入表入均值禁裁剪替换剔除,-,契约R-O6-5,A,NO,,延续至前望段
+version_reg,contract_id,ddf_mac_ext_001_forge_scenario_v5,-,本设计§0.1,-,NO,,与既有ddf_mac_ext_001_forge_v5对象区隔;号位冲突已登记
+version_reg,d7_read_as,"设计/对齐代次v4 -> 2026-2030情景代次v5;若上游要求严格单调则应改称v6",-,-,-,NO,,如实登记未静默修正

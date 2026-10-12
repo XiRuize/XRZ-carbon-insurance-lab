@@ -1,0 +1,197 @@
+{
+  "research_date": "2026-10-09",
+  "data_cutoff": "2026-09-30",
+  "document_pages": 28,
+  "editable_equations": 38,
+  "tables": 32,
+  "commercial_quote_allowed": false,
+  "live_trade_recommendation_allowed": false,
+  "reproduction_sha256": "671385e96896918a4580234b370cec5e56899d6eb3b43e2edc784648aad26631",
+  "files": [
+    {
+      "path": "build_cea_complete_plan_20261009.py",
+      "bytes": 52265,
+      "sha256": "99f2441e40b3a48fa0d930fde4babac24736abe824b374e8f806eff7e12ce834"
+    },
+    {
+      "path": "CEA现货采购保险及企业购售决策完整方案.docx",
+      "bytes": 71227,
+      "sha256": "368d49c064631bee621b61ae736279720475ff3cfed0fedef92c6536cfa37862"
+    },
+    {
+      "path": "data/2026年最后15日行情.csv",
+      "bytes": 1740,
+      "sha256": "2d49b607021ad6ea53e2b5699ef23442aa36593db0b72a09f7b9edb359d968a7"
+    },
+    {
+      "path": "data/CEA输入日行情.csv",
+      "bytes": 86562,
+      "sha256": "cc3041eb296fb6f95884730e3cfcbad3695be2d4f951603b32aa634ab2da64b4"
+    },
+    {
+      "path": "data/run_cea_20d_analysis.py",
+      "bytes": 18347,
+      "sha256": "c44b384360de959de0b698ac9eb5ace2f2ae05e3884802a3b9c4dcaf985e36ba"
+    },
+    {
+      "path": "data/run_cea_enterprise_strategy_20261009.py",
+      "bytes": 12771,
+      "sha256": "d38cdbfea24251354fa5d5e447b80d143d7ab0974a5b154fa14c3673297bc4af"
+    },
+    {
+      "path": "data/run_cea_product_review_20261009.py",
+      "bytes": 16324,
+      "sha256": "68b8242b4c0415a7af8bb5397c8f5ee11d763e4c2cae24fecf2fcd4b4f0a431d"
+    },
+    {
+      "path": "data/summary.json",
+      "bytes": 6403,
+      "sha256": "04909db88eb526f0658a529e84c7101a22d4dd20f6ad68621cabfb4ab050ef6e"
+    },
+    {
+      "path": "data/企业决策汇总.json",
+      "bytes": 6467,
+      "sha256": "c656b5beacfa857a02933f6fcfd9f72ac39ec2026b084278ff6430896cfd93a6"
+    },
+    {
+      "path": "data/企业输入空白示例.json",
+      "bytes": 364,
+      "sha256": "51561a6da2d85f04977bcbf9841ce30026c8a24ad30408014dce3898b8447cf1"
+    },
+    {
+      "path": "data/保费变动对方案的影响.csv",
+      "bytes": 359,
+      "sha256": "7f58ad105ccece4d5d63d7d5e5d0c3d5614bce8eff04839cf722c78c79d66035"
+    },
+    {
+      "path": "data/保费算法回放指标.csv",
+      "bytes": 1114,
+      "sha256": "b2031b204918c0ca827e3b22b96bdbd33e656c4287373a895313d7cfbd9e04db"
+    },
+    {
+      "path": "data/全部采购投保候选.csv",
+      "bytes": 22258,
+      "sha256": "e77e4f72ae633daa6db3a955db71f9f4bbc368c8e6c8b1c7e87f546e329308e9"
+    },
+    {
+      "path": "data/历史赔款预测记录.csv",
+      "bytes": 30674,
+      "sha256": "5414c5fbe16ac396195e01c4952608dda8dd28bb5b4351e08a2e09625e431a79"
+    },
+    {
+      "path": "data/富余配额出售比较.csv",
+      "bytes": 2758,
+      "sha256": "98823ed11af698c617f9dc54d90f260526eebdffc6ea5f35fab792c2f1e585be"
+    },
+    {
+      "path": "data/智能体输入流程.json",
+      "bytes": 3038,
+      "sha256": "bbeff91d2048b7a5bd135e20ad716ac1b0a4559886dc5e17fe1d120ff6da5f94"
+    },
+    {
+      "path": "data/演示出售方案.csv",
+      "bytes": 166,
+      "sha256": "a98420a9aaa5e4d9c0cf9b67ae4f33c2a13d5b79809d26d460c697d735db866b"
+    },
+    {
+      "path": "data/演示采购方案.csv",
+      "bytes": 1156,
+      "sha256": "23ae4247d246faf6e49426a0fa65fcdcc11e06713bb50c00f9bda76c2aa90a53"
+    },
+    {
+      "path": "data/统一分阶段保障.csv",
+      "bytes": 727,
+      "sha256": "06876d50fed507f202e9ff0e7b98d2c84458dff87213904c8b63e46e1bd9c75b"
+    },
+    {
+      "path": "data/统一单期限保费.csv",
+      "bytes": 971,
+      "sha256": "02092e634e5091c5536affed49edb7c99b98950bd3625488edcbd8ac40a21a7b"
+    },
+    {
+      "path": "data/统一吨数档位.csv",
+      "bytes": 683,
+      "sha256": "5fb2b23950e9ad28aa7681b095ca17addc90489ef52700381cf6fd18575a625a"
+    },
+    {
+      "path": "data/统一模型附加.csv",
+      "bytes": 647,
+      "sha256": "62ed8cc8dffbb1d88a7c5a9e5eddc3a4d088993b45f43358724b70b11ed668ba"
+    },
+    {
+      "path": "data/统一算法报价.csv",
+      "bytes": 2485,
+      "sha256": "a217e769e2a8897eaf103bbacbf575c9dac37d05be814473d8aeb7f1e01d2cc5"
+    },
+    {
+      "path": "data/统一行情预测.csv",
+      "bytes": 746,
+      "sha256": "aecb251fd82f2c605cfdc2a70291e1412ec600f7b332b48ce2991d78fd72e7a1"
+    },
+    {
+      "path": "data/统一采价比较.csv",
+      "bytes": 797,
+      "sha256": "099899ba8f4d38bf11aa5b8377b9ce47300ab80cb526f59653b67c51db7d579c"
+    },
+    {
+      "path": "data/采购成本压力情景.csv",
+      "bytes": 743,
+      "sha256": "51d54f7d50e5a0e60beb0d50374998e559dff1621e358097c763f891ba9422da"
+    },
+    {
+      "path": "data/限额流程校验.json",
+      "bytes": 1997,
+      "sha256": "2489270a743d7021bffba8a5578400e84f92ba808cf8b532b035f7ac8eec1f45"
+    },
+    {
+      "path": "prepare_cea_complete_plan_20261009.py",
+      "bytes": 7789,
+      "sha256": "e34a83c95ac2effa304aacc9acdf531cc437cd475c69103735e3997cb3a68242"
+    },
+    {
+      "path": "run_cea_20d_analysis.py",
+      "bytes": 18347,
+      "sha256": "c44b384360de959de0b698ac9eb5ace2f2ae05e3884802a3b9c4dcaf985e36ba"
+    },
+    {
+      "path": "run_cea_enterprise_strategy_20261009.py",
+      "bytes": 12771,
+      "sha256": "d38cdbfea24251354fa5d5e447b80d143d7ab0974a5b154fa14c3673297bc4af"
+    },
+    {
+      "path": "run_cea_product_review_20261009.py",
+      "bytes": 16324,
+      "sha256": "68b8242b4c0415a7af8bb5397c8f5ee11d763e4c2cae24fecf2fcd4b4f0a431d"
+    },
+    {
+      "path": "公式索引.json",
+      "bytes": 5179,
+      "sha256": "dc358e994df3ac94e32903c20141eeb5ba167c096535e8ac93ce9d95f0cedb16"
+    },
+    {
+      "path": "完整方案.md",
+      "bytes": 44130,
+      "sha256": "56972799a29ec4efb292632694ca53f076a5323ceb380a5c49f806efbeab385b"
+    },
+    {
+      "path": "文档结构校验.json",
+      "bytes": 174,
+      "sha256": "35ad049a0c5fe6b52cc05c4d33aeb27a19213449791479f38b4fe459c04492e1"
+    },
+    {
+      "path": "渲染检查记录.json",
+      "bytes": 7300,
+      "sha256": "95c8a74dbe2afb34c3c1971b45f0357a265e7c9a9b01baa4f550d24c08788a09"
+    },
+    {
+      "path": "统一计算结果.json",
+      "bytes": 20324,
+      "sha256": "671385e96896918a4580234b370cec5e56899d6eb3b43e2edc784648aad26631"
+    },
+    {
+      "path": "阅读与复算说明.md",
+      "bytes": 2202,
+      "sha256": "31d96659f40ac61c28ca99cf25fce6e3a4c0cfbca13cddb7f11e34ae1235ac1e"
+    }
+  ]
+}

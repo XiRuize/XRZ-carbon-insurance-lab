@@ -1,0 +1,1097 @@
+{
+ "schema": "nuwax.tester.T12.v1",
+ "task_id": "ddf_mac_ext_001",
+ "batch": "deliver3",
+ "agent": "tester@zhengming-tianwen",
+ "version": "V1.3L",
+ "phase": "诊断性补测：符号区制与 O6 判据适用域（2022 基准年 + 2023-2025 逐档）",
+ "env": {
+  "python": "3.13.5",
+  "platform": "Linux-7.0.0-34-generic-x86_64-with-glibc2.41",
+  "numpy": "2.4.6",
+  "cwd": "03_实验记录",
+  "run_cmd": "PYTHONDONTWRITEBYTECODE=1 python3 -B run_T12_sign_regime.py",
+  "seed": "N/A (确定性计算)"
+ },
+ "declarations": {
+  "reestimate_forbidden": true,
+  "theta_B": 0.5,
+  "R_widen_max": 1.5,
+  "C0": 0.0,
+  "WSTAR": [
+   [
+    -0.3242844303508603,
+    0.10185339066179176
+   ],
+   [
+    0.11016869827632653,
+    0.1416513547484503
+   ]
+  ],
+  "K_tiers_used": {
+   "low": 0.0442,
+   "mid": 0.1281,
+   "high": 0.2067
+  },
+  "central_C_path": "P3b",
+  "n_grid": 231,
+  "c0_grid_nearest": -0.00017961,
+  "input_route": "实际外推输入精确代入（同源 T-09 内核），非 T-07 ceteris paribus 表（R-O6-2）",
+  "diagnostic_only": true,
+  "modifies_existing_values": false
+ },
+ "input_hashes": {
+  "原始面板": {
+   "path": "/home/user/1699367/deliver/04_数据/原始数据_修正LGDP_Kbase_WJP_Lofficial_v1.xlsx",
+   "sha256": "9c11146c861dd2bde81e10fecca610740b5a13615175f8a0d3f73f9ef3e4d3d2",
+   "bytes": 72499
+  },
+  "C_LP_v1.json": {
+   "path": "/home/user/1699367/deliver/06_复现归档/outputs/C_LP_v1.json",
+   "sha256": "d3adb43d5d9e8fe3ccc5f948be6ff38dc23a2cf7c9e672d4b188f91c9b72c937",
+   "bytes": 157028
+  },
+  "T09脚本": {
+   "path": "/home/user/1699367/deliver3/03_实验记录/run_T09_extrapolation.py",
+   "sha256": "661d98f5eed363df80b9bafbd0e0b1ec33557a33d73856daf0fd9231127d8e26",
+   "bytes": 24732
+  }
+ },
+ "identity_check": {
+  "statement": "dDdb - dDdy = gamma1 - b1；代码恒置 gamma1 = b1 + 1.0，故 dDdb - dDdy ≡ 1（与 c 无关）。由此 MAC_scaled = -dDdb/(dDdb-1)，MAC>0 ⟺ dDdb∈(0,1)（开区间）恒成立。",
+  "at_c0": {
+   "c": 0.0,
+   "b1": -1.0,
+   "gamma1": 0.0,
+   "max_abs_dev": 1.1102230246251565e-16,
+   "holds": true
+  },
+  "general_c_on_Wstar": {
+   "max_abs_dev": 2.220446049250313e-16,
+   "worst_c": -0.32428443,
+   "holds": true,
+   "n_c": 231
+  },
+  "note": "一般 c 处 gamma1 = c ≠ 0，但恒等式仍严格成立（因 gamma1 由构造等于 b1+1），故「c0 处」与「W* 一般 c 处」两种情形同构，MAC 正值区间同为 (0,1)。"
+ },
+ "anchor_2022": {
+  "exact_c0_mean_MAC_orig": 190.53058207374156,
+  "contract_target": 190.53058207373442,
+  "absdiff": 7.133849067031406e-12
+ },
+ "Q1_Q2_2022": {
+  "year": 2022,
+  "caliber_exact_c0": {
+   "c": 0.0,
+   "b1": -1.0,
+   "gamma1": 0.0,
+   "B_t": 0.9666666666666667,
+   "n_lambda1": 29,
+   "n_lambda0": 1,
+   "zones_dDdb": {
+    "le0": 1,
+    "btw01": 29,
+    "ge1": 0
+   },
+   "MAC_scaled_sign": {
+    "pos": 29,
+    "zero": 0,
+    "neg": 1
+   },
+   "MAC_pos_ratio": 0.9666666666666667,
+   "MAC_orig_mean": 190.53058207374156,
+   "identity_maxdev": 1.1102230246251565e-16,
+   "identity_holds": true
+  },
+  "caliber_grid_c0": {
+   "c": -0.00017961,
+   "b1": -1.00017961,
+   "gamma1": -0.00017961,
+   "B_t": 0.9666666666666667,
+   "n_lambda1": 29,
+   "n_lambda0": 1,
+   "zones_dDdb": {
+    "le0": 1,
+    "btw01": 29,
+    "ge1": 0
+   },
+   "MAC_scaled_sign": {
+    "pos": 29,
+    "zero": 0,
+    "neg": 1
+   },
+   "MAC_pos_ratio": 0.9666666666666667,
+   "MAC_orig_mean": 190.60176538109744,
+   "identity_maxdev": 1.1102230246251565e-16,
+   "identity_holds": true
+  },
+  "caliber_max_c": {
+   "c": -0.28827278,
+   "b1": -1.28827278,
+   "gamma1": -0.28827278,
+   "B_t": 1.0,
+   "n_lambda1": 30,
+   "n_lambda0": 0,
+   "zones_dDdb": {
+    "le0": 0,
+    "btw01": 30,
+    "ge1": 0
+   },
+   "MAC_scaled_sign": {
+    "pos": 30,
+    "zero": 0,
+    "neg": 0
+   },
+   "MAC_pos_ratio": 1.0,
+   "MAC_orig_mean": 482.16686236693164,
+   "identity_maxdev": 1.1102230246251565e-16,
+   "identity_holds": true
+  },
+  "scan_over_grid": {
+   "c0_grid": -0.00017961,
+   "B_at_c0_grid": 0.9666666666666667,
+   "c_star": -0.28827278,
+   "B_max_c": 1.0,
+   "B_min_over_grid": 0.9333333333333333,
+   "n_grid": 231
+  },
+  "B_t_gt_theta_exact_c0": true,
+  "B_t_gt_theta_grid_c0": true,
+  "B_t_gt_theta_max_c": true
+ },
+ "prov_detail_2022": [
+  {
+   "prov": "上海",
+   "dDdb": 0.11418633459868147,
+   "dDdy": -0.8858136654013186,
+   "MAC_scaled": 0.12890559161440487,
+   "MAC_orig": 718.015313224876,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "云南",
+   "dDdb": 0.011487730828331863,
+   "dDdy": -0.9885122691716681,
+   "MAC_scaled": 0.011621232418246159,
+   "MAC_orig": 34.55078754559103,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "内蒙古",
+   "dDdb": 0.08556904680152558,
+   "dDdy": -0.9144309531984743,
+   "MAC_scaled": 0.09357627987353692,
+   "MAC_orig": 102.45628784878723,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "北京",
+   "dDdb": 0.07922160569430418,
+   "dDdy": -0.9207783943056957,
+   "MAC_scaled": 0.08603764617439844,
+   "MAC_orig": 625.7063705123819,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "吉林",
+   "dDdb": 0.030629346629087294,
+   "dDdy": -0.9693706533709127,
+   "MAC_scaled": 0.03159714658430815,
+   "MAC_orig": 70.17509602516377,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "四川",
+   "dDdb": 0.03528019330635962,
+   "dDdy": -0.9647198066936404,
+   "MAC_scaled": 0.03657040423713754,
+   "MAC_orig": 190.5685693991394,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "天津",
+   "dDdb": 0.044174207368703214,
+   "dDdy": -0.9558257926312969,
+   "MAC_scaled": 0.046215751561899006,
+   "MAC_orig": 152.26259957097764,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "宁夏",
+   "dDdb": 0.07124365520147308,
+   "dDdy": -0.9287563447985269,
+   "MAC_scaled": 0.07670866056578898,
+   "MAC_orig": 42.47805007011356,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "安徽",
+   "dDdb": 0.006955862760582229,
+   "dDdy": -0.9930441372394178,
+   "MAC_scaled": 0.007004585697387998,
+   "MAC_orig": 24.789706907264488,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "山东",
+   "dDdb": 0.05527571225818363,
+   "dDdy": -0.9447242877418164,
+   "MAC_scaled": 0.05850988799103461,
+   "MAC_orig": 156.24835799893452,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "山西",
+   "dDdb": 0.07462811463446459,
+   "dDdy": -0.9253718853655355,
+   "MAC_scaled": 0.08064661982353763,
+   "MAC_orig": 53.847667821205434,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "广东",
+   "dDdb": 0.07740188511141192,
+   "dDdy": -0.9225981148885881,
+   "MAC_scaled": 0.08389555957499316,
+   "MAC_orig": 591.3145056312333,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "广西",
+   "dDdb": 0.047160168753115406,
+   "dDdy": -0.9528398312468845,
+   "MAC_scaled": 0.04949432969379722,
+   "MAC_orig": 199.66478625237926,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "新疆",
+   "dDdb": 0.09834714657082015,
+   "dDdy": -0.9016528534291799,
+   "MAC_scaled": 0.10907429194815364,
+   "MAC_orig": 121.32038018005157,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "江苏",
+   "dDdb": 0.05866079789038534,
+   "dDdy": -0.9413392021096147,
+   "MAC_scaled": 0.06231632312658594,
+   "MAC_orig": 330.9203286347832,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "江西",
+   "dDdb": 0.02941932562848066,
+   "dDdy": -0.9705806743715193,
+   "MAC_scaled": 0.030311056468881964,
+   "MAC_orig": 123.66396119887455,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "河北",
+   "dDdb": 0.04414650412238197,
+   "dDdy": -0.955853495877618,
+   "MAC_scaled": 0.04618542937047984,
+   "MAC_orig": 77.77704483265423,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "河南",
+   "dDdb": 0.00901137774051386,
+   "dDdy": -0.9909886222594861,
+   "MAC_scaled": 0.00909332109178774,
+   "MAC_orig": 31.01690609204778,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "浙江",
+   "dDdb": 0.08824612324295447,
+   "dDdy": -0.9117538767570456,
+   "MAC_scaled": 0.09678722020555702,
+   "MAC_orig": 534.1985265032246,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "海南",
+   "dDdb": 0.10024638794300621,
+   "dDdy": -0.8997536120569938,
+   "MAC_scaled": 0.11141537705397533,
+   "MAC_orig": 473.591294457895,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "湖北",
+   "dDdb": 0.02418919625354357,
+   "dDdy": -0.9758108037464563,
+   "MAC_scaled": 0.024788817832999334,
+   "MAC_orig": 94.27893769565583,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "湖南",
+   "dDdb": 0.006922239922932685,
+   "dDdy": -0.9930777600770674,
+   "MAC_scaled": 0.0069704913363435785,
+   "MAC_orig": 32.36132886363523,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "甘肃",
+   "dDdb": 0.04014597650741729,
+   "dDdy": -0.9598540234925828,
+   "MAC_scaled": 0.0418250854034447,
+   "MAC_orig": 70.8829670487766,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "福建",
+   "dDdb": 0.04622189225446013,
+   "dDdy": -0.9537781077455398,
+   "MAC_scaled": 0.048461892634247536,
+   "MAC_orig": 311.1064595456667,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "贵州",
+   "dDdb": 0.011648161492342518,
+   "dDdy": -0.9883518385076575,
+   "MAC_scaled": 0.011785440203086413,
+   "MAC_orig": 18.014798247445867,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "辽宁",
+   "dDdb": 0.07609207328562312,
+   "dDdy": -0.9239079267143769,
+   "MAC_scaled": 0.08235893543659002,
+   "MAC_orig": 150.20105827792588,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "重庆",
+   "dDdb": 0.03973380434037707,
+   "dDdy": -0.9602661956596229,
+   "MAC_scaled": 0.04137790595979822,
+   "MAC_orig": 253.49913337355082,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "陕西",
+   "dDdb": 0.048088010738573966,
+   "dDdy": -0.9519119892614261,
+   "MAC_scaled": 0.05051728655701113,
+   "MAC_orig": 98.73700077523438,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  },
+  {
+   "prov": "青海",
+   "dDdb": -3.622102617839573e-15,
+   "dDdy": -1.0000000000000036,
+   "MAC_scaled": -3.6221026178395606e-15,
+   "MAC_orig": -8.475081675847425e-12,
+   "zone": "le0",
+   "lambda_b": 0,
+   "mac_sign": "neg"
+  },
+  {
+   "prov": "黑龙江",
+   "dDdb": 0.013739757612045052,
+   "dDdy": -0.986260242387955,
+   "MAC_scaled": 0.01393116849035509,
+   "MAC_orig": 32.26923767678501,
+   "zone": "btw01",
+   "lambda_b": 1,
+   "mac_sign": "pos"
+  }
+ ],
+ "Q3": {
+  "2023": {
+   "low": {
+    "caliber_exact_c0": {
+     "c": 0.0,
+     "B_t": 0.9,
+     "n_lambda1": 27,
+     "n_lambda0": 3,
+     "zones_dDdb": {
+      "le0": 3,
+      "btw01": 27,
+      "ge1": 0
+     },
+     "MAC_scaled_sign": {
+      "pos": 27,
+      "zero": 0,
+      "neg": 3
+     },
+     "MAC_pos_ratio": 0.9,
+     "identity_maxdev": 1.1102230246251565e-16
+    },
+    "caliber_grid_c0": {
+     "c": -0.00017961,
+     "B_t": 0.9,
+     "zones_dDdb": {
+      "le0": 3,
+      "btw01": 27,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.9
+    },
+    "caliber_max_c": {
+     "c": -0.32428443,
+     "B_t": 0.9666666666666667,
+     "zones_dDdb": {
+      "le0": 1,
+      "btw01": 29,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.9666666666666667
+    },
+    "scan_over_grid": {
+     "c_star": -0.32428443,
+     "B_max_c": 0.9666666666666667,
+     "B_min_over_grid": 0.8333333333333334
+    },
+    "g_K": 0.0442
+   },
+   "mid": {
+    "caliber_exact_c0": {
+     "c": 0.0,
+     "B_t": 0.7666666666666667,
+     "n_lambda1": 23,
+     "n_lambda0": 7,
+     "zones_dDdb": {
+      "le0": 7,
+      "btw01": 23,
+      "ge1": 0
+     },
+     "MAC_scaled_sign": {
+      "pos": 23,
+      "zero": 0,
+      "neg": 7
+     },
+     "MAC_pos_ratio": 0.7666666666666667,
+     "identity_maxdev": 2.220446049250313e-16
+    },
+    "caliber_grid_c0": {
+     "c": -0.00017961,
+     "B_t": 0.7666666666666667,
+     "zones_dDdb": {
+      "le0": 7,
+      "btw01": 23,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.7666666666666667
+    },
+    "caliber_max_c": {
+     "c": -0.32428443,
+     "B_t": 0.9333333333333333,
+     "zones_dDdb": {
+      "le0": 2,
+      "btw01": 28,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.9333333333333333
+    },
+    "scan_over_grid": {
+     "c_star": -0.32428443,
+     "B_max_c": 0.9333333333333333,
+     "B_min_over_grid": 0.7333333333333333
+    },
+    "g_K": 0.1281
+   },
+   "high": {
+    "caliber_exact_c0": {
+     "c": 0.0,
+     "B_t": 0.6333333333333333,
+     "n_lambda1": 19,
+     "n_lambda0": 11,
+     "zones_dDdb": {
+      "le0": 11,
+      "btw01": 19,
+      "ge1": 0
+     },
+     "MAC_scaled_sign": {
+      "pos": 19,
+      "zero": 0,
+      "neg": 11
+     },
+     "MAC_pos_ratio": 0.6333333333333333,
+     "identity_maxdev": 2.220446049250313e-16
+    },
+    "caliber_grid_c0": {
+     "c": -0.00017961,
+     "B_t": 0.6333333333333333,
+     "zones_dDdb": {
+      "le0": 11,
+      "btw01": 19,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.6333333333333333
+    },
+    "caliber_max_c": {
+     "c": -0.32428443,
+     "B_t": 0.8333333333333334,
+     "zones_dDdb": {
+      "le0": 5,
+      "btw01": 25,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.8333333333333334
+    },
+    "scan_over_grid": {
+     "c_star": -0.32428443,
+     "B_max_c": 0.8333333333333334,
+     "B_min_over_grid": 0.5333333333333333
+    },
+    "g_K": 0.2067
+   }
+  },
+  "2024": {
+   "low": {
+    "caliber_exact_c0": {
+     "c": 0.0,
+     "B_t": 0.7666666666666667,
+     "n_lambda1": 23,
+     "n_lambda0": 7,
+     "zones_dDdb": {
+      "le0": 7,
+      "btw01": 23,
+      "ge1": 0
+     },
+     "MAC_scaled_sign": {
+      "pos": 23,
+      "zero": 0,
+      "neg": 7
+     },
+     "MAC_pos_ratio": 0.7666666666666667,
+     "identity_maxdev": 1.1102230246251565e-16
+    },
+    "caliber_grid_c0": {
+     "c": -0.00017961,
+     "B_t": 0.7666666666666667,
+     "zones_dDdb": {
+      "le0": 7,
+      "btw01": 23,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.7666666666666667
+    },
+    "caliber_max_c": {
+     "c": -0.32428443,
+     "B_t": 0.9666666666666667,
+     "zones_dDdb": {
+      "le0": 1,
+      "btw01": 29,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.9666666666666667
+    },
+    "scan_over_grid": {
+     "c_star": -0.32428443,
+     "B_max_c": 0.9666666666666667,
+     "B_min_over_grid": 0.7666666666666667
+    },
+    "g_K": 0.0442
+   },
+   "mid": {
+    "caliber_exact_c0": {
+     "c": 0.0,
+     "B_t": 0.4,
+     "n_lambda1": 12,
+     "n_lambda0": 18,
+     "zones_dDdb": {
+      "le0": 18,
+      "btw01": 12,
+      "ge1": 0
+     },
+     "MAC_scaled_sign": {
+      "pos": 12,
+      "zero": 0,
+      "neg": 18
+     },
+     "MAC_pos_ratio": 0.4,
+     "identity_maxdev": 1.1102230246251565e-16
+    },
+    "caliber_grid_c0": {
+     "c": -0.00017961,
+     "B_t": 0.4,
+     "zones_dDdb": {
+      "le0": 18,
+      "btw01": 12,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.4
+    },
+    "caliber_max_c": {
+     "c": -0.32428443,
+     "B_t": 0.8,
+     "zones_dDdb": {
+      "le0": 6,
+      "btw01": 24,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.8
+    },
+    "scan_over_grid": {
+     "c_star": -0.32428443,
+     "B_max_c": 0.8,
+     "B_min_over_grid": 0.4
+    },
+    "g_K": 0.1281
+   },
+   "high": {
+    "caliber_exact_c0": {
+     "c": 0.0,
+     "B_t": 0.23333333333333334,
+     "n_lambda1": 7,
+     "n_lambda0": 23,
+     "zones_dDdb": {
+      "le0": 23,
+      "btw01": 7,
+      "ge1": 0
+     },
+     "MAC_scaled_sign": {
+      "pos": 7,
+      "zero": 0,
+      "neg": 23
+     },
+     "MAC_pos_ratio": 0.23333333333333334,
+     "identity_maxdev": 1.1102230246251565e-16
+    },
+    "caliber_grid_c0": {
+     "c": -0.00017961,
+     "B_t": 0.23333333333333334,
+     "zones_dDdb": {
+      "le0": 23,
+      "btw01": 7,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.23333333333333334
+    },
+    "caliber_max_c": {
+     "c": -0.32428443,
+     "B_t": 0.6,
+     "zones_dDdb": {
+      "le0": 12,
+      "btw01": 18,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.6
+    },
+    "scan_over_grid": {
+     "c_star": -0.32428443,
+     "B_max_c": 0.6,
+     "B_min_over_grid": 0.1
+    },
+    "g_K": 0.2067
+   }
+  },
+  "2025": {
+   "low": {
+    "caliber_exact_c0": {
+     "c": 0.0,
+     "B_t": 0.7333333333333333,
+     "n_lambda1": 22,
+     "n_lambda0": 8,
+     "zones_dDdb": {
+      "le0": 8,
+      "btw01": 22,
+      "ge1": 0
+     },
+     "MAC_scaled_sign": {
+      "pos": 22,
+      "zero": 0,
+      "neg": 8
+     },
+     "MAC_pos_ratio": 0.7333333333333333,
+     "identity_maxdev": 1.1102230246251565e-16
+    },
+    "caliber_grid_c0": {
+     "c": -0.00017961,
+     "B_t": 0.7333333333333333,
+     "zones_dDdb": {
+      "le0": 8,
+      "btw01": 22,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.7333333333333333
+    },
+    "caliber_max_c": {
+     "c": -0.22625273,
+     "B_t": 0.9333333333333333,
+     "zones_dDdb": {
+      "le0": 2,
+      "btw01": 28,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.9333333333333333
+    },
+    "scan_over_grid": {
+     "c_star": -0.22625273,
+     "B_max_c": 0.9333333333333333,
+     "B_min_over_grid": 0.7333333333333333
+    },
+    "g_K": 0.0442
+   },
+   "mid": {
+    "caliber_exact_c0": {
+     "c": 0.0,
+     "B_t": 0.26666666666666666,
+     "n_lambda1": 8,
+     "n_lambda0": 22,
+     "zones_dDdb": {
+      "le0": 22,
+      "btw01": 8,
+      "ge1": 0
+     },
+     "MAC_scaled_sign": {
+      "pos": 8,
+      "zero": 0,
+      "neg": 22
+     },
+     "MAC_pos_ratio": 0.26666666666666666,
+     "identity_maxdev": 2.220446049250313e-16
+    },
+    "caliber_grid_c0": {
+     "c": -0.00017961,
+     "B_t": 0.26666666666666666,
+     "zones_dDdb": {
+      "le0": 22,
+      "btw01": 8,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.26666666666666666
+    },
+    "caliber_max_c": {
+     "c": -0.32428443,
+     "B_t": 0.6333333333333333,
+     "zones_dDdb": {
+      "le0": 11,
+      "btw01": 19,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.6333333333333333
+    },
+    "scan_over_grid": {
+     "c_star": -0.32428443,
+     "B_max_c": 0.6333333333333333,
+     "B_min_over_grid": 0.16666666666666666
+    },
+    "g_K": 0.1281
+   },
+   "high": {
+    "caliber_exact_c0": {
+     "c": 0.0,
+     "B_t": 0.0,
+     "n_lambda1": 0,
+     "n_lambda0": 30,
+     "zones_dDdb": {
+      "le0": 30,
+      "btw01": 0,
+      "ge1": 0
+     },
+     "MAC_scaled_sign": {
+      "pos": 0,
+      "zero": 0,
+      "neg": 30
+     },
+     "MAC_pos_ratio": 0.0,
+     "identity_maxdev": 2.220446049250313e-16
+    },
+    "caliber_grid_c0": {
+     "c": -0.00017961,
+     "B_t": 0.0,
+     "zones_dDdb": {
+      "le0": 30,
+      "btw01": 0,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.0
+    },
+    "caliber_max_c": {
+     "c": -0.32428443,
+     "B_t": 0.3333333333333333,
+     "zones_dDdb": {
+      "le0": 20,
+      "btw01": 10,
+      "ge1": 0
+     },
+     "MAC_pos_ratio": 0.3333333333333333
+    },
+    "scan_over_grid": {
+     "c_star": -0.32428443,
+     "B_max_c": 0.3333333333333333,
+     "B_min_over_grid": 0.0
+    },
+    "g_K": 0.2067
+   }
+  }
+ },
+ "Q4": {
+  "2023": {
+   "low": {
+    "g_K": 0.0442,
+    "exact_c0": {
+     "B_t": 0.9,
+     "MAC_pos_ratio": 0.9,
+     "degrade": true,
+     "conflict": true
+    },
+    "grid_c0": {
+     "B_t": 0.9,
+     "MAC_pos_ratio": 0.9,
+     "degrade": true,
+     "conflict": true
+    },
+    "max_c": {
+     "B_t": 0.9666666666666667,
+     "MAC_pos_ratio": 0.9666666666666667,
+     "degrade": true,
+     "conflict": true
+    }
+   },
+   "mid": {
+    "g_K": 0.1281,
+    "exact_c0": {
+     "B_t": 0.7666666666666667,
+     "MAC_pos_ratio": 0.7666666666666667,
+     "degrade": true,
+     "conflict": true
+    },
+    "grid_c0": {
+     "B_t": 0.7666666666666667,
+     "MAC_pos_ratio": 0.7666666666666667,
+     "degrade": true,
+     "conflict": true
+    },
+    "max_c": {
+     "B_t": 0.9333333333333333,
+     "MAC_pos_ratio": 0.9333333333333333,
+     "degrade": true,
+     "conflict": true
+    }
+   },
+   "high": {
+    "g_K": 0.2067,
+    "exact_c0": {
+     "B_t": 0.6333333333333333,
+     "MAC_pos_ratio": 0.6333333333333333,
+     "degrade": true,
+     "conflict": true
+    },
+    "grid_c0": {
+     "B_t": 0.6333333333333333,
+     "MAC_pos_ratio": 0.6333333333333333,
+     "degrade": true,
+     "conflict": true
+    },
+    "max_c": {
+     "B_t": 0.8333333333333334,
+     "MAC_pos_ratio": 0.8333333333333334,
+     "degrade": true,
+     "conflict": true
+    }
+   }
+  },
+  "2024": {
+   "low": {
+    "g_K": 0.0442,
+    "exact_c0": {
+     "B_t": 0.7666666666666667,
+     "MAC_pos_ratio": 0.7666666666666667,
+     "degrade": true,
+     "conflict": true
+    },
+    "grid_c0": {
+     "B_t": 0.7666666666666667,
+     "MAC_pos_ratio": 0.7666666666666667,
+     "degrade": true,
+     "conflict": true
+    },
+    "max_c": {
+     "B_t": 0.9666666666666667,
+     "MAC_pos_ratio": 0.9666666666666667,
+     "degrade": true,
+     "conflict": true
+    }
+   },
+   "mid": {
+    "g_K": 0.1281,
+    "exact_c0": {
+     "B_t": 0.4,
+     "MAC_pos_ratio": 0.4,
+     "degrade": false,
+     "conflict": false
+    },
+    "grid_c0": {
+     "B_t": 0.4,
+     "MAC_pos_ratio": 0.4,
+     "degrade": false,
+     "conflict": false
+    },
+    "max_c": {
+     "B_t": 0.8,
+     "MAC_pos_ratio": 0.8,
+     "degrade": true,
+     "conflict": true
+    }
+   },
+   "high": {
+    "g_K": 0.2067,
+    "exact_c0": {
+     "B_t": 0.23333333333333334,
+     "MAC_pos_ratio": 0.23333333333333334,
+     "degrade": false,
+     "conflict": false
+    },
+    "grid_c0": {
+     "B_t": 0.23333333333333334,
+     "MAC_pos_ratio": 0.23333333333333334,
+     "degrade": false,
+     "conflict": false
+    },
+    "max_c": {
+     "B_t": 0.6,
+     "MAC_pos_ratio": 0.6,
+     "degrade": true,
+     "conflict": true
+    }
+   }
+  },
+  "2025": {
+   "low": {
+    "g_K": 0.0442,
+    "exact_c0": {
+     "B_t": 0.7333333333333333,
+     "MAC_pos_ratio": 0.7333333333333333,
+     "degrade": true,
+     "conflict": true
+    },
+    "grid_c0": {
+     "B_t": 0.7333333333333333,
+     "MAC_pos_ratio": 0.7333333333333333,
+     "degrade": true,
+     "conflict": true
+    },
+    "max_c": {
+     "B_t": 0.9333333333333333,
+     "MAC_pos_ratio": 0.9333333333333333,
+     "degrade": true,
+     "conflict": true
+    }
+   },
+   "mid": {
+    "g_K": 0.1281,
+    "exact_c0": {
+     "B_t": 0.26666666666666666,
+     "MAC_pos_ratio": 0.26666666666666666,
+     "degrade": false,
+     "conflict": false
+    },
+    "grid_c0": {
+     "B_t": 0.26666666666666666,
+     "MAC_pos_ratio": 0.26666666666666666,
+     "degrade": false,
+     "conflict": false
+    },
+    "max_c": {
+     "B_t": 0.6333333333333333,
+     "MAC_pos_ratio": 0.6333333333333333,
+     "degrade": true,
+     "conflict": true
+    }
+   },
+   "high": {
+    "g_K": 0.2067,
+    "exact_c0": {
+     "B_t": 0.0,
+     "MAC_pos_ratio": 0.0,
+     "degrade": false,
+     "conflict": false
+    },
+    "grid_c0": {
+     "B_t": 0.0,
+     "MAC_pos_ratio": 0.0,
+     "degrade": false,
+     "conflict": false
+    },
+    "max_c": {
+     "B_t": 0.3333333333333333,
+     "MAC_pos_ratio": 0.3333333333333333,
+     "degrade": false,
+     "conflict": false
+    }
+   }
+  }
+ },
+ "global_scan_dDdb": {
+  "n_obs_scanned": 69300,
+  "dDdb_min": -0.24037382938053364,
+  "dDdb_max": 0.27522348386766704,
+  "argmax": [
+   "2022",
+   "actual",
+   -0.32428443
+  ],
+  "count_ge1": 0,
+  "count_le0": 24854,
+  "finding": "在 2022-2025 全部实测输出输入 × W* 全网格扫描中，dDdb≥1 从未出现（全局上界 < 1）；故样本内 λ_b=1 的集合与「MAC>0」集合完全重合（因 ∀ 观测 dDdb<1）。A5 所述「dDdb>1 触发 λ=1 却 MAC<0」分支在本样本内为空；实际失配全部位于 dDdb≤0 侧：dDdb≤0 → MAC<0（负价，不可解释）却被 λ_b=0 判为「健康」。"
+ },
+ "elapsed_s": 4.36
+}
